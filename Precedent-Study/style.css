@@ -74,7 +74,12 @@ main {
   margin-bottom: 24px;                
 }
 
-.advisor {
+.project-image {
+  width: 80%;
+  height: auto;
+}
+
+.format {
   font-size: 14px;                    
   margin-bottom: 40px;                
   color: #111;                     
@@ -125,11 +130,6 @@ button {
 
 button:hover {
   background-color: #333;            
-}
-
-.project-image {
-  width: 100%;
-  height: auto;
 }
 
 .menu{
