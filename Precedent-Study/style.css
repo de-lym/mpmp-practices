@@ -75,8 +75,9 @@ main {
 }
 
 .project-image {
-  width: 80%;
+  max-width: 100%;
   height: auto;
+  display: block;
 }
 
 .format {
