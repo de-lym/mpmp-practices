@@ -49,11 +49,20 @@ menus.forEach(menu=>{
 showPage("intro");
 
 
-// Get the page button
+// Get the archive page button
 const moveButton = document.getElementById("demoButton");
 
 if(moveButton){
     moveButton.addEventListener("click", () => {
         window.location.href = "archive.html";
+    });
+}
+
+// Get the analysis page button
+const moveButton = document.getElementById("nextButton");
+
+if(moveButton){
+    moveButton.addEventListener("click", () => {
+        window.location.href = "analysis.html";
     });
 }
