@@ -59,10 +59,10 @@ if(moveButton){
 }
 
 // Get the analysis page button
-const moveButton = document.getElementById("nextButton");
+const nextButton = document.getElementById("nextButton");
 
-if(moveButton){
-    moveButton.addEventListener("click", () => {
+if(nextButton){
+    nextButton.addEventListener("click", () => {
         window.location.href = "analysis.html";
     });
 }
