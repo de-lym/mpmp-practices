@@ -1,3 +1,4 @@
+console.log("JS LOADED");
 
 // Get all menu buttons
 const menus = document.querySelectorAll(".menu");
