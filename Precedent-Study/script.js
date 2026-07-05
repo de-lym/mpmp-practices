@@ -6,6 +6,9 @@ const menus = document.querySelectorAll(".menu");
 // Get all sections
 const pages = document.querySelectorAll(".page");
 
+console.log("Menus:", menus.length);
+console.log("Pages:", pages.length);
+
 // Show a page
 function showPage(pageID){
 
@@ -47,7 +50,17 @@ menus.forEach(menu=>{
 });
 
 // Default page
-showPage("intro");
+const currentPage = window.location.pathname.split("/").pop();
+
+if (currentPage === "archive.html") {
+    showPage("intro");
+}
+else if (currentPage === "analysis.html") {
+    showPage("history");
+}
+// else if (currentPage === "#" || currentPage === "") {
+//     showPage("#");
+// }
 
 
 // Get the archive page button
