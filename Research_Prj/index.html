@@ -1,64 +1,406 @@
-<!-- computational design workspaces tutorial #1 -->
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  
   <meta charset="UTF-8">
-  <title>Precedent Study | The Uncensored Library</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Archive Under Restriction</title>
+
+  <!-- Google Fonts: Fraunces (headings/statement) + IBM Plex Sans (everything else,
+       including uppercase data style labels at a heavier weight, see styles.css) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- D3.js, powers the drag-able node diagram in section 03 (#fieldsViz), drawn by script.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+
+  <!-- All page styling lives in this one file, see styles.css -->
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  
-  <header>
-    
-    <div class="left">Columbia GSAPP</div>  
-    <div class="center">
 
-      Computational Design Practices<br>
-      <span>Precedent Study</span>
+<!-- ============================================================
+     NAV
+     Sticky jump-links to every section below. Stays dark/black
+     no matter what section is scrolled behind it (see nav{} in
+     styles.css).
+     ============================================================ -->
+<nav>
+  <div class="navwrap">
+    <a href="#hero">Title</a>
+    <a href="#questions">Questions</a>
+    <a href="#keywords">Keywords</a>
+    <a href="#fields">Fields</a>
+    <a href="#lineage">Lineage</a>
+    <a href="#situated">Situated Tech</a>
+    <a href="#methods">Methods</a>
+    <a href="#experiments">Experiments</a>
+    <a href="#rhetoric">Argument</a>
+    <a href="#outline">Outline</a>
+    <a href="#challenge">Challenge</a>
+    <a href="#exhibition">Exhibition</a>
+    <a href="#references">Precedents &amp; Refs</a>
+  </div>
+</nav>
 
+<!-- ============================================================
+     HERO
+     Title, one-paragraph framing, and the precedent citation.
+     ============================================================ -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Research Foundation</span>
+    <h1>The Archive<br>Under <span class="split">Restriction</span></h1>
+    <p class="sub">Every archive operates inside restrictions it didn't choose, restrictions written into corporate infrastructure, legal access rules, and platform ownership. This project sets aside whether an archive can survive and asks instead how its context keeps evolving once it's already built inside someone else's rules.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     01 RESEARCH QUESTIONS
+     The central question plus two follow-up paragraphs.
+     ============================================================ -->
+<section id="questions">
+  <div class="wrap">
+    <span class="eyebrow">01 &middot; Research Questions</span>
+    <h2 class="q">"How can computational interfaces let an archive's context keep evolving past the restrictions it was built inside?"</h2>
+    <p class="lede">Every archive, physical or digital, operates under some restriction it didn't design, whether a legal order, a corporate terms of service, or a platform's ownership. This research doesn't ask whether that restriction can be removed. It asks what computational rules, not just what content, could keep an archive's context alive and legible in spite of it, and who gets to set those rules.</p>
+    <p class="lede">And a harder question follows. Does digital "interactivity" actually loosen that restriction, or does it just relocate the gatekeeping into an interface, where you can only contribute in the shapes a form, a tag menu, or a comment box was built to accept?</p>
+    <p class="lede">Context isn't static, so it treats time as a design variable, not just visibility. What if a contribution's exposure isn't fixed the moment it's written, but governed by a rule instead, one where something sealed resurfaces once enough related entries accumulate around it, something unvisited fades from view without ever being deleted, and something anonymous can be reconnected to its author only under conditions set in advance? That's a question for an algorithm, not a form.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     02 KEYWORDS
+     Six recurring terms, shown as a simple tag grid.
+     ============================================================ -->
+<section id="keywords">
+  <div class="wrap">
+    <span class="eyebrow">02 &middot; Keywords</span>
+    <h2>Six recurring terms</h2>
+    <div class="kw-grid">
+      <div class="kw">participation</div>
+      <div class="kw">joint authorship</div>
+      <div class="kw">interface</div>
+      <div class="kw">custodianship</div>
+      <div class="kw">temporality</div>
+      <div class="kw">restriction</div>
     </div>
-    
-    <div class="right"><a href="https://www.uncensoredlibrary.com/en">The Uncensored Library</a></div>
+  </div>
+</section>
 
-  </header>
+<!-- ============================================================
+     03 INTERSECTING FIELDS
+     The #fieldsViz <div> below is empty on load, script.js
+     draws the drag-able D3 node diagram into it at runtime.
+     ============================================================ -->
+<section id="fields">
+  <div class="wrap">
+    <span class="eyebrow">03 &middot; Intersecting Fields</span>
+    <h2>A problem no single discipline owns</h2>
+    <p class="lede">The work sits where archival science meets infrastructure studies, where archives led by communities meet interaction design, where preservation meets information policy.</p>
+    <!-- Empty on load, script.js finds this div by id and appends
+         an <svg> with the D3 force-directed diagram into it. -->
+    <div class="fields-viz" id="fieldsViz">
+      <span class="fv-hint">drag nodes</span>
+    </div>
+  </div>
+</section>
 
-  <main>
-    
-    <!-- title -->
-    <div class="project-meta">2020</div>
-    <div class="project-title">The Uncensored Library</div>
-    <div class="project-subtitle">by Reporters Without Borders</div>
+<!-- ============================================================
+     04 HISTORICAL LINEAGE
+     Two parts, a dated two-column ledger (state restriction vs.
+     corporate/infrastructural restriction), then a second list
+     of precedents for archives evolving past those restrictions.
+     ============================================================ -->
+<section id="lineage">
+  <div class="wrap">
+    <span class="eyebrow">04 &middot; Historical Lineage</span>
+    <h2 class="q">A ledger of the restrictions archives operate under, and a second lineage of how they evolve past them.</h2>
+    <p class="lede">First, the record of restriction, not fire or decay, but the legal orders and corporate infrastructure that decide who can reach an archive and how its context can be used. This isn't the main argument here, it's the condition everything else is designed against.</p>
+    <div class="ledger">
+      <div class="ledger-head">
+        <div></div>
+        <div class="phys-h">State &amp; Legal Restriction</div>
+        <div class="dig-h">Corporate &amp; Infrastructural Restriction</div>
+      </div>
+      <div class="ledger-row">
+        <div class="yr">1967</div>
+        <div class="ledger-cell phys">FBI begins compiling records on U.S. library patrons' reading habits. It is the earliest recorded case of an archive's use, not just its contents, being restricted.</div>
+        <div class="ledger-cell dig"></div>
+      </div>
+      <div class="ledger-row">
+        <div class="yr">2001</div>
+        <div class="ledger-cell phys">USA PATRIOT Act Section&nbsp;215 allows secret court orders for library circulation records, with librarians gagged from disclosing the request.</div>
+        <div class="ledger-cell dig"></div>
+      </div>
+      <div class="ledger-row">
+        <div class="yr">2013</div>
+        <div class="ledger-cell phys"></div>
+        <div class="ledger-cell dig">Snowden discloses PRISM. Microsoft is among the platforms shown to have handed user data to the NSA, restriction folded quietly into infrastructure.</div>
+      </div>
+      <div class="ledger-row">
+        <div class="yr">2020</div>
+        <div class="ledger-cell phys"></div>
+        <div class="ledger-cell dig">The Uncensored Library launches inside Minecraft, owned by Mojang, owned by Microsoft. It is an archive built to evade state censorship, hosted on infrastructure with its own compliance history.</div>
+      </div>
+      <div class="ledger-row">
+        <div class="yr">2024</div>
+        <div class="ledger-cell phys"></div>
+        <div class="ledger-cell dig">Internet Archive suffers sustained DDoS attacks and a major data breach. It is a reminder that even an "open" archive's context depends on infrastructure it doesn't fully control.</div>
+      </div>
+    </div>
 
-    <!-- image section -->
-    <img class="project-image" src="images/Poster_Uncensored_Library_01.png" alt="The Uncensored Library">
+    <h3>A second lineage of archives evolving past their restrictions</h3>
+    <p class="lede">Alongside the history of restriction runs a separate history of archives opening their authorship in spite of it, the actual lineage this work continues.</p>
+    <div class="comm-list">
+      <div class="comm-item">
+        <div class="name">1917 to 1983<br>The Dymaxion Chronofile</div>
+        <p>Buckminster Fuller's lifelong scrapbook of his own life, correspondence, sketches, even dry cleaning bills. Fuller refused to be "judge of what was valid to put in or not," so he put everything in. The direct model for the logging logic here, inclusion without curation.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">1998<br>Relational aesthetics</div>
+        <p>Nicolas Bourriaud's framing of art as social interaction rather than a fixed object, where the interaction <em>is</em> the work.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">2007<br>Crowdsourced transcription</div>
+        <p>Zooniverse launches in 2007, later joined by the Smithsonian Transcription Center in 2013, turning public volunteers into working archivists, through narrow, structured interfaces.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">2010<br>The participatory museum</div>
+        <p>Nina Simon's argument that institutions should design for visitors to contribute, not just consume.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">2010 &middot; <br> and a labeling system built around Indigenous community protocols rather than a platform's default open access, restriction chosen by the community documented, not imposed by the infrastructure hosting it. The clearest precedent for the inversion of who sets the restriction at the center of this work.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- format -->
-    <div class="format">Digital Library in Minecraft </div>
-    
-    <div class="section-title">Abstract</div>
-    <p>The Uncensored Library is a virtual library built within Minecraft by Reporters Without Borders (RSF) in collaboration with BlockWorks, DDB Berlin, and MediaMonks. Launched on the World Day Against Cyber Censorship in 2020, the project functions as a digital archive that preserves censored journalism by embedding banned articles into readable in-game books. Organized as a monumental neoclassical library with country-specific exhibition halls, it allows visitors to freely explore reports that have been suppressed by governments while learning about the global state of press freedom. By transforming a popular gaming platform into an accessible archive, the project demonstrates how virtual environments can operate as alternative spaces for knowledge preservation, public education, and resistance to information censorship.</p>
-    
-    <div class="section-title">Motivation</div>
-    <p>The project was motivated by the growing suppression of independent journalism and the recognition that conventional websites and social media platforms are often blocked or heavily monitored in countries with limited press freedom. Rather than creating another online archive vulnerable to the same restrictions, the designers identified Minecraft as an unexpected yet effective medium because the game remained accessible in many of these regions. Their goal was not only to restore public access to censored information but also to engage younger audiences who regularly inhabit digital game worlds. In doing so, The Uncensored Library reframes virtual space as a form of civic infrastructure, demonstrating that entertainment platforms can also function as sites for political expression, public memory, and the defense of freedom of information.</p>
-    
-    <div class="section-title">Methodology</div>
-    <p>By combining digital architecture, archival curation, and interactive storytelling, the project creates an immersive learning experience. The library was constructed using more than 12.5 million Minecraft blocks, with each country represented by a uniquely designed wing whose architectural language reflects its particular political and journalistic context. Censored articles are preserved as interactive in-game books, allowing visitors to read them individually or collectively while navigating the virtual environment. Beyond simply storing documents, the project integrates spatial symbolism, multilingual content, memorial spaces for persecuted journalists, and references to the Press Freedom Index to contextualize each collection. This methodology transforms the archive from a passive repository into an explorable exhibition, where architecture, gameplay, and information design work together to communicate the consequences of censorship and the importance of free access to knowledge.</p>
-    
-    <div class="section-title">More Information</div>
-    <p>Click the button below to get to know more about The Uncensored Library</p>
-    
-    <button id="demoButton">Click Me!</button>
-    
-  </main>
+<!-- ============================================================
+     05 SITUATED TECHNOLOGY
+     Argues that interface design itself is archival policy.
+     ============================================================ -->
+<section id="situated">
+  <div class="wrap">
+    <span class="eyebrow">05 &middot; Situated Technology</span>
+    <h2 class="q">Every interface decides what counts as a contribution.</h2>
+    <p class="lede">A tag field, a comment box, a reaction bar with five icons, each one quietly defines the shapes a contribution is allowed to take. The Uncensored Library shows the same logic at the level of the platform itself. It's hosted inside Minecraft, made by Mojang, owned by Microsoft, a company with its own history of complying with government data requests. Whether people are contributing content or just visiting it, they're doing so inside someone else's designed and governed space.</p>
+    <p class="lede">This work treats interface design itself as archival policy. Every dropdown, form field, and moderation rule is a decision about who gets to speak in the record, made before any user ever arrives.</p>
+    <p class="lede">That policy doesn't stop at the interface. An algorithm that decides which memory resurfaces, which stays sealed, or which connects to which is making the same kind of decision as a locked door, just running continuously instead of once. Treating that as a design object, not an implementation detail, is what makes this a computational question rather than an archival one.</p>
+    <p class="lede">The one interface decision kept here is a visibility choice, open, sealed, or anonymous, offered to each contributor at the moment of writing. Everything else follows Fuller's rule, nothing is excluded from the record itself, sealed or not, seen or not.</p>
+  </div>
+</section>
 
-  <script src="script.js"></script>
+<!-- ============================================================
+     06 METHODS
+     Five numbered method cards in an auto-wrapping grid.
+     ============================================================ -->
+<section id="methods">
+  <div class="wrap">
+    <span class="eyebrow">06 &middot; Methods</span>
+    <h2>How this gets built</h2>
+    <div class="method-grid">
+      <div class="method-card"><div class="num">01</div>Investigating a written contribution format, a memory plus one visibility choice, open, sealed, or anonymous.</div>
+      <div class="method-card"><div class="num">02</div>Prototyping a continuous chronological log, timestamped, unedited, nothing excluded, following Fuller's Chronofile rule.</div>
+      <div class="method-card"><div class="num">03</div>Testing a translation from digital to physical, how an open entry prints legibly and a sealed entry prints as a fold, redaction, or blackout mark.</div>
+      <div class="method-card"><div class="num">04</div>Drawing on the restriction dataset as context, evidence for why designing around who gets excluded matters more than designing for indestructibility.</div>
+      <div class="method-card"><div class="num">05</div>Investigating computational rules for how entries relate over time, decay for the unvisited, resurfacing once related entries accumulate, connection by theme rather than by date alone.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     07 COMPUTATIONAL DESIGN EXPERIMENTS
+     Placeholder gallery, swap .gcell contents for real images
+     or diagrams as they're produced.
+     ============================================================ -->
+<section id="experiments">
+  <div class="wrap">
+    <span class="eyebrow">07 &middot; Computational Design Experiments</span>
+    <h2>In progress</h2>
+    <p class="lede">Placeholders below, to be replaced with sketches, diagrams, and studies produced across the semester.</p>
+    <div class="gallery">
+      <div class="gcell">decay &amp; resurfacing<br>rule sketch</div>
+      <div class="gcell">access control<br>network diagram</div>
+      <div class="gcell">thematic clustering<br>of entries, procedural</div>
+      <div class="gcell">visibility mechanism<br>study</div>
+      <div class="gcell">ledger<br>typography test</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     08 RHETORICAL ARGUMENT
+     Single large pull-quote statement, no supporting paragraph.
+     ============================================================ -->
+<section id="rhetoric">
+  <div class="wrap">
+    <span class="eyebrow">08 &middot; Rhetorical Argument</span>
+    <p class="statement">An archive proves it's alive by how its context keeps evolving past the restrictions it was built inside, not by how well it resists loss, and it stays honest by refusing to judge what's worth keeping.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     09 TOWARD A CAPSTONE
+     Two-column card, research direction / one possible build.
+     ============================================================ -->
+<section id="outline">
+  <div class="wrap">
+    <span class="eyebrow">09 &middot; Toward a Capstone</span>
+    <h2>A gesture, not a plan yet</h2>
+    <div class="two-col">
+      <div class="card">
+        <h3>Research direction</h3>
+        <p>This research may culminate in an interactive archival system that investigates computational models of participation, authorship, and visibility, where a contribution's exposure isn't fixed at the moment it's written, but governed by a rule that can let it decay, resurface, or connect to other entries as the archive grows. The open question is what that rule should be, and who gets to set it, not yet which interface it runs through.</p>
+      </div>
+      <div class="card">
+        <h3>One possible implementation</h3>
+        <p><em>The Two Way Archive</em>. Visitors write a personal memory and choose how it's seen, open, sealed, or anonymous, logged permanently in chronological order, following Fuller's Chronofile rule that nothing gets excluded from the record, seen or not. This is a single fixed rule, one restriction the contributor sets instead of a platform. A stronger version would treat visibility as something that can change over time rather than only at submission, which is the direction methods 02 and 05 are meant to test before this gets treated as a final form.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     10 THE CHALLENGE
+     Two-column card, technical gaps / design gaps.
+     ============================================================ -->
+<section id="challenge">
+  <div class="wrap">
+    <span class="eyebrow">10 &middot; The Challenge</span>
+    <div class="two-col">
+      <div class="card">
+        <h3>Technical</h3>
+        <p>I don't yet have strong skills in building even a simple digital logging system or in driving a plotter or printer from live input. This will mean learning basic logic for connecting a web form to a database, and physical output such as plotting or printing, over the semester.</p>
+      </div>
+      <div class="card">
+        <h3>Design</h3>
+        <p>Designing a sealed or redacted mark that reads as genuinely withheld rather than merely decorative, and keeping the growing scroll legible as a single object rather than visual noise as entries accumulate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     11 EXHIBITION COMPONENTS
+     Two proposed physical pieces, each described then broken
+     into a short spec list.
+     ============================================================ -->
+<section id="exhibition">
+  <div class="wrap">
+    <span class="eyebrow">11 &middot; Exhibition Components</span>
+    <h2>Two proposals</h2>
+    <p class="lede">Sketches for testing the research direction in section 09, not commitments to a final form. The fixed three part visibility choice below is the simplest version to test with; a version governed by a rule, where visibility can change after submission, is the one worth building toward.</p>
+
+    <div class="exhib-card">
+      <h3>Printed Vertical Drawing &middot; "The Chronofile, Left Open"</h3>
+      <p>A tall scroll printed top to bottom in strict chronological order, exactly like Fuller's own Chronofile. Open memories are set in legible type, sealed ones rendered as folds, redactions, or blackout bars, anonymous ones marked but unattributed. The top of the scroll can carry a condensed version of the restriction ledger as fixed context; the lower portion grows live during the review as visitors contribute, so the piece is visibly still being written when the jury sees it.</p>
+      <ul>
+        <li>Format, a single long vertical print or plot, roughly mural scale, suspended from the Avery 100 rails, printed or plotted in sections as contributions accumulate.</li>
+        <li>Content, entries from the written memory contribution system, in the order they arrive.</li>
+        <li>Visual rule, legible type for open entries, folded or redacted marks for sealed ones. The reader can see how much of the archive they're not allowed to read.</li>
+      </ul>
+    </div>
+
+    <div class="exhib-card">
+      <h3 class="dig-h">Material and Spatial Gesture &middot; "Writing Station"</h3>
+      <p>A small physical station, paper, or a simple keyboard or input device, where a visitor writes one personal memory and picks open, sealed, or anonymous before submitting. A visible readout (a counter, a printed timestamp, a light) confirms the memory has entered the log the moment it's submitted, whether or not it will ever be shown. The fixed choice is the version to test first; a computational rule that lets that choice change over time, rather than lock in at submission, is the direction this gesture is meant to lead toward.</p>
+      <ul>
+        <li>Form, a simple writing surface or input device with a three part visibility choice and a confirmation readout.</li>
+        <li>Placement, alongside the drawing during final review, feeding it directly.</li>
+        <li>Function, makes the moment of contribution, and its provisional exposure, physically present in the room.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     12 PRECEDENTS & REFERENCES
+     Full bibliography, split into "community of practice" and
+     "theory & critical frameworks".
+     ============================================================ -->
+<section id="references">
+  <div class="wrap">
+    <span class="eyebrow">12 &middot; Precedents &amp; References</span>
+    <h2>Who else is doing this, and everything cited along the way</h2>
+    <p class="lede">Every project, reading, and precedent cited across this site, gathered in one place. Not exhaustive, a working bibliography for an interim stage.</p>
+
+    <h3>Community of practice</h3>
+    <div class="comm-list">
+      <div class="comm-item">
+        <div class="name">Reporters Without Borders &amp; BlockWorks &middot; The Uncensored Library (2020)</div>
+        <p>The direct precedent for this work, and the one it argues against, an archive that is top down and curated, built on infrastructure it doesn't control. RSF adds content and visitors move through it; they don't shape it.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Rick Prelinger &middot; Lost Landscapes</div>
+        <p>Live audiences collectively narrate archival film in real time, participation with almost no interface at all, entirely social and physical.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Cooper Hewitt Pen</div>
+        <p>Visitors physically tap objects during a museum visit to build a personal digital collection afterward, a genuine loop between physical and digital contribution.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Zooniverse (2007) &amp; Smithsonian Transcription Center (2013)</div>
+        <p>Turn the public into fellow archivists, but only within the tags, fields, and forms the platform provides. A useful cautionary case as much as a model.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Community archives movement &middot; Michelle Caswell</div>
+        <p>Archives built and held by the communities they document, a direct rejection of the single, external custodian. Caswell's writing (<em>"Toward a Survivor-Centered Approach to Records Documenting Human Rights Abuse"</em>; <em>"Community Archives, Community Spaces"</em>) is the scholarly anchor for this movement.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Mukurtu CMS &amp; Local Contexts &middot; Kimberly Christen (2010)</div>
+        <p>An archive platform governed by the community, and a labeling system that let Indigenous communities set their own access protocols instead of accepting a platform's default open or closed setting. The clearest working precedent for the central move made in this work, restriction chosen by the people documented, not imposed by whoever hosts the archive.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Library Freedom Project</div>
+        <p>A reminder that "who gets to shape or even see the record" has been contested since long before digital archives existed.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Buckminster Fuller &middot; the Dymaxion Chronofile, 1917 to 1983</div>
+        <p>A direct model for the logging logic used here, inclusion without curation.</p>
+      </div>
+    </div>
+
+    <h3>Theory &amp; critical frameworks</h3>
+    <div class="comm-list">
+      <div class="comm-item">
+        <div class="name">Jacques Derrida &middot; <em>Archive Fever</em> (1995)</div>
+        <p>Argues no archive is neutral; the archive's structure already decides what can be remembered. Foundational for treating restriction as built into the archive, not incidental to it.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Michel Foucault &middot; <em>The Archaeology of Knowledge</em> (1969)</div>
+        <p>Not about archives specifically, but background for how systems of knowledge police what counts as a valid statement in the first place.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Johanna Drucker &middot; "Humanities Approaches to Interface"</div>
+        <p>Interface as an interpretive layer, not a neutral window, direct support for section 05's argument that every interface decision is a restriction decision.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Shannon Mattern &middot; "A City Is Not a Computer"</div>
+        <p>Infrastructure as a hidden layer of governance, useful for thinking about the corporate/infrastructural column of the restriction ledger.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Andrew Flinn &middot; writing on community archives</div>
+        <p>Access as something communities negotiate for themselves, not something a platform grants them.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Nicolas Bourriaud &middot; <em>Relational Aesthetics</em> (1998)</div>
+        <p>Framing of art as social interaction rather than a fixed object.</p>
+      </div>
+      <div class="comm-item">
+        <div class="name">Nina Simon &middot; <em>The Participatory Museum</em> (2010)</div>
+        <p>Institutions designing for visitors to contribute, not just consume.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>Draft for interim review, Summer Colloquium, Computational Design Practices</footer>
+
+<!-- All page behavior (the section-03 node diagram) lives in this one file, see script.js -->
+<script src="script.js"></script>
 
 </body>
 </html>
