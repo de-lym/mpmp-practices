@@ -1,157 +1,273 @@
-// ============================================================
-// FIELDS DIAGRAM (section 03 — #fieldsViz)
-// Draws a drag-able, force-directed node graph with D3, showing
-// "Research" at the center connected to the five fields it
-// intersects with. Wrapped in an IIFE so nothing here leaks into
-// the global scope.
-// ============================================================
-(function(){
+const CATS = {
+  protective: {label:'protective', color:'var(--c-protective)'},
+  cohesive:   {label:'cohesive',   color:'var(--c-cohesive)'},
+  political:  {label:'political control', color:'var(--c-political)'},
+  commercial: {label:'commercial', color:'var(--c-commercial)'},
+  epistemic:  {label:'epistemic',  color:'var(--c-epistemic)'},
+};
 
-  // Find the empty <div id="fieldsViz"> from the HTML and read its
-  // rendered size, so the SVG we build fits it exactly.
-  const container = document.getElementById('fieldsViz');
-  const width = container.clientWidth;
-  const height = container.clientHeight;
+const CASES = [
+  {id:'01', title:'The Great Firewall', actor:'state', rationale:'political', outcome:'normalized', pos:88,
+   summary:'A national infrastructure of filtering and blocking that restricts access to foreign platforms and search results, justified as sovereignty over domestic information space.',
+   tags:['china','infrastructure','ongoing']},
+  {id:'02', title:'NetzDG Takedown Law', actor:'state', rationale:'protective', outcome:'contested', pos:42,
+   summary:'A law requiring platforms to remove hate speech and illegal content within 24 hours or face heavy fines, criticized for pushing moderation decisions onto private companies.',
+   tags:['germany','platform law','hate speech']},
+  {id:'03', title:'Gayssot Act', actor:'state', rationale:'protective', outcome:'upheld', pos:34,
+   summary:'A law criminalizing Holocaust denial, framed as protecting historical fact and public dignity rather than restricting general political speech.',
+   tags:['france','historical memory','upheld']},
+  {id:'04', title:"Children's Online Privacy Rule", actor:'state', rationale:'protective', outcome:'upheld', pos:18,
+   summary:'Federal rules restricting how services can collect data from and target content toward children under 13, limiting what minors can be shown online.',
+   tags:['usa','minors','data']},
+  {id:'05', title:'2017 Wikipedia Block', actor:'state', rationale:'political', outcome:'overturned', pos:82,
+   summary:"A nationwide block of Wikipedia that lasted more than two years before being ruled unconstitutional by the country's highest court and reversed.",
+   tags:['turkey','overturned','court ruling']},
+  {id:'06', title:'Regional Internet Shutdowns', actor:'state', rationale:'cohesive', outcome:'contested', pos:76,
+   summary:'Repeated, localized shutdowns of mobile internet during periods of unrest, justified on public order and security grounds.',
+   tags:['india','security','recurring']},
+  {id:'07', title:'Platform Misinformation Removal', actor:'platform', rationale:'epistemic', outcome:'contested', pos:52,
+   summary:'Extensive removal and demotion of posts flagged as health or election misinformation, applying private editorial judgment at the scale of a public square.',
+   tags:['platform policy','health','elections']},
+  {id:'08', title:'Podcast Delisting Disputes', actor:'platform', rationale:'epistemic', outcome:'contested', pos:47,
+   summary:'Selective removal of specific episodes accused of spreading misinformation, while the show itself remains available on the platform, illustrating a partial and editorial form of moderation.',
+   tags:['audio platform','selective removal']},
+  {id:'09', title:'Protection from Online Falsehoods Act', actor:'state', rationale:'epistemic', outcome:'contested', pos:68,
+   summary:'A law empowering government ministers to order correction notices or takedowns of statements deemed false, criticized as a tool for suppressing dissent under a rationale based on truth.',
+   tags:['singapore','fake news law']},
+  {id:'10', title:'Online Safety Act', actor:'state', rationale:'protective', outcome:'upheld', pos:31,
+   summary:'Legislation requiring platforms to shield minors from harmful content and enforce age verification, trading some degree of open access for guarantees of child safety.',
+   tags:['uk','minors','platform duty']},
+  {id:'11', title:'DMCA Takedown Notices', actor:'commercial', rationale:'commercial', outcome:'normalized', pos:28,
+   summary:'A system allowing rights holders to request removal of content they claim infringes copyright through formal notice, widely used and occasionally applied to suppress legitimate criticism.',
+   tags:['usa','copyright','routine']},
+  {id:'12', title:'School Library Book Removals', actor:'institution', rationale:'cohesive', outcome:'contested', pos:58,
+   summary:'Removal of books from school libraries at the district level in response to content disputes, driven by local parental and administrative pressure rather than national law.',
+   tags:['usa','education','local']},
+  {id:'13', title:'Social Credit Content Restriction', actor:'state', rationale:'political', outcome:'normalized', pos:91,
+   summary:'Access to services and visibility tied to a citizen scoring system that can be affected by online speech, blending financial and expressive consequences.',
+   tags:['china','scoring system','ongoing']},
+  {id:'14', title:'Film Ratings Board', actor:'institution', rationale:'cohesive', outcome:'normalized', pos:16,
+   summary:'An industry body that regulates itself, assigning age ratings that restrict theatrical release and marketing, and rarely challenged as a form of censorship despite shaping what is ultimately produced.',
+   tags:['industry regulation','film','longstanding']},
+  {id:'15', title:'Political Account Suspensions', actor:'platform', rationale:'political', outcome:'contested', pos:63,
+   summary:'Suspension of prominent political accounts across several countries for policy violations, with critics on all sides disputing whether the standard was applied evenly.',
+   tags:['platform policy','politicians','global']},
+  {id:'16', title:'Wartime Press Censorship', actor:'state', rationale:'cohesive', outcome:'contested', pos:55,
+   summary:'Government review and restriction of war reporting to prevent aiding an adversary, a historically normalized practice that remains ethically disputed.',
+   tags:['historical','wartime','press']},
+];
 
-  // --- Data: the graph's nodes ---
-  // `type: 'core'` = the central research node (bigger circle, deep-blue fill).
-  // `type: 'field'` = a surrounding discipline node (smaller, dark panel fill).
-  // `label` is an array so multi-word names can wrap onto two lines.
-  const nodes = [
-    {id:'research', label:['Research'], type:'core'},
-    {id:'archival', label:['Archival','Science'], type:'field'},
-    {id:'infra', label:['Infrastructure','Studies'], type:'field'},
-    {id:'community', label:['Participatory','Community Archives'], type:'field'},
-    {id:'hci', label:['HCI &','Interactive Design'], type:'field'},
-    {id:'policy', label:['Information Policy','Governance'], type:'field'}
-  ];
+// build the word list from tags and rationale labels, each with a derived position
+function hashSign(str){
+  let s = 0;
+  for(let i=0;i<str.length;i++) s += str.charCodeAt(i);
+  return (s % 2 === 0) ? 1 : -1;
+}
 
-  // --- Data: the graph's edges ---
-  // `kind: 'core'` = a line from the center out to a field (solid, deep blue).
-  // `kind: 'pair'` = a line between two fields that also relate to each
-  // other directly (dashed, medium blue). `source`/`target` here are just
-  // the `id` strings above — D3 resolves them into node objects below.
-  const links = [
-    {source:'research', target:'archival', kind:'core'},
-    {source:'research', target:'infra', kind:'core'},
-    {source:'research', target:'community', kind:'core'},
-    {source:'research', target:'hci', kind:'core'},
-    {source:'research', target:'policy', kind:'core'},
-    {source:'archival', target:'infra', kind:'pair'},
-    {source:'community', target:'hci', kind:'pair'},
-    {source:'archival', target:'policy', kind:'pair'}
-  ];
-
-  // Create the <svg> element inside #fieldsViz. viewBox lets it scale
-  // responsively while keeping the coordinate system fixed at width×height.
-  const svg = d3.select('#fieldsViz')
-    .append('svg')
-    .attr('viewBox', [0, 0, width, height]);
-
-  // Draw one <line> per link. Class names (fv-core / fv-pair) hook into
-  // the corresponding color/dash styles defined in styles.css.
-  const linkSel = svg.append('g')
-    .selectAll('line')
-    .data(links)
-    .join('line')
-    .attr('class', d => 'fv-link ' + (d.kind === 'core' ? 'fv-core' : 'fv-pair'));
-
-  // Declared here (not `const`) because the drag handlers below need to
-  // reference `simulation` before it's actually created further down.
-  let simulation;
-
-  // --- Drag behavior ---
-  // Lets a visitor click-and-drag any node to reposition it. While
-  // dragging, the node is "pinned" (fx/fy fixed) so the simulation
-  // doesn't fight the mouse; on release it's unpinned and free to
-  // settle again under the forces below.
-  function drag(){
-    function dragstarted(event, d){
-      if (!event.active) simulation.alphaTarget(0.3).restart(); // reheat the simulation
-      d.fx = d.x; d.fy = d.y; // pin the node at its current position
-    }
-    function dragged(event, d){
-      d.fx = event.x; d.fy = event.y; // follow the cursor
-    }
-    function dragended(event, d){
-      if (!event.active) simulation.alphaTarget(0); // let the simulation cool back down
-      d.fx = null; d.fy = null; // release the pin
-    }
-    return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended);
-  }
-
-  // Create one <g> group per node (a circle plus its label text will go
-  // inside each group), and attach the drag behavior to all of them.
-  const nodeSel = svg.append('g')
-    .selectAll('g')
-    .data(nodes)
-    .join('g')
-    .attr('class', d => 'fv-node fv-type-' + d.type) // fv-type-core or fv-type-field
-    .call(drag());
-
-  // The circle behind each node's label. Core node is drawn bigger (r=54)
-  // than field nodes (r=46) to visually anchor it as the center.
-  nodeSel.append('circle')
-    .attr('r', d => d.type === 'core' ? 54 : 46);
-
-  // Render each node's label as one <text> element per line in its
-  // `label` array, vertically centered as a block inside the circle.
-  nodeSel.each(function(d){
-    const g = d3.select(this);
-    const lineHeight = 11;
-    // Shift the first line up (and last line down) so a multi-line
-    // label is centered as a whole, not just its first line.
-    const startY = -((d.label.length - 1) * lineHeight) / 2 + 4;
-    d.label.forEach((line, i) => {
-      g.append('text')
-        .attr('class', 'fv-label')
-        .attr('y', startY + i * lineHeight)
-        .text(line);
-    });
+const wordMap = {};
+CASES.forEach(c => {
+  c.tags.forEach(t => {
+    if(!wordMap[t]) wordMap[t] = { cases:[], cat:c.rationale };
+    wordMap[t].cases.push(c);
   });
+});
+Object.keys(CATS).forEach(k => {
+  const label = CATS[k].label;
+  const inCat = CASES.filter(c => c.rationale === k);
+  wordMap[label] = { cases:inCat, cat:k };
+});
 
-  // --- Physics simulation ---
-  // This is what makes the diagram self-arrange and settle into a
-  // readable layout instead of needing manually-set coordinates.
-  simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links).id(d => d.id)
-      // core links (research→field) are shorter and stronger, so the
-      // field nodes cluster fairly tightly around the center;
-      // pair links (field↔field) are longer and weaker, just a nudge.
-      .distance(d => d.kind === 'core' ? 120 : 175)
-      .strength(d => d.kind === 'core' ? 0.7 : 0.25))
-    .force('charge', d3.forceManyBody().strength(-380)) // nodes repel each other, so they spread out
-    .force('center', d3.forceCenter(width / 2, height / 2)) // keeps the whole cluster centered in the box
-    .force('collide', d3.forceCollide().radius(d => (d.type === 'core' ? 54 : 46) + 14)) // prevents circles overlapping
-    .on('tick', ticked); // re-run `ticked` on every physics step
+const words = Object.entries(wordMap).map(([word, data]) => {
+  const avgPos = Math.round(data.cases.reduce((s,c)=>s+c.pos,0) / data.cases.length);
+  return { word, cases:data.cases, cat:data.cat, pos:avgPos, freq:data.cases.length, rotSign:hashSign(word) };
+}).sort(()=>Math.random()-0.5);
 
-  // Runs on every simulation tick: reads each node's current x/y
-  // (computed by the forces above) and repositions the SVG elements
-  // to match.
-  function ticked(){
-    linkSel
-      .attr('x1', d => d.source.x)
-      .attr('y1', d => d.source.y)
-      .attr('x2', d => d.target.x)
-      .attr('y2', d => d.target.y);
-    nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
-  }
+// build persistent word field elements
+const wordFieldEl = document.getElementById('wordField');
+let activeCat = null;
+let selectedWord = null;
 
-  // --- Hover highlight ---
-  // On hovering a node, dim every node/link that ISN'T connected to it,
-  // so the visitor can trace one node's relationships at a glance.
-  nodeSel.on('mouseenter', function(event, d){
-    const connected = new Set([d.id]); // the hovered node is always "connected" to itself
-    links.forEach(l => {
-      if (l.source.id === d.id) connected.add(l.target.id);
-      if (l.target.id === d.id) connected.add(l.source.id);
-    });
-    nodeSel.style('opacity', n => connected.has(n.id) ? 1 : 0.25);
-    linkSel.style('opacity', l => (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.08);
-  }).on('mouseleave', function(){
-    // restore full opacity once the cursor leaves the node
-    nodeSel.style('opacity', 1);
-    linkSel.style('opacity', 1);
+words.forEach(w => {
+  const span = document.createElement('span');
+  span.className = 'word';
+  span.textContent = w.word;
+  span.onclick = () => {
+    selectedWord = w.word;
+    refreshWordField();
+    openModal(w.word);
+  };
+  w.el = span;
+  wordFieldEl.appendChild(span);
+});
+
+function refreshWordField(){
+  const v = +slider.value;
+  words.forEach(w => {
+    const declassified = w.pos <= v;
+    const distance = Math.abs(w.pos - v);
+    const proximity = 1 - (distance / 100);
+
+    const baseSize = 12 + Math.min(w.freq, 6) * 2.5;
+    const fontSize = baseSize + proximity * 34;
+    const rotation = w.rotSign * (1 - proximity) * 22;
+    const lift = (1 - proximity) * 10 * (w.rotSign > 0 ? 1 : -1);
+
+    w.el.style.fontSize = fontSize.toFixed(1) + 'px';
+    w.el.style.transform = `rotate(${rotation.toFixed(1)}deg) translateY(${lift.toFixed(1)}px)`;
+
+    w.el.classList.toggle('hidden', !declassified);
+    w.el.classList.toggle('selected', selectedWord === w.word);
+
+    w.el.style.color = declassified ? CATS[w.cat].color : '';
+
+    let opacity = 1;
+    if(activeCat && w.cat !== activeCat) opacity = declassified ? 0.15 : 0.05;
+    w.el.style.opacity = opacity;
   });
+}
 
-})();
+const legendEl = document.getElementById('legend');
+Object.keys(CATS).forEach(k => {
+  const btn = document.createElement('button');
+  btn.innerHTML = `<span class="dot" style="background:${CATS[k].color}"></span>${CATS[k].label}`;
+  btn.onclick = () => {
+    activeCat = activeCat === k ? null : k;
+    [...legendEl.children].forEach(b=>b.classList.remove('active'));
+    if(activeCat) btn.classList.add('active');
+    refreshWordField();
+  };
+  legendEl.appendChild(btn);
+});
+
+// threshold slider
+const slider = document.getElementById('slider');
+const readout = document.getElementById('readout');
+const posLabel = document.getElementById('posLabel');
+
+function labelFor(v){
+  if(v < 25) return 'This threshold suggests a narrow tolerance for restriction, in which most censorship reads as overreach.';
+  if(v < 50) return 'This threshold suggests acceptance of clearly protective restriction and little else.';
+  if(v < 75) return 'This threshold suggests tolerance for broad justification when the stated aim is order or safety.';
+  return 'This threshold suggests acceptance of most restriction, including overtly political control.';
+}
+
+function updateThreshold(){
+  const v = +slider.value;
+  posLabel.textContent = v + ' / 100';
+  const inLine = CASES.filter(c => c.pos <= v).length;
+  readout.innerHTML = `<span class="stat">${inLine}</span> of ${CASES.length} cases fall within your threshold.<br>${labelFor(v)}`;
+  refreshWordField();
+  if(modalOverlay.classList.contains('open')){
+    renderFlashcard();
+  }
+}
+slider.addEventListener('input', updateThreshold);
+
+// modal and flashcards
+const modalOverlay = document.getElementById('modalOverlay');
+const modalTitle = document.getElementById('modalTitle');
+const modalCount = document.getElementById('modalCount');
+const flashcardArea = document.getElementById('flashcardArea');
+
+let currentList = [];
+let currentIndex = 0;
+
+function openModal(word){
+  currentList = (word === 'all cases') ? CASES : words.find(w => w.word === word).cases;
+  currentIndex = 0;
+  modalTitle.textContent = word;
+  modalCount.textContent = currentList.length + (currentList.length === 1 ? ' case' : ' cases');
+  buildFlashcardShell();
+  renderFlashcard();
+  modalOverlay.classList.add('open');
+}
+
+function closeModal(){
+  modalOverlay.classList.remove('open');
+  selectedWord = null;
+  refreshWordField();
+}
+
+document.getElementById('modalClose').onclick = closeModal;
+modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) closeModal(); });
+document.addEventListener('keydown', (e) => {
+  if(!modalOverlay.classList.contains('open')) return;
+  if(e.key === 'Escape') closeModal();
+  if(e.key === 'ArrowRight') goTo(currentIndex + 1);
+  if(e.key === 'ArrowLeft') goTo(currentIndex - 1);
+});
+document.getElementById('browseAll').onclick = () => {
+  selectedWord = null;
+  refreshWordField();
+  openModal('all cases');
+};
+
+function buildFlashcardShell(){
+  flashcardArea.innerHTML = `
+    <div class="flashcard-viewport">
+      <div class="card" id="flashcard"></div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="nav-btn" id="prevBtn">previous</button>
+      <div class="dots" id="dots"></div>
+      <button class="nav-btn" id="nextBtn">next</button>
+    </div>
+    <div class="swipe-hint">swipe, or use the arrow keys, to move between cases</div>
+  `;
+  document.getElementById('prevBtn').onclick = () => goTo(currentIndex - 1);
+  document.getElementById('nextBtn').onclick = () => goTo(currentIndex + 1);
+
+  const viewport = document.querySelector('.flashcard-viewport');
+  let startX = 0;
+  viewport.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, {passive:true});
+  viewport.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].clientX - startX;
+    if(Math.abs(diff) > 50){
+      if(diff < 0) goTo(currentIndex + 1);
+      else goTo(currentIndex - 1);
+    }
+  }, {passive:true});
+}
+
+function goTo(index){
+  if(index < 0 || index >= currentList.length) return;
+  currentIndex = index;
+  renderFlashcard();
+}
+
+function renderFlashcard(){
+  const v = +slider.value;
+  const c = currentList[currentIndex];
+  const declassified = c.pos <= v;
+  const card = document.getElementById('flashcard');
+  card.className = 'card' + (declassified ? '' : ' redacted');
+  card.innerHTML = `
+    <div class="tophead">
+      <div class="catdot" style="background:${CATS[c.rationale].color}"></div>
+      <div class="idmono">${c.id} of ${CASES.length} / ${c.actor}</div>
+    </div>
+    <h3>${c.title}</h3>
+    <p class="summary">${c.summary}</p>
+    ${declassified
+      ? `<div class="tags"><span>${CATS[c.rationale].label}</span><span>${c.outcome}</span></div>`
+      : `<div class="tags"><span>${c.actor}</span><span>position ${c.pos}</span></div><span class="stamp">exceeds your threshold</span>`
+    }
+  `;
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  prevBtn.disabled = currentIndex === 0;
+  nextBtn.disabled = currentIndex === currentList.length - 1;
+
+  const dots = document.getElementById('dots');
+  dots.innerHTML = '';
+  currentList.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === currentIndex ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dots.appendChild(d);
+  });
+}
+
+refreshWordField();
+updateThreshold();

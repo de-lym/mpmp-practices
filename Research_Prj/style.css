@@ -1,310 +1,220 @@
-/* ============================================================
-   THEME VARIABLES
-   Every color, spacing max-width etc. used across this file is
-   defined once here. Change a value here and it updates
-   everywhere it's used — that's the whole point of using
-   variables instead of hard-coded colors in each rule.
-
-   Two font families total: Fraunces (serif) for headings and the
-   big pull-quote statement, IBM Plex Sans for everything else —
-   including small uppercase "data label" text (eyebrows, nav,
-   ledger years, method numbers), which gets its distinct look
-   from a heavier weight (600) + letter-spacing + uppercase, not
-   from switching typeface.
-   ============================================================ */
 :root{
-  /* base page colors */
-  --bg:#ffffff;
-  --ink:#16233d;
-  --ink-soft: rgba(22,35,61,0.72);
-  --ink-faint: rgba(22,35,61,0.45);
-  --line: rgba(22,35,61,0.14);
-  --maxw: 880px; /* max width for readable text columns */
-
-  /* header (nav) stays dark/black regardless of page background */
-  --nav-bg:#06090f;
-  --nav-text:#eef3fb;
-  --nav-line: rgba(255,255,255,0.14);
-
-  /* accent blues — two related tones, kept close on purpose */
-  --accent-1:#2f6fb3;        /* medium blue — corporate/infrastructure, primary accent */
-  --accent-1-dim:#1d4a78;
-  --accent-1-light:#7fb0e3;  /* for use on the dark nav */
-  --accent-2:#1c3f66;        /* deep blue — state/legal restriction */
-  --accent-2-dim:#12283f;
-  --panel-dark:#14213a;      /* dark fill used inside the fields diagram */
+  --paper:#e6e0d1;
+  --paper-dim:#d9d2bd;
+  --folder:#c7bb9c;
+  --ink:#18160f;
+  --ink-soft:#3a362c;
+  --line:#b8ac8a;
+  --stamp-red:#a13328;
+  --c-protective:#6fae86;
+  --c-cohesive:#5f8ab8;
+  --c-political:#d9776a;
+  --c-commercial:#e0b25e;
+  --c-epistemic:#b088c2;
 }
-
-/* ============================================================
-   RESET & BASE ELEMENTS
-   ============================================================ */
-*{
-  box-sizing:border-box; /* padding/border no longer add to element width */
-}
-html{
-  scroll-behavior:smooth; /* smooth-scrolls when the nav links jump to a section */
-}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
 body{
   margin:0;
-  background:var(--bg);
+  background:var(--paper);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, transparent 1px, transparent 2px),
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,0.25), transparent 40%);
   color:var(--ink);
-  font-family:'IBM Plex Sans', sans-serif;
-  font-weight:300;
-  line-height:1.55;
+  font-family:'Source Serif 4', serif;
+  -webkit-font-smoothing:antialiased;
 }
-h1,h2,h3{
-  font-family:'Fraunces', serif;
-  font-weight:500;
-  margin:0 0 0.4em 0;
-  letter-spacing:-0.01em;
-}
-.eyebrow{
-  /* small uppercase section-number label, e.g. "03 — Intersecting Fields" */
-  font-family:'IBM Plex Sans', sans-serif; font-weight:600;
-  font-size:0.72rem;
-  letter-spacing:0.14em;
-  text-transform:uppercase;
-  color:var(--accent-1);
-  display:block;
-  margin-bottom:0.9em;
-}
-.wrap{
-  /* the standard centered text column used inside most sections */
-  max-width:var(--maxw);
-  margin:0 auto;
-  padding:0 28px;
-}
+::selection{ background:var(--ink); color:var(--paper); }
+
+.mono{ font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em; }
+.type{ font-family:'Special Elite', monospace; }
+.soft{ opacity:0.4; }
+
 a{ color:inherit; }
 
-/* ============================================================
-   SPACING & TEXT-SIZE UTILITIES
-   These replace what used to be one-off inline `style="..."`
-   attributes in the HTML. Centralizing them here means every
-   margin/size value lives in exactly one place.
-   ============================================================ */
-
-/* --- Section 01 "Research Questions": three stacked .lede
-       paragraphs. The first uses the default .lede margin;
-       every .lede that follows another .lede gets extra spacing. --- */
-#questions .lede{ margin-top:1em; }
-#questions .lede + .lede{ margin-top:1.4em; }
-
-/* --- Section 04 "Historical Lineage" --- */
-#lineage h2.q + p.lede{ margin-bottom:1.6em; } /* intro paragraph, sits above the ledger */
-#lineage h3{ margin-top:3em; font-size:1.2rem; } /* "A second lineage" sub-heading */
-#lineage h3 + p.lede{ margin-top:0.6em; }
-#lineage p.lede + .comm-list{ margin-top:1.6em; }
-
-/* --- Section 05 "Situated Technology": four stacked .lede
-       paragraphs, same pattern as section 01. --- */
-#situated .lede + .lede{ margin-top:1em; }
-
-/* --- Sections 10 & 11 (Outline / Challenge): body copy inside
-       the two-column cards is slightly smaller than default text. --- */
-.card p,
-.exhib-card p{ font-size:0.94rem; }
-
-/* --- Section 12 "Precedents & References": both sub-headings
-       ("Community of practice" / "Theory & critical frameworks")
-       and the list that follows each one. --- */
-#references h3{ margin-top:2.6em; font-size:1.05rem; }
-#references h3 + .comm-list{ margin-top:1.2em; }
-
-/* ============================================================
-   NAV
-   Kept black/dark regardless of whatever section is scrolled
-   behind it, and stays pinned to the top of the viewport.
-   ============================================================ */
-nav{
-  position:sticky; top:0; z-index:50;
-  background:rgba(6,9,15,0.94);
-  color:var(--nav-text);
-  backdrop-filter:blur(6px);
-  border-bottom:1px solid var(--nav-line);
+/* topbar */
+header.topbar{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:18px 40px;
+  border-bottom:1.5px solid var(--ink);
 }
-.navwrap{
-  max-width:1100px; margin:0 auto; padding:14px 28px;
-  display:flex; gap:22px; overflow-x:auto; /* horizontal scroll on narrow screens */
-  font-family:'IBM Plex Sans', sans-serif; font-weight:600;
-  font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase;
-  white-space:nowrap;
-}
-.navwrap a{
-  color:var(--nav-text); opacity:0.6; text-decoration:none;
-  transition:opacity .2s, color .2s;
-}
-.navwrap a:hover{ opacity:1; color:var(--accent-1-light); }
+.topbar .mark{ font-family:'Special Elite', monospace; font-size:14px; letter-spacing:0.08em; }
+.topbar .meta{ font-size:11px; text-transform:uppercase; letter-spacing:0.12em; opacity:0.65; }
 
-/* ============================================================
-   SECTION LAYOUT (generic — applies to every <section>)
-   ============================================================ */
-section{
-  padding:96px 0;
-  border-bottom:1px solid var(--line);
+/* hero */
+.hero{ padding:90px 40px 70px; max-width:1000px; }
+.hero .eyebrow{
+  font-size:12px; text-transform:uppercase; letter-spacing:0.18em;
+  color:var(--stamp-red); margin-bottom:18px; display:block;
 }
-section:last-of-type{ border-bottom:none; } /* no rule under the final section */
-
-/* ============================================================
-   HERO — flat white, no gradient
-   ============================================================ */
-.hero{
-  min-height:92vh;
-  display:flex; flex-direction:column; justify-content:center;
-  position:relative;
-  overflow:hidden;
-  border-bottom:1px solid var(--line);
-  padding:60px 0;
-  background:var(--bg);
-}
-.hero-inner{ position:relative; max-width:var(--maxw); margin:0 auto; padding:0 28px; }
 .hero h1{
-  font-size:clamp(2.6rem, 6vw, 4.6rem); /* scales with viewport, min 2.6rem, max 4.6rem */
-  line-height:1.02;
-  max-width:11ch;
+  font-family:'Special Elite', monospace;
+  font-size:clamp(38px, 6vw, 74px);
+  line-height:1.05;
+  margin:0 0 34px;
+  letter-spacing:-0.01em;
 }
-.hero .split{ color:var(--accent-1); } /* highlights the word "Fixed" in the title */
-.hero p.sub{
-  max-width:46ch; font-size:1.05rem; color:var(--ink-soft);
-  margin-top:1.4em;
+.redact-line{ display:inline-block; position:relative; overflow:hidden; }
+.redact-line .bar{
+  position:absolute; inset:0; background:var(--ink); transform-origin:right;
+  animation:unredact 1.1s cubic-bezier(.77,0,.18,1) forwards; animation-delay:var(--d, 0.2s);
 }
-.hero .meta{
-  margin-top:3.2em; font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:0.72rem;
-  letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint);
-}
-
-/* ============================================================
-   SHARED TEXT STYLES (used across several sections)
-   ============================================================ */
-h2.q{
-  /* the italic, question-style headings used in several sections */
-  font-size:clamp(1.6rem, 3.2vw, 2.3rem);
-  max-width:20ch;
-}
-.lede{ max-width:58ch; color:var(--ink-soft); font-size:1.02rem; }
-
-/* ============================================================
-   SECTION 02 — KEYWORDS
-   ============================================================ */
-.kw-grid{ display:flex; flex-wrap:wrap; gap:14px; margin-top:1.6em; }
-.kw{
-  font-family:'IBM Plex Sans', sans-serif; font-weight:600;
-  font-size:0.85rem;
-  padding:10px 16px;
-  border:1px solid var(--line);
-  border-radius:2px;
+@keyframes unredact{ to{ transform:scaleX(0); } }
+.hero p.thesis{
+  font-size:19px; line-height:1.6; max-width:640px; color:var(--ink-soft);
+  border-left:3px solid var(--ink); padding-left:20px;
 }
 
-/* ============================================================
-   SECTION 03 — FIELDS DIAGRAM (actor-network, drawn by D3 in script.js)
-   ============================================================ */
-.fields-viz{
-  position:relative; width:100%; height:440px; margin-top:2.4em;
-  border:1px solid var(--line); border-radius:2px;
+/* section labels */
+.section{ padding:70px 40px; border-top:1.5px solid var(--ink); }
+.section-head{ display:flex; justify-content:space-between; align-items:baseline; max-width:1200px; margin:0 auto 34px; }
+.section-head .num{ font-family:'IBM Plex Mono', monospace; font-size:12px; opacity:0.55; }
+.section-head h2{ font-family:'Special Elite', monospace; font-size:26px; margin:6px 0 0; }
+.section-head .desc{ max-width:380px; font-size:14px; color:var(--ink-soft); text-align:right; line-height:1.5;}
+.section-inner{ max-width:1200px; margin:0 auto; }
+
+/* merged field and threshold panel */
+.field-panel{ background:var(--ink); color:var(--paper); border:1px solid var(--ink); }
+.field-panel .section-head .num, .field-panel .section-head .desc{ color:var(--paper); opacity:0.6; }
+.field-panel .section-head h2{ color:var(--paper); }
+
+.legend{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:30px; }
+.legend button{
+  font-family:'IBM Plex Mono', monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:0.06em;
+  border:1px solid var(--paper); background:transparent; padding:6px 12px; border-radius:20px; cursor:pointer;
+  display:flex; align-items:center; gap:7px; color:var(--paper); transition:all .15s ease; opacity:0.75;
 }
-.fields-viz svg{ width:100%; height:100%; display:block; }
-.fields-viz .fv-link{ stroke:var(--line); stroke-width:1; }
-.fields-viz .fv-link.fv-core{ stroke:var(--accent-2); stroke-opacity:0.55; } /* links from the central "project" node */
-.fields-viz .fv-link.fv-pair{ stroke:var(--accent-1); stroke-opacity:0.55; stroke-dasharray:3,4; } /* links between two field nodes */
-.fields-viz .fv-node circle{ stroke:#fff; stroke-opacity:0.35; stroke-width:1; cursor:grab; }
-.fields-viz .fv-node.fv-type-core circle{ fill:var(--accent-2-dim); } /* the central "This Project" node */
-.fields-viz .fv-node.fv-type-field circle{ fill:var(--panel-dark); stroke:var(--accent-1); } /* the surrounding field nodes */
-.fields-viz .fv-label{
-  font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:0.62rem;
-  letter-spacing:0.04em; text-transform:uppercase; fill:#ffffff;
-  text-anchor:middle; pointer-events:none;
+.legend button .dot{ width:8px; height:8px; border-radius:50%; }
+.legend button.active{ background:var(--paper); color:var(--ink); opacity:1; }
+
+.word-field{
+  padding:18px 0 50px;
+  display:flex; flex-wrap:wrap; gap:22px 30px; align-items:center;
+  min-height:260px;
+  border-bottom:1px solid rgba(230,224,209,0.2);
+  margin-bottom:34px;
 }
-.fields-viz .fv-node.fv-type-core .fv-label{ font-size:0.66rem; }
-.fields-viz .fv-hint{
-  /* the small "drag nodes" hint in the corner of the diagram */
-  position:absolute; bottom:10px; right:14px;
-  font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:0.6rem;
-  letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-faint);
+.word{
+  font-family:'Special Elite', monospace;
+  cursor:pointer;
+  background:none; border:none; padding:0; position:relative;
+  transition:color .45s ease, opacity .45s ease, transform .45s cubic-bezier(.4,.2,.2,1), font-size .45s cubic-bezier(.4,.2,.2,1);
+  will-change:transform, font-size;
+  display:inline-block;
+}
+.word.hidden{ color:rgba(230,224,209,0.14); }
+.word.hidden:hover{ color:rgba(230,224,209,0.5); }
+.word.selected{ text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:6px; }
+.word.selected.hidden{ color:rgba(230,224,209,0.55); }
+
+.threshold-row{
+  display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace;
+  font-size:11px; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; opacity:0.6;
+}
+input[type=range]{
+  -webkit-appearance:none; width:100%; height:2px; background:rgba(230,224,209,0.4);
+  outline:none; margin:18px 0 8px;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
+  background:var(--stamp-red); cursor:pointer; border:2px solid var(--paper);
+}
+input[type=range]::-moz-range-thumb{
+  width:18px; height:18px; border-radius:50%; background:var(--stamp-red); cursor:pointer; border:2px solid var(--paper);
+}
+.threshold-readout{ font-family:'Special Elite', monospace; font-size:15px; margin-top:14px; line-height:1.6; }
+.threshold-readout .stat{ color:var(--stamp-red); }
+.threshold-note{ font-size:12.5px; opacity:0.5; margin-top:14px; max-width:560px; line-height:1.5; font-family:'IBM Plex Mono', monospace;}
+
+/* archive teaser */
+.archive-teaser{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
+  border:1px dashed var(--line); padding:34px 30px;
+}
+.archive-teaser p{ margin:0; font-size:14px; color:var(--ink-soft); max-width:480px; line-height:1.6; }
+.btn-browse{
+  font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.06em;
+  border:1.5px solid var(--ink); background:var(--ink); color:var(--paper);
+  padding:12px 22px; cursor:pointer; white-space:nowrap;
+}
+.btn-browse:hover{ background:var(--stamp-red); border-color:var(--stamp-red); }
+
+/* modal */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(15,13,8,0.68); backdrop-filter:blur(3px);
+  display:none; align-items:flex-start; justify-content:center; z-index:100; padding:60px 20px;
+  overflow-y:auto;
+}
+.modal-overlay.open{ display:flex; }
+.modal-box{
+  background:var(--paper); border:1.5px solid var(--ink); max-width:560px; width:100%;
+  padding:30px 30px 36px; position:relative; animation:modalIn .25s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes modalIn{ from{ opacity:0; transform:translateY(14px) scale(0.98);} to{opacity:1; transform:translateY(0) scale(1);} }
+.modal-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; border-bottom:1px solid var(--line); padding-bottom:16px; }
+.modal-header .htext{ display:flex; align-items:baseline; gap:12px; }
+.modal-header .pill{
+  font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;
+  border:1px solid var(--ink); padding:5px 12px; border-radius:20px;
+}
+.modal-header .count{ font-family:'IBM Plex Mono', monospace; font-size:12px; opacity:0.55; }
+.modal-close{
+  background:none; border:none; cursor:pointer; font-family:'IBM Plex Mono', monospace;
+  font-size:13px; letter-spacing:0.05em; color:var(--ink-soft);
+}
+.modal-close:hover{ color:var(--stamp-red); }
+
+/* flashcard */
+.flashcard-viewport{ overflow:hidden; touch-action:pan-y; }
+.card{
+  background:#eee8da; border:1px solid var(--line); padding:26px 24px; min-height:280px;
+  display:flex; flex-direction:column; position:relative;
+  transition:transform .3s ease, opacity .3s ease;
+}
+.card .tophead{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+.card .catdot{ width:10px; height:10px; border-radius:50%; margin-top:4px; flex-shrink:0; }
+.card .idmono{ font-family:'IBM Plex Mono', monospace; font-size:10px; opacity:0.5; }
+.card h3{ font-family:'Special Elite', monospace; font-size:19px; margin:0 0 12px; line-height:1.3; }
+.card p.summary{ font-size:14.5px; line-height:1.6; color:var(--ink-soft); flex-grow:1; margin:0 0 16px; }
+.card .tags{ display:flex; flex-wrap:wrap; gap:6px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; text-transform:uppercase; }
+.card .tags span{ border:1px solid var(--line); padding:4px 8px; opacity:0.75; }
+.card.redacted h3, .card.redacted p.summary{ color:transparent; user-select:none; border-radius:2px; }
+.card.redacted h3{ background:var(--ink); }
+.card.redacted p.summary{ background:var(--ink); opacity:1;}
+.card.redacted .tags span{ opacity:0.3; }
+.card.redacted .stamp{
+  display:inline-block; margin-top:auto; padding-top:16px; font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:var(--stamp-red); letter-spacing:0.08em; text-transform:uppercase;
 }
 
-/* ============================================================
-   SECTION 04 — LEDGER TIMELINE (signature element: two-column
-   dated rows, "State" vs "Corporate" restriction history)
-   ============================================================ */
-.ledger{ margin-top:2.6em; border-top:1px solid var(--line); }
-.ledger-row{
-  display:grid; grid-template-columns:70px 1fr 1fr;
-  gap:18px; padding:16px 0; border-bottom:1px solid var(--line);
-  align-items:baseline;
+.flashcard-nav{
+  display:flex; align-items:center; justify-content:space-between; margin-top:20px;
 }
-.ledger-row .yr{ font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:0.78rem; color:var(--ink-faint); }
-.ledger-cell{ font-size:0.92rem; }
-.ledger-cell.phys{ border-left:2px solid var(--accent-2); padding-left:14px; } /* left column = state/legal */
-.ledger-cell.dig{ border-left:2px solid var(--accent-1); padding-left:14px; } /* right column = corporate/infrastructure */
-.ledger-head{
-  display:grid; grid-template-columns:70px 1fr 1fr; gap:18px;
-  font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:0.68rem;
-  text-transform:uppercase; letter-spacing:0.08em; padding-bottom:10px;
+.nav-btn{
+  font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;
+  border:1px solid var(--ink); background:transparent; padding:9px 16px; cursor:pointer; color:var(--ink);
 }
-.ledger-head .phys-h{ color:var(--accent-2); }
-.ledger-head .dig-h{ color:var(--accent-1); }
-
-/* ============================================================
-   COMMUNITY / PRECEDENTS LIST
-   (reused in section 04's "second lineage" and section 13 "References")
-   ============================================================ */
-.comm-list{ margin-top:2em; display:flex; flex-direction:column; gap:22px; }
-.comm-item{
-  display:grid; grid-template-columns:160px 1fr; gap:20px;
-  padding-bottom:20px; border-bottom:1px solid var(--line);
-}
-.comm-item .name{ font-family:'Fraunces', serif; font-style:italic; font-size:1.05rem; }
-.comm-item p{ margin:0; font-size:0.92rem; color:var(--ink-soft); }
-
-/* ============================================================
-   SECTION 06 — METHODS GRID
-   ============================================================ */
-.method-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:22px; margin-top:2em; }
-.method-card{ border:1px solid var(--line); padding:20px; border-radius:2px; }
-.method-card .num{ font-family:'IBM Plex Sans', sans-serif; font-weight:600; color:var(--accent-1); font-size:0.75rem; }
-
-/* ============================================================
-   SECTION 07 — EXPERIMENTS PLACEHOLDER GALLERY
-   ============================================================ */
-.gallery{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-top:2em; }
-.gcell{
-  aspect-ratio:4/3; border:1px dashed var(--line); border-radius:2px;
-  display:flex; align-items:center; justify-content:center;
-  font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:0.65rem; color:var(--ink-faint);
-  text-align:center; padding:8px;
+.nav-btn:hover{ background:var(--ink); color:var(--paper); }
+.nav-btn:disabled{ opacity:0.25; cursor:default; }
+.nav-btn:disabled:hover{ background:transparent; color:var(--ink); }
+.dots{ display:flex; gap:7px; }
+.dots .dot{ width:7px; height:7px; border-radius:50%; background:var(--line); cursor:pointer; border:none; padding:0; }
+.dots .dot.active{ background:var(--ink); }
+.swipe-hint{
+  text-align:center; font-family:'IBM Plex Mono', monospace; font-size:10.5px; opacity:0.4;
+  margin-top:10px; text-transform:uppercase; letter-spacing:0.08em;
 }
 
-/* ============================================================
-   SECTION 08 — RHETORIC / BIG PULL-QUOTE STATEMENT
-   ============================================================ */
-.statement{
-  font-family:'Fraunces', serif; font-weight:400;
-  font-size:clamp(1.5rem, 3.4vw, 2.4rem); line-height:1.3; max-width:16ch;
-}
+/* method */
+.method{ max-width:720px; font-size:14.5px; line-height:1.7; color:var(--ink-soft); }
+.method strong{ color:var(--ink); }
 
-/* ============================================================
-   SECTIONS 09 & 10 — OUTLINE / CHALLENGE (two-column cards)
-   ============================================================ */
-.two-col{ display:grid; grid-template-columns:1fr; gap:40px; margin-top:1.6em; }
-@media(min-width:720px){
-  .two-col{ grid-template-columns:1fr 1fr; } /* side-by-side once there's room */
-}
-.card{ border:1px solid var(--line); padding:26px; border-radius:2px; }
-.card h3{ font-size:1.1rem; }
+footer{ padding:30px 40px; border-top:1.5px solid var(--ink); font-family:'IBM Plex Mono', monospace; font-size:11px; opacity:0.55; text-align:center; }
 
-/* ============================================================
-   SECTION 11 — EXHIBITION PROPOSALS
-   ============================================================ */
-.exhib-card{ border:1px solid var(--line); padding:28px; border-radius:2px; margin-top:1.6em; }
-.exhib-card h3{ color:var(--accent-2); font-size:1.15rem; } /* default = "state/legal" blue */
-.exhib-card h3.dig-h{ color:var(--accent-1); } /* second card = "corporate/infrastructure" blue */
-.exhib-card ul{ padding-left:18px; margin:0.8em 0 0 0; }
-.exhib-card li{ margin-bottom:0.5em; font-size:0.94rem; }
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-footer{
-  padding:50px 0; text-align:center;
-  font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:0.68rem;
-  color:var(--ink-faint); letter-spacing:0.06em; text-transform:uppercase;
+@media(max-width:720px){
+  .section-head{ flex-direction:column; align-items:flex-start; gap:10px; }
+  .section-head .desc{ text-align:left; }
+  header.topbar{ padding:16px 20px; }
+  .hero, .section{ padding-left:20px; padding-right:20px; }
+  .archive-teaser{ flex-direction:column; align-items:flex-start; }
 }
