@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Censorship Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="mark">The Censorship Atlas</div>
+  <div class="meta">Dong Eun Lim</div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow mono">an archive of censorship</span>
+  <h1>
+    <span class="redact-line" style="--d:0.1s">who decides<span class="bar"></span></span><br>
+    <span class="redact-line" style="--d:0.5s">what remains unseen<span class="bar"></span></span><br>
+    <span class="redact-line" style="--d:0.9s">and why<span class="bar"></span></span>
+  </h1>
+  <p class="thesis">Censorship is not inherently good or bad. It is a governance mechanism that operates under different political, legal, and social values, deployed by states, platforms, and institutions alike in the name of protection as often as control. This atlas does not attempt to determine whether censorship is justified. Instead, it asks who is doing the justifying, on what grounds, and whether the reader would draw the same line.</p>
+</section>
+
+<section class="section field-panel" id="field">
+  <div class="section-inner">
+    <div class="section-head">
+      <div>
+        <div class="num mono">01. the world map</div>
+        <h2>vocabulary of control</h2>
+      </div>
+      <div class="desc">Every term below is drawn from a documented case. Words swell and stand upright as their standing approaches the threshold, and shrink, tilt, and drift toward the margins as they fall further from it. Select any word to open its associated case.</div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="word-field" id="wordField"></div>
+
+    <div class="threshold-row"><span>your threshold</span><span id="posLabel">set your line</span></div>
+    <div class="type" style="font-size:20px;">protective <span class="soft">(the range you find acceptable)</span> repressive</div>
+    <input type="range" id="slider" min="0" max="100" value="50">
+    <div class="threshold-readout" id="readout"></div>
+    <div class="threshold-note">Each word's position reflects the average standing of the cases associated with it. This value is a placeholder assigned for the purposes of this draft rather than a finding drawn from a completed dataset. Words at or below the selected threshold appear in color, while the remainder stay in shadow. Size and orientation shift according to each word's distance from the threshold in either direction.</div>
+  </div>
+</section>
+
+<section class="section" id="archive">
+  <div class="section-inner">
+    <div class="section-head">
+      <div>
+        <div class="num mono">02. the archive</div>
+        <h2>case index</h2>
+      </div>
+      <div class="desc">Sixteen documented instances of restricted, moderated, or suppressed information. No case in this index is pre sorted into a category of good or bad.</div>
+    </div>
+    <div class="archive-teaser">
+      <p>Select a keyword in the word field above to open the case file associated with that term, or browse the complete index below, one case at a time.</p>
+      <button class="btn-browse" id="browseAll">browse the full case index</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="method">
+  <div class="section-inner">
+    <div class="section-head">
+      <div>
+        <div class="num mono">03. method</div>
+        <h2>on this draft</h2>
+      </div>
+    </div>
+    <div class="method">
+      <p><strong>Documented component.</strong> The sixteen cases included in this draft are publicly known, verifiable instances of information restriction or moderation.</p>
+      <p><strong>Placeholder component.</strong> The numeric position assigned to each case, and by extension to each word derived from it, along the protective to repressive scale is a rough estimate developed for this prototype rather than a sourced or defensible measurement.</p>
+      <p>A completed version of this project would require a transparent scoring method, most likely constructed from primary sources such as court records, platform transparency reports, and legislative text rather than individual judgment, and ideally weighted or contested by multiple readers rather than fixed by a single author. The taxonomy of rationale, actor, and outcome is the element most in need of feedback at this stage, particularly whether these three axes represent the appropriate framework, or whether a fourth axis, such as jurisdiction or reversibility, should be added.</p>
+    </div>
+  </div>
+</section>
+
+<footer>The Censorship Atlas. Computational Design Practice.</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="htext">
+        <span class="pill mono" id="modalTitle">—</span>
+        <span class="count" id="modalCount"></span>
+      </div>
+      <button class="modal-close" id="modalClose">close</button>
+    </div>
+    <div id="flashcardArea"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
