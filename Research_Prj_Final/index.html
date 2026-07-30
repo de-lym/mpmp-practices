@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Censorship Atlas</title>
+<title>UNSEEN — Case File Archive</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -12,7 +12,7 @@
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <div class="sb-brand">Dong Eun Lim</div>
+    <div class="sb-brand">Files</div>
   </aside>
 
   <div class="main">
@@ -33,7 +33,7 @@
 
     <section id="slide-view" class="view">
       <div class="slide-controls">
-        <button class="ctl-btn" id="btnHome">Board</button>
+        <button class="ctl-btn" id="btnHome">&larr; Board</button>
         <div class="grp">
           <button class="ctl-btn" id="btnPrev">&larr; Prev</button>
           <button class="ctl-btn" id="btnNext">Next &rarr;</button>
@@ -42,6 +42,20 @@
       <div class="slide-stage" id="slideStage"></div>
     </section>
 
+  </div>
+</div>
+
+<div class="archive-overlay" id="archiveOverlay">
+  <div class="archive-panel">
+    <div class="archive-head">
+      <div>
+        <div class="archive-eyebrow mono">full record</div>
+        <h2>Case Index — 16 Files</h2>
+      </div>
+      <button class="ctl-btn" id="archiveClose">Close &times;</button>
+    </div>
+    <div class="archive-filters" id="archiveFilters"></div>
+    <div class="archive-grid" id="archiveGrid"></div>
   </div>
 </div>
 

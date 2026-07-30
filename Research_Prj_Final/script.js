@@ -1,55 +1,31 @@
 const FILES = [
-  {n:"01", tag:"Thesis",     title:"The Thesis",             code:"NT-0100-T", x:280,  y:70,   rot:-2,
-    body:"Censorship is not the disappearance of information. It is the negotiation of visibility through infrastructures, protocols, and institutions. This research asks whether cartography can reveal those negotiations without claiming a position outside of them.",
-    hint:"Everything else in this archive branches from this one line."},
-
-  {n:"02", tag:"Inquiry",    title:"The Question",           code:"NT-0211-Q", x:560,  y:40,   rot:1.5,
-    body:"How can cartography reveal the infrastructures that negotiate visibility in contemporary digital society? Can information ever exist outside a system of governance, or does escaping one protocol only mean landing inside another?",
-    hint:"The question stays open. It is not answered by this archive."},
-
-  {n:"03", tag:"Lexicon",    title:"Five Terms",             code:"NT-0305-W", x:470,  y:280,  rot:2,
-    body:". <br>Infrastructure. <br>Cartography. Platform Governance. Archive. Five terms, chosen deliberately as concepts rather than technologies — the coordinates this atlas keeps returning to.",
-    hint:"Not a glossary of censorship. A vocabulary for studying its mechanisms."},
-
-  {n:"04", tag:"Field",      title:"Where Fields Cross",     code:"NT-0418-F", x:760,  y:250,  rot:-1.5,
-    body:"This project sits at the intersection of Computational Design, Critical Data Studies, Cartography, Media Studies, Political Geography, and Platform Studies — no single field owns the question of who controls visibility.",
-    hint:"The overlap is the site of the research, not a side effect of it."},
-
-  {n:"05", tag:"Lineage",    title:"The Lineage",            code:"NT-0525-L", x:1030, y:100,  rot:2,
-    body:"Book banning. State archives. Military secrecy. Satellite image restriction. Broadcast regulation. Internet filtering. Platform moderation. AI moderation. The techniques kept changing across the 20th century into the present. The underlying question — who controls visibility — did not.",
-    hint:"This is not a story of censorship getting worse. It is a story of protocols evolving."},
-
-  {n:"06", tag:"Practice",   title:"Who Else Is Looking",    code:"NT-0609-P", x:130,  y:450,  rot:1,
-    body:"Researchers — Foucault, Bratton, Lyon — theorize infrastructures of power. Investigators — Forensic Architecture, Trevor Paglen — visualize what those infrastructures hide. Designers — James Bridle, Hito Steyerl — use design itself as a method of investigation. The Uncensored Library relocates censored journalism into another platform. This project investigates the platform itself as an infrastructure of negotiated visibility.",
-    hint:"Positioned in relation to, not in place of, this community."},
-
-  {n:"07", tag:"Situated",   title:"The Library",            code:"NT-0714-U", x:420,  y:530,  rot:-2,
-    body:"The Uncensored Library moved journalism banned by state censors into Minecraft, framed as an escape from government surveillance. But that escape is conditional: Mojang, Microsoft, platform policy, servers, software, terms of service. It left one protocol only to become dependent on another.",
-    hint:"Situated technology: government, platform, software, and moderation, exposed by a single case."},
-
-  {n:"08", tag:"Method",     title:"The Method",             code:"NT-0822-M", x:700,  y:500,  rot:1.5,
-    body:"Computational cartography. Comparative platform analysis. Archival research. Metadata collection. Network diagrams. Interactive visualization, built toward D3.js. Computation is not deployed to solve censorship — it is deployed to make its patterns legible.",
-    hint:"Qualitative case study first. Computation reveals the shape of what's already there."},
-
-  {n:"09", tag:"Experiment", title:"The Prototypes",         code:"NT-0903-X", x:980,  y:430,  rot:-1,
-    body:"Same coordinates, three platforms: Google Maps, Naver Maps, Apple Maps — identical location, different visibility depending on whose infrastructure you're standing on. This site's own flashcard-and-redaction interaction began as one of those early prototypes.",
-    hint:"Early evidence of exploration, not a finished study."},
-
-  {n:"10", tag:"Visual",     title:"The Case File",          code:"NT-1017-V", x:1230, y:330,  rot:2.5,
-    body:"Government archive. Military dossier. Engineering drawing. Atlas. Evidence wall. The case-file aesthetic isn't decoration layered on top of the argument — the black bar performs it directly. Censorship as a technique of reduction, enacted on a document.",
-    hint:"The visual language is the argument, not an illustration of it."},
-
-  {n:"11", tag:"Argument",   title:"The Argument",           code:"NT-1129-A", x:270,  y:760,  rot:-1.5,
-    body:"Visibility is continuously negotiated through infrastructures rather than simply granted or denied. Making those negotiations legible is itself a critical design act. This atlas does not claim to stand outside the systems it studies — it is a situated instrument for examining them.",
-    hint:"Descriptive, not prescriptive. It opens the question rather than closing it."},
-
-  {n:"12", tag:"Capstone",   title:"What Comes Next",        code:"NT-1206-C", x:590,  y:780,  rot:1,
-    body:"This research may develop into an interactive atlas — computational mapping, comparative case studies, and a physical archival installation, an old censored book placed beside the screen demo — letting an audience navigate different infrastructures of visibility for themselves.",
-    hint:"A direction, not a promise. The proposal is built out next semester."},
-
-  {n:"13", tag:"Challenge",  title:"What I Don't Know Yet",  code:"NT-1313-W", x:900,  y:760,  rot:-2,
-    body:"Technical: learning D3.js, building a visualization system that scales past thirteen files. Research: defining the scope of comparison, reaching moderation data that isn't public. Design: representing distributed systems without flattening them. Conceptual: staying descriptive when every map already argues for something.",
-    hint:"Withholding a solution to a problem not yet fully understood."},
+  {n:"01", tag:"Governance",  title:"The First Mark",   code:"NT-0117-A", x:280,  y:70,   rot:-2,
+   body:"In 1559 the Catholic Church published the first Index Librorum Prohibitorum — a standing list of books its members were forbidden to read. It stayed in print, revised edition after edition, until 1966. Four centuries before firewalls and takedown notices, censorship already had its basic shape: a governing body, a list, and the ongoing work of keeping the list current. Everything filed in this archive descends from that same shape, dressed in newer protocols."},
+  {n:"02", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
+   body:"Every restriction filed here can be read two ways — protection, by the party enforcing it; repression, by the party losing access. This archive doesn't try to settle that argument. It asks a narrower one: who has standing to sign off on a restriction, and does that standing survive being made visible? A court order and a platform's terms of service both restrict speech. Only one of them was voted on."},
+  {n:"03", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
+   body:"Every black bar in this archive is an argument, not a decoration. Most censorship doesn't erase a document — it keeps the file, keeps the page number, and removes one passage from it. That's the technique of reduction this entire board reproduces: nothing here is deleted, only covered, and a cover is reversible in a way a deletion never claims to be."},
+  {n:"04", tag:"Threshold",   title:"Line of Sight",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
+   body:"In 2020, Reporters Without Borders rebuilt banned journalism inside Minecraft, placing censored reporting on servers no state firewall could reach. Readers under restriction could open the game and read what their government had blocked. But the library never left governance behind — it moved from one authority's line of sight into another's: Mojang's terms of service, Microsoft's moderation policy, a platform's right to shut the whole thing down. It traded one censor for a landlord."},
+  {n:"05", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
+   body:"Index → Code → Stack → Library. The mechanism for controlling visibility keeps changing hands: a Church's printed list, Hollywood's self-policed Hays Code (1934–1968), Benjamin Bratton's account of computation as its own layered sovereignty — Earth, Cloud, City, Address, Interface, User — and finally a library built inside somebody else's game. Each new protocol claims to have escaped the last one. None of them escape needing a protocol."},
+  {n:"06", tag:"Governance",  title:"Need to Know",     code:"NT-0602-B", x:130,  y:450,  rot:1,
+   body:"This project doesn't belong to one discipline, and that's deliberate. Information policy, platform governance, comparative law, data visualization, and archival science each hold one piece of how visibility gets restricted — and no single one of them can explain why a restriction reads as protection in one field and control in another."},
+  {n:"07", tag:"Legitimacy",  title:"The Classifier",   code:"NT-0718-C", x:420,  y:530,  rot:-2,
+   body:"Michel Foucault argued that power rarely announces itself as prohibition — more often it works through surveillance and classification, the ongoing sorting of what's visible from what isn't. Read that way, a censor isn't someone who deletes. It's someone who classifies. Every actor filed here — state, platform, institution — is treated first as a classifier, and the question is what their scheme actually optimizes for."},
+  {n:"08", tag:"Redaction",   title:"The Archive",      code:"NT-0825-D", x:700,  y:500,  rot:1.5,
+   body:"Sixteen documented cases sit behind this file, spanning six countries and four kinds of actor. None were pre-sorted into good or bad. Open the full record to browse by tag — governance, legitimacy, redaction, threshold, protocol — the same five terms pinned to every file on this board.",
+   gateway:true},
+  {n:"09", tag:"Threshold",   title:"What Leaks",       code:"NT-0904-A", x:980,  y:430,  rot:-1,
+   body:"OpenAI moderates its own models. X moderates its own feed. Microsoft moderates the server the Uncensored Library depends on. Each restricts visibility at the level of code and API rather than law, and each is close to invisible from outside its own company. This archive can document their effects. It can't fully see their protocols — and that gap is part of the argument."},
+  {n:"10", tag:"Protocol",    title:"Sunset Clause",    code:"NT-1012-B", x:1230, y:330,  rot:2.5,
+   body:"This taxonomy — rationale, actor, outcome — is a working structure, not a settled one. It's missing at least two axes worth testing: jurisdiction, whose law applies when a platform and a state disagree; and reversibility, whether a restriction, once imposed, is ever actually lifted. Every classification in this archive should be read as provisional. This one included."},
+  {n:"11", tag:"Governance",  title:"The Appeal",       code:"NT-1128-C", x:270,  y:760,  rot:-1.5,
+   body:"Harvard's Lumen Database collects takedown notices without ruling on them. OONI and Citizen Lab measure internet censorship worldwide using standardized, volunteer-run categories. The EFF documents platform takedowns at the scale of the individual report. None of these projects say whether a restriction was justified. All of them make it visible enough that someone else can ask."},
+  {n:"12", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
+   body:"Kialo structures arguments as trees of pro and con, letting a reader hold both sides of a claim without being handed a verdict — a different mechanism aimed at the same goal as this archive. This project departs from, rather than extends, the Uncensored Library: Reporters Without Borders' position becomes one case among sixteen here, not the frame the rest of the project is judged against."},
+  {n:"13", tag:"Redaction",   title:"Declassified",     code:"NT-1301-A", x:900,  y:760,  rot:-2,
+   body:"The working direction: a fully sourced version of this archive, exhibited beside a physical object it can't replace — a printed page from a real banned book. Software and a two-hundred-year-old index, side by side, making the same argument in two different materials. Not a solution. A pairing."},
 ];
 const TITLE_POS = {x:20, y:60};
 const LINKS = [[0,1],[1,2],[2,3],[3,4],[5,6],[6,7],[7,8],[8,9],[10,11],[11,12],
@@ -79,9 +55,9 @@ titleNode.style.left = TITLE_POS.x+'px'; titleNode.style.top = TITLE_POS.y+'px';
 titleNode.innerHTML = `
   <div class="pin"></div>
   <div class="paper">
-    <div class="eyebrow">Atlas of Negotiated Visibility · 13 Documents</div>
-    <div class="thesis">&ldquo;Visibility is negotiated. It is never simply granted, or denied.&rdquo;</div>
-    <div class="keywords">VISIBILITY<span class="dot">·</span>INFRASTRUCTURE<span class="dot">·</span>CARTOGRAPHY<br>PLATFORM GOVERNANCE<span class="dot">·</span>ARCHIVE</div>
+    <div class="eyebrow">Case File Archive · 13 Documents · 16-Case Index</div>
+    <div class="thesis">&ldquo;Who decides what remains unseen — and why?&rdquo;</div>
+    <div class="keywords">GOVERNANCE<span class="dot">·</span>LEGITIMACY<span class="dot">·</span>REDACTION<br>THRESHOLD<span class="dot">·</span>PROTOCOL</div>
   </div>`;
 boardCanvas.appendChild(titleNode);
 
@@ -260,16 +236,20 @@ FILES.forEach((f,idx)=>{
       <div class="doc-head"><span class="doc-num">FILE ${f.n} — ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
       <h2 class="doc-title">${f.title}</h2>
       <div class="text-wrap">
-        <p class="doc-body">${f.body}<span class="hint">${f.hint}</span></p>
+        <p class="doc-body">${f.body}<span class="hint">Case notes continue in appendix</span></p>
         <div class="redaction" role="button" aria-label="Reveal document ${f.n}">
           ${Array(8).fill('<div class="bar"></div>').join('')}
           <div class="stamp-hint">Declassifying…</div>
         </div>
       </div>
+      ${f.gateway ? `<button class="open-archive-btn" id="openArchiveBtn">Open the full case index &rarr;</button>` : ``}
       <div class="stamp">DECLASSIFIED</div>
     </div>`;
   slideStage.appendChild(wrap);
   wrap.querySelector('.redaction').addEventListener('click', ()=> wrap.classList.add('revealed'));
+  if(f.gateway){
+    wrap.querySelector('#openArchiveBtn').addEventListener('click', openArchive);
+  }
 
   /* draggable photo */
   const photo = wrap.querySelector('.slide-photo');
@@ -345,3 +325,94 @@ window.addEventListener('hashchange', ()=>{
   const h=location.hash.replace('#','');
   if(h.startsWith('f') && FILES.some(f=>f.n===h.slice(1))) go(h.slice(1));
 })();
+
+/* -------- the 16-case archive (nested inside File 08) -------- */
+const ARCHIVE_TAGS = ["Governance","Legitimacy","Redaction","Threshold","Protocol"];
+const ARCHIVE_CASES = [
+  {id:'01', title:'The Great Firewall', tag:'Governance', actor:'state', outcome:'normalized',
+   summary:'A national infrastructure of filtering and blocking that restricts access to foreign platforms and search results, justified as sovereignty over domestic information space.'},
+  {id:'02', title:'NetzDG Takedown Law', tag:'Redaction', actor:'state', outcome:'contested',
+   summary:'A law requiring platforms to remove hate speech and illegal content within 24 hours or face heavy fines, pushing moderation decisions onto private companies.'},
+  {id:'03', title:'Gayssot Act', tag:'Legitimacy', actor:'state', outcome:'upheld',
+   summary:'A law criminalizing Holocaust denial, framed as protecting historical fact and public dignity rather than restricting general political speech.'},
+  {id:'04', title:"Children's Online Privacy Rule", tag:'Threshold', actor:'state', outcome:'upheld',
+   summary:'Federal rules restricting how services can collect data from and target content toward children under 13.'},
+  {id:'05', title:'2017 Wikipedia Block', tag:'Governance', actor:'state', outcome:'overturned',
+   summary:"A nationwide block of Wikipedia lasting more than two years before being ruled unconstitutional and reversed."},
+  {id:'06', title:'Regional Internet Shutdowns', tag:'Governance', actor:'state', outcome:'contested',
+   summary:'Repeated, localized mobile internet shutdowns during unrest, justified on public order and security grounds.'},
+  {id:'07', title:'Platform Misinformation Removal', tag:'Legitimacy', actor:'platform', outcome:'contested',
+   summary:'Extensive removal and demotion of posts flagged as health or election misinformation — private editorial judgment at public-square scale.'},
+  {id:'08', title:'Podcast Delisting Disputes', tag:'Redaction', actor:'platform', outcome:'contested',
+   summary:'Selective removal of specific episodes accused of misinformation while the show itself stays available — a partial, editorial form of moderation.'},
+  {id:'09', title:'Protection from Online Falsehoods Act', tag:'Legitimacy', actor:'state', outcome:'contested',
+   summary:'A law empowering ministers to order correction notices or takedowns of statements deemed false, criticized as a tool for suppressing dissent.'},
+  {id:'10', title:'Online Safety Act', tag:'Threshold', actor:'state', outcome:'upheld',
+   summary:'Legislation requiring platforms to shield minors from harmful content and enforce age verification.'},
+  {id:'11', title:'DMCA Takedown Notices', tag:'Protocol', actor:'commercial', outcome:'normalized',
+   summary:'A system letting rights holders request removal of infringing content via formal notice — routine, and occasionally used to suppress criticism.'},
+  {id:'12', title:'School Library Book Removals', tag:'Redaction', actor:'institution', outcome:'contested',
+   summary:'District-level removal of books in response to content disputes, driven by local pressure rather than national law.'},
+  {id:'13', title:'Social Credit Content Restriction', tag:'Governance', actor:'state', outcome:'normalized',
+   summary:'Access to services tied to a citizen scoring system that can be affected by online speech, blending financial and expressive consequences.'},
+  {id:'14', title:'Film Ratings Board', tag:'Threshold', actor:'institution', outcome:'normalized',
+   summary:'A self-regulating industry body assigning age ratings that restrict theatrical release and marketing.'},
+  {id:'15', title:'Political Account Suspensions', tag:'Legitimacy', actor:'platform', outcome:'contested',
+   summary:'Suspension of prominent political accounts across several countries, with disputes over whether the standard was applied evenly.'},
+  {id:'16', title:'Wartime Press Censorship', tag:'Protocol', actor:'state', outcome:'contested',
+   summary:'Government review and restriction of war reporting to prevent aiding an adversary — historically normalized, still ethically disputed.'},
+];
+
+const archiveOverlay = document.getElementById('archiveOverlay');
+const archiveFilters = document.getElementById('archiveFilters');
+const archiveGrid = document.getElementById('archiveGrid');
+let archiveActiveTag = null;
+
+function buildArchiveFilters(){
+  const allBtn = document.createElement('button');
+  allBtn.className = 'af-chip active';
+  allBtn.textContent = 'all';
+  allBtn.onclick = () => setArchiveFilter(null, allBtn);
+  archiveFilters.appendChild(allBtn);
+  ARCHIVE_TAGS.forEach(tag=>{
+    const btn = document.createElement('button');
+    btn.className = 'af-chip';
+    btn.textContent = tag.toLowerCase();
+    btn.onclick = () => setArchiveFilter(tag, btn);
+    archiveFilters.appendChild(btn);
+  });
+}
+function setArchiveFilter(tag, btn){
+  archiveActiveTag = tag;
+  [...archiveFilters.children].forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderArchiveGrid();
+}
+function renderArchiveGrid(){
+  archiveGrid.innerHTML = '';
+  ARCHIVE_CASES.forEach(c=>{
+    const visible = !archiveActiveTag || c.tag === archiveActiveTag;
+    const card = document.createElement('div');
+    card.className = 'archive-card' + (visible ? '' : ' ac-hidden');
+    card.innerHTML = `
+      <div class="ac-pin"></div>
+      <div class="ac-head"><span class="ac-id">CASE ${c.id}</span><span class="ac-tag">${c.tag}</span></div>
+      <h4 class="ac-title">${c.title}</h4>
+      <div class="ac-mask">
+        <div class="ac-bars"><div></div><div></div><div></div></div>
+        <div class="ac-hint">click to declassify</div>
+      </div>
+      <p class="ac-summary">${c.summary}</p>
+      <div class="ac-meta">${c.actor} &middot; ${c.outcome}</div>`;
+    card.addEventListener('click', ()=> card.classList.toggle('ac-open'));
+    archiveGrid.appendChild(card);
+  });
+}
+function openArchive(){
+  if(!archiveFilters.children.length){ buildArchiveFilters(); renderArchiveGrid(); }
+  archiveOverlay.classList.add('open');
+}
+function closeArchive(){ archiveOverlay.classList.remove('open'); }
+document.getElementById('archiveClose').addEventListener('click', closeArchive);
+archiveOverlay.addEventListener('click', e=>{ if(e.target===archiveOverlay) closeArchive(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && archiveOverlay.classList.contains('open')) closeArchive(); });
