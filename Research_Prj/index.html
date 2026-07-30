@@ -3,217 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Censorship Atlas</title>
+<title>UNSEEN — Case File Archive</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="mark">The Censorship Atlas</div>
-  <div class="meta">Dong Eun Lim</div>
-</header>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">Files</div>
+  </aside>
 
-<nav class="anchornav">
-  <a href="#hero">thesis</a>
-  <a href="#anchor">anchor</a>
-  <a href="#question">question</a>
-  <a href="#keywords">keywords</a>
-  <a href="#fields">fields</a>
-  <a href="#lineage">lineage</a>
-  <a href="#practice">practice</a>
-  <a href="#situated">situated tech</a>
-  <a href="#field">the map</a>
-  <a href="#archive">archive</a>
-  <a href="#method">method</a>
-  <a href="#outline">outline</a>
-</nav>
+  <div class="main">
 
-<section class="hero" id="hero">
-  <span class="eyebrow mono">an archive of visibiilty protocols</span>
-  <h1>
-    <span class="redact-line" style="--d:0.1s">who decides<span class="bar"></span></span><br>
-    <span class="redact-line" style="--d:0.5s">what remains unseen<span class="bar"></span></span><br>
-    <span class="redact-line" style="--d:0.9s">and why<span class="bar"></span></span>
-  </h1>
-  <p class="thesis">Censorship is not the disappearance of information. It is the negotiation of visibility, a governance mechanism, deployed for protection as often as control.</p>
-</section>
+    <section id="home-view" class="view active">
+      <div class="board-viewport" id="boardViewport">
+        <div class="board-canvas" id="boardCanvas">
+          <svg class="strings" id="strings"></svg>
+        </div>
+      </div>
+      <div class="zoom-controls">
+        <button id="zoomIn" aria-label="Zoom in">+</button>
+        <button id="zoomOut" aria-label="Zoom out">&minus;</button>
+        <button id="zoomReset" aria-label="Reset view" style="font-size:10px;">FIT</button>
+      </div>
+      <div class="board-hint">Drag to explore &nbsp;·&nbsp; scroll or pinch to zoom &nbsp;·&nbsp; click a file to open it</div>
+    </section>
 
-<section class="section" id="anchor">
-  <div class="section-inner">
-    <div class="section-head">
+    <section id="slide-view" class="view">
+      <div class="slide-controls">
+        <button class="ctl-btn" id="btnHome">&larr; Board</button>
+        <div class="grp">
+          <button class="ctl-btn" id="btnPrev">&larr; Prev</button>
+          <button class="ctl-btn" id="btnNext">Next &rarr;</button>
+        </div>
+      </div>
+      <div class="slide-stage" id="slideStage"></div>
+    </section>
+
+  </div>
+</div>
+
+<div class="archive-overlay" id="archiveOverlay">
+  <div class="archive-panel">
+    <div class="archive-head">
       <div>
-        <div class="num mono">the precedent study</div>
-        <h2>a library that escaped one censor</h2>
+        <div class="archive-eyebrow mono">full record</div>
+        <h2>Case Index — 16 Files</h2>
       </div>
-      <div class="desc">Reporters Without Borders rebuilt banned journalism inside Minecraft to dodge state firewalls. This atlas starts here — not to celebrate the escape, but to ask what it escaped into.</div>
+      <button class="ctl-btn" id="archiveClose">Close &times;</button>
     </div>
-    <div class="method">
-      <p>The Uncensored Library sits on servers owned by Mojang, owned by Microsoft, bound by their terms of service and their moderation rules. It didn't leave censorship behind. It moved from one protocol, a state firewall, to another, a platform's policy.</p>
-      <p><strong>That trade is the thesis of this atlas.</strong> Visibility is never released into the open. It only ever changes hands, from one gatekeeper to the next. The sixteen cases that follow are sixteen versions of that same handoff with different actors, different rationales, same underlying question: who holds the protocol, and what do they let through it?</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="question">
-  <div class="section-inner">
-    <div class="section-head">
-      <div>
-        <div class="num mono">research question</div>
-        <h2>who decides the rule of redaction</h2>
-      </div>
-      <div class="desc">If a restriction can be argued as protection by one party and repression by another, is there a way to make that argument visible without settling it for the reader?</div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="keywords">
-  <div class="section-inner">
-    <div class="section-head">
-      <div><div class="num mono">keywords</div><h2>five terms</h2></div>
-    </div>
-    <div class="kw-row">
-      <span>governance</span><span>legitimacy</span><span>redaction</span><span>threshold</span><span>protocol</span>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="fields">
-  <div class="section-inner">
-    <div class="section-head">
-      <div><div class="num mono">intersecting fields</div><h2>no single discipline owns this</h2></div>
-    </div>
-    <div class="field-grid">
-      <div class="field-tag">information policy</div>
-      <div class="field-tag">platform governance</div>
-      <div class="field-tag">comparative law</div>
-      <div class="field-tag">data visualization</div>
-      <div class="field-tag">archival science</div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="lineage">
-  <div class="section-inner">
-    <div class="section-head">
-      <div><div class="num mono">historical lineage</div><h2>old censors, new protocols</h2></div>
-      <div class="desc">The trajectory this project continues, from bound indexes of banned texts to layered software sovereignty.</div>
-    </div>
-    <div class="dossier">
-      <div class="dossier-row"><div class="dname">Index Librorum Prohibitorum</div><p>The Catholic Church's banned-books index, 1559&ndash;1966 — proof this genre predates the internet by centuries.</p></div>
-      <div class="dossier-row"><div class="dname">The Hays Code</div><p>Hollywood's self-imposed production code, 1934&ndash;1968 — an industry policing its own visibility before any regulator forced it to. Direct ancestor of Case 14 in the archive below.</p></div>
-      <div class="dossier-row"><div class="dname">Benjamin Bratton — The Stack</div><p>Planetary computation forms its own layered sovereignty — Earth, Cloud, City, Address, Interface, User — overriding national jurisdiction.</p></div>
-      <div class="dossier-row"><div class="dname">Reporters Without Borders — Uncensored Library</div><p>The precedent study — resistance built inside Minecraft, entirely dependent on Microsoft's continued permission.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="practice">
-  <div class="section-inner">
-    <div class="section-head">
-      <div><div class="num mono">community of practice</div><h2>who else is mapping this, old and recent</h2></div>
-    </div>
-    <div class="dossier">
-      <div class="group-label mono">historical / theoretical</div>
-      <div class="dossier-row"><div class="dname">Michel Foucault</div><p>Discipline and Punish reframed power as something that operates through visibility and surveillance, not just outright prohibition — the root of reading censorship as infrastructure rather than event.</p></div>
-      <div class="group-label mono">contemporary practice</div>
-      <div class="dossier-row"><div class="dname">Lumen Database</div><p>Harvard's public archive of takedown notices — copyright, defamation, court orders — collected for transparency rather than verdicts.</p></div>
-      <div class="dossier-row"><div class="dname">OONI / Citizen Lab</div><p>Standardized, volunteer-measured categories of internet censorship worldwide, published as raw measurement.</p></div>
-      <div class="dossier-row"><div class="dname">EFF — Tracking Global Online Censorship</div><p>User-reported documentation of platform takedowns, the who/what/why of content removal at platform scale.</p></div>
-      <div class="dossier-row"><div class="dname">Kialo</div><p>Structured pro/con argument trees — a different mechanism for the same goal: letting a reader hold both sides without being handed a verdict.</p></div>
-    </div>
-    <p class="method" style="margin-top:20px;">This atlas departs from Uncensored Library rather than extending it — RSF's position becomes one case among sixteen, not the frame.</p>
-  </div>
-</section>
-
-<section class="section" id="situated">
-  <div class="section-inner">
-    <div class="section-head">
-      <div><div class="num mono">situated technology</div><h2>every dataset has an owner</h2></div>
-    </div>
-    <p class="method">Microsoft owns Mojang; OpenAI and X now moderate at the protocol level — censorship happens inside proprietary systems this project can't fully see.</p>
-  </div>
-</section>
-
-<section class="section field-panel" id="field">
-  <div class="section-inner">
-    <div class="section-head">
-      <div>
-        <div class="num mono">01. the world map</div>
-        <h2>vocabulary of control</h2>
-      </div>
-      <div class="desc">Every term is drawn from a documented case.</div>
-    </div>
-    <div class="legend" id="legend"></div>
-    <div class="word-field" id="wordField"></div>
-
-    <div class="threshold-row"><span></span><span id="posLabel"></span></div>
-    <div class="type" style="font-size:20px;">protective <span class="soft"></span> repressive</div>
-    <input type="range" id="slider" min="0" max="100" value="50">
-    <div class="threshold-readout" id="readout"></div>
-    <div class="threshold-note">Position is a placeholder estimate, not sourced data.</div>
-  </div>
-</section>
-
-<section class="section" id="archive">
-  <div class="section-inner">
-    <div class="section-head">
-      <div>
-        <div class="num mono">02. the archive</div>
-        <h2>case index</h2>
-      </div>
-      <div class="desc">Sixteen documented cases, none pre-sorted into good or bad.</div>
-    </div>
-    <div class="archive-teaser">
-      <p>Click a word above, or browse all sixteen cases.</p>
-      <button class="btn-browse" id="browseAll">browse the full case index</button>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="method">
-  <div class="section-inner">
-    <div class="section-head">
-      <div>
-        <div class="num mono">03. method</div>
-        <h2>on this draft</h2>
-      </div>
-    </div>
-    <div class="method">
-      <p><strong>Redaction as method.</strong> The archive's blacked-out cards aren't only an aesthetic choice — most censorship works exactly this way: the document stays, a passage is removed. The interface performs the argument instead of just illustrating it.</p>
-      <p><strong>Documented.</strong> Sixteen cases, all publicly verifiable.</p>
-      <p><strong>Placeholder.</strong> Position scores are estimates, not sourced measurements.</p>
-      <p><strong>Open question.</strong> Is rationale / actor / outcome the right taxonomy, or does it need a fourth axis — jurisdiction, reversibility?</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="outline">
-  <div class="section-inner">
-    <div class="section-head">
-      <div><div class="num mono">04. toward a capstone</div><h2>a gesture, not a plan yet</h2></div>
-      <div class="desc">Not a solution to a problem this project doesn't yet fully understand.</div>
-    </div>
-    <div class="outline-grid">
-      <div class="outline-card"><h3>working direction</h3><p>A sourced version of this atlas, paired with a physical index of banned material.</p></div>
-      <div class="outline-card"><h3>possible form</h3><p>The threshold interface, exhibited beside a printed historical index — software and old book, two centuries apart.</p></div>
-    </div>
-  </div>
-</section>
-
-<footer>The Censorship Atlas. Computational Design Practice.</footer>
-
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div class="htext">
-        <span class="pill mono" id="modalTitle">—</span>
-        <span class="count" id="modalCount"></span>
-      </div>
-      <button class="modal-close" id="modalClose">close</button>
-    </div>
-    <div id="flashcardArea"></div>
+    <div class="archive-filters" id="archiveFilters"></div>
+    <div class="archive-grid" id="archiveGrid"></div>
   </div>
 </div>
 
