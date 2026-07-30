@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Censorship Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">Dong Eun Lim</div>
+  </aside>
+
+  <div class="main">
+
+    <section id="home-view" class="view active">
+      <div class="board-viewport" id="boardViewport">
+        <div class="board-canvas" id="boardCanvas">
+          <svg class="strings" id="strings"></svg>
+        </div>
+      </div>
+      <div class="zoom-controls">
+        <button id="zoomIn" aria-label="Zoom in">+</button>
+        <button id="zoomOut" aria-label="Zoom out">&minus;</button>
+        <button id="zoomReset" aria-label="Reset view" style="font-size:10px;">FIT</button>
+      </div>
+      <div class="board-hint">Drag to explore &nbsp;·&nbsp; scroll or pinch to zoom &nbsp;·&nbsp; click a file to open it</div>
+    </section>
+
+    <section id="slide-view" class="view">
+      <div class="slide-controls">
+        <button class="ctl-btn" id="btnHome">Board</button>
+        <div class="grp">
+          <button class="ctl-btn" id="btnPrev">&larr; Prev</button>
+          <button class="ctl-btn" id="btnNext">Next &rarr;</button>
+        </div>
+      </div>
+      <div class="slide-stage" id="slideStage"></div>
+    </section>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

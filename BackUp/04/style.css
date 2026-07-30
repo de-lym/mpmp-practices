@@ -211,51 +211,10 @@ input[type=range]::-moz-range-thumb{
 
 footer{ padding:30px 40px; border-top:1.5px solid var(--ink); font-family:'IBM Plex Mono', monospace; font-size:11px; opacity:0.55; text-align:center; }
 
-/* anchor nav */
-.anchornav{
-  display:flex; flex-wrap:wrap; gap:18px; padding:10px 40px;
-  background:var(--ink); border-bottom:1.5px solid var(--ink);
-  position:sticky; top:0; z-index:50;
-}
-.anchornav a{
-  font-family:'IBM Plex Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em;
-  color:var(--paper); opacity:0.6; text-decoration:none;
-}
-.anchornav a:hover{ opacity:1; }
-
-/* keywords */
-.kw-row{ display:flex; flex-wrap:wrap; gap:12px; }
-.kw-row span{
-  font-family:'IBM Plex Mono', monospace; font-size:13px; text-transform:uppercase; letter-spacing:0.05em;
-  border:1px solid var(--ink); padding:8px 16px; border-radius:20px;
-}
-
-/* intersecting fields */
-.field-grid{ display:flex; flex-wrap:wrap; gap:10px; }
-.field-tag{
-  font-family:'Special Elite', monospace; font-size:14px;
-  border:1px dashed var(--line); padding:10px 16px;
-}
-
-/* dossier list (lineage / practice) */
-.dossier{ display:flex; flex-direction:column; gap:0; }
-.dossier-row{
-  display:grid; grid-template-columns:220px 1fr; gap:24px;
-  padding:20px 0; border-bottom:1px solid var(--line);
-}
-.group-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.1em; opacity:0.5; margin:22px 0 2px; }
-.group-label:first-child{ margin-top:0; }
-.dossier-row .dname{ font-family:'Special Elite', monospace; font-size:15px; }
-.dossier-row p{ margin:0; font-size:14px; line-height:1.6; color:var(--ink-soft); }
-
-/* outline cards */
-.outline-grid{ display:grid; grid-template-columns:1fr; gap:24px; }
-@media(min-width:720px){ .outline-grid{ grid-template-columns:1fr 1fr; } }
-.outline-card{ border:1px solid var(--ink); padding:24px; }
-.outline-card h3{ font-family:'Special Elite', monospace; font-size:16px; margin:0 0 10px; }
-.outline-card p{ font-size:14px; line-height:1.6; color:var(--ink-soft); margin:0; }
-
 @media(max-width:720px){
-  .dossier-row{ grid-template-columns:1fr; gap:8px; }
-  .anchornav{ padding:10px 20px; gap:12px; overflow-x:auto; }
+  .section-head{ flex-direction:column; align-items:flex-start; gap:10px; }
+  .section-head .desc{ text-align:left; }
+  header.topbar{ padding:16px 20px; }
+  .hero, .section{ padding-left:20px; padding-right:20px; }
+  .archive-teaser{ flex-direction:column; align-items:flex-start; }
 }
