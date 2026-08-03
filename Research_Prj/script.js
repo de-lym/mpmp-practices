@@ -1,35 +1,52 @@
+// Array order = presentation/navigation order (sidebar + next/prev).
+// File numbers (n) and qtags stay fixed to the assignment's 13 required questions.
 const FILES = [
   {n:"01", tag:"Governance",  title:"The First Mark",   code:"NT-0117-A", x:280,  y:70,   rot:-2,
-   body:"In 1559 the Catholic Church published the first Index Librorum Prohibitorum — a standing list of books its members were forbidden to read. It stayed in print, revised edition after edition, until 1966. Four centuries before firewalls and takedown notices, censorship already had its basic shape: a governing body, a list, and the ongoing work of keeping the list current. Everything filed in this archive descends from that same shape, dressed in newer protocols."},
-  {n:"02", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
-   body:"Every restriction filed here can be read two ways — protection, by the party enforcing it; repression, by the party losing access. This archive doesn't try to settle that argument. It asks a narrower one: who has standing to sign off on a restriction, and does that standing survive being made visible? A court order and a platform's terms of service both restrict speech. Only one of them was voted on."},
-  {n:"03", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
-   body:"Every black bar in this archive is an argument, not a decoration. Most censorship doesn't erase a document — it keeps the file, keeps the page number, and removes one passage from it. That's the technique of reduction this entire board reproduces: nothing here is deleted, only covered, and a cover is reversible in a way a deletion never claims to be."},
-  {n:"04", tag:"Threshold",   title:"Line of Sight",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
-   body:"In 2020, Reporters Without Borders rebuilt banned journalism inside Minecraft, placing censored reporting on servers no state firewall could reach. Readers under restriction could open the game and read what their government had blocked. But the library never left governance behind — it moved from one authority's line of sight into another's: Mojang's terms of service, Microsoft's moderation policy, a platform's right to shut the whole thing down. It traded one censor for a landlord."},
-  {n:"05", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
-   body:"Index → Code → Stack → Library. The mechanism for controlling visibility keeps changing hands: a Church's printed list, Hollywood's self-policed Hays Code (1934–1968), Benjamin Bratton's account of computation as its own layered sovereignty — Earth, Cloud, City, Address, Interface, User — and finally a library built inside somebody else's game. Each new protocol claims to have escaped the last one. None of them escape needing a protocol."},
+   qtag:"assignment 01 · title",
+   body:"In 1559 the Catholic Church published its own version of a case file system, the Index Librorum Prohibitorum, a list of prohibited books revised repeatedly until it was discontinued in 1966. This project continues that same practice under a different form of authority, four centuries later. This is why the project is titled Censorship Case File rather than Censorship Atlas. An atlas claims to cover an entire territory. A case file documents a single instance that remains open to appeal rather than closed into a final record. Each of the thirteen files on this board, and each of the sixteen cases in the archive behind it, is written and organized as exactly that, a documented instance rather than a settled verdict."},
   {n:"06", tag:"Governance",  title:"Need to Know",     code:"NT-0602-B", x:130,  y:450,  rot:1,
-   body:"This project doesn't belong to one discipline, and that's deliberate. Information policy, platform governance, comparative law, data visualization, and archival science each hold one piece of how visibility gets restricted — and no single one of them can explain why a restriction reads as protection in one field and control in another."},
-  {n:"07", tag:"Legitimacy",  title:"The Classifier",   code:"NT-0718-C", x:420,  y:530,  rot:-2,
-   body:"Michel Foucault argued that power rarely announces itself as prohibition — more often it works through surveillance and classification, the ongoing sorting of what's visible from what isn't. Read that way, a censor isn't someone who deletes. It's someone who classifies. Every actor filed here — state, platform, institution — is treated first as a classifier, and the question is what their scheme actually optimizes for."},
+   qtag:"assignment 03 · keywords",
+   body:"Five terms structure this entire project. Governance refers to who holds the authority to restrict information. Legitimacy refers to whether that authority is broadly accepted as valid. Redaction refers to the specific technique used, which is to cover material rather than delete it. Threshold refers to the point at which a restriction stops functioning as protection and begins to function as control. Protocol refers to the underlying system through which a restriction is carried out, whether that system is digital, institutional, or physical."},
+  {n:"02", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
+   qtag:"assignment 02 · research question",
+   body:"This project asks how cartography can reveal the infrastructures that negotiate visibility without determining whether any single negotiation was justified. Every restriction documented in this archive can be read in two ways. It can be read as protection by the party enforcing it, or as repression by the party losing access. This project does not attempt to resolve that disagreement. Instead it asks a narrower and more answerable question. Who holds the authority to approve a restriction, and does that authority remain credible once it is made visible?"},
+  {n:"03", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
+   qtag:"assignment 10 · visual representation",
+   body:"The visual system of this project functions as an argument rather than as decoration. Case files are pinned and layered across the board the way evidence is arranged during an active investigation. Each redaction bar represents a specific passage that was removed from a document, and the reader must click through it to continue, which reproduces the friction of an actual declassification review. The overall visual language, paper, string, red ink, and black bars, is drawn directly from government case file conventions. This project does not claim to be neutral. A case file is already a form of interpretation."},
+  {n:"04", tag:"Threshold",   title:"Line of Sight",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
+   qtag:"assignment 07 · situated technology",
+   body:"In 2020 Reporters Without Borders rebuilt banned journalism inside the video game Minecraft, placing censored reporting on servers that a national firewall could not reach. Readers living under state restriction could open the game and read reporting their own government had blocked through conventional channels. The library did not escape governance so much as relocate within it. It moved from the authority of a state firewall to the authority of a private platform, subject to Mojang's terms of service and Microsoft's moderation policy, both of which retain the right to remove the project entirely. Of the sixteen cases documented in this archive, this is the clearest demonstration of the claim advanced in File 12."},
+  {n:"12", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
+   qtag:"assignment 11 · rhetorical argument",
+   body:"This project does not argue that any single restriction documented in this archive was justified. It argues something narrower and more difficult to dismiss. Visibility is never released from control. It is only transferred from one controller to another. A platform's terms of service comes to occupy the position previously held by a state's firewall. A private scoring system comes to occupy the position previously held by a censor's published list. No single case in this archive proves that claim on its own, but the sixteen cases considered together begin to. Whoever currently holds infrastructural power has little incentive to relinquish it, and no technology identified in this research, however protective in intent, removes that asymmetry. It only relocates it, or makes it briefly visible before it moves again. This is not a neutral position. It is an argument, and one that remains open to challenge. Decentralized protocols and public documentation both complicate this claim, and this project treats that complication as an open question rather than a resolved one."},
+  {n:"05", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
+   qtag:"assignment 05 · historical lineage",
+   body:"The mechanism used to control visibility has changed hands repeatedly across four centuries, moving from a printed index maintained by a religious institution, to a production code enforced by the American film industry itself between 1934 and 1968, to Benjamin Bratton's theory of computation as its own layered form of sovereignty spanning earth, cloud, city, address, interface, and user, to a digital library built inside a commercial video game. Each new arrangement presents itself as an escape from the one before it, yet none of them escape the need for an underlying protocol. A comparable pattern appears twice in United States internet law. Section 230 protected platforms from legal liability for user content in 1996. The FOSTA and SESTA legislation opened an exception to that protection in 2018, and that same exception is now driving the platform moderation practices documented in three cases in this archive."},
   {n:"08", tag:"Redaction",   title:"The Archive",      code:"NT-0825-D", x:700,  y:500,  rot:1.5,
-   body:"Sixteen documented cases sit behind this file, spanning six countries and four kinds of actor. None were pre-sorted into good or bad. Open the full record to browse by tag — governance, legitimacy, redaction, threshold, protocol — the same five terms pinned to every file on this board.",
+   qtag:"assignment 09 · computational experiments",
+   body:"Two computational experiments support this archive. The first is a case index containing sixteen documented restrictions, filterable by the five terms used throughout this project. The second is a threshold map, which plots the same sixteen cases along a spectrum from clearly protective to clearly repressive. The placement of the threshold itself is left to the reader rather than fixed by the project, which is intentional. The purpose of both experiments is not to resolve the classification of any single case, but to make the act of classification itself visible and available for scrutiny.",
    gateway:true},
   {n:"09", tag:"Threshold",   title:"What Leaks",       code:"NT-0904-A", x:980,  y:430,  rot:-1,
-   body:"OpenAI moderates its own models. X moderates its own feed. Microsoft moderates the server the Uncensored Library depends on. Each restricts visibility at the level of code and API rather than law, and each is close to invisible from outside its own company. This archive can document their effects. It can't fully see their protocols — and that gap is part of the argument."},
-  {n:"10", tag:"Protocol",    title:"Sunset Clause",    code:"NT-1012-B", x:1230, y:330,  rot:2.5,
-   body:"This taxonomy — rationale, actor, outcome — is a working structure, not a settled one. It's missing at least two axes worth testing: jurisdiction, whose law applies when a platform and a state disagree; and reversibility, whether a restriction, once imposed, is ever actually lifted. Every classification in this archive should be read as provisional. This one included."},
+   qtag:"assignment 08 · methods",
+   body:"This project relies on four methods. Comparative case coding was used to identify patterns across the sixteen documented restrictions. Archival research was conducted using primary sources including statutes, court rulings, platform policy documents, and press coverage. An interactive interface was designed specifically to perform the argument rather than simply illustrate it. Protocol analysis was applied to infrastructures including Minecraft, Microsoft, OpenAI, and X, though this method has a clear limitation. It can document the effects of these infrastructures without being able to fully examine their internal systems. Computation does not resolve the problem of censorship in this project. It is used instead to reveal where existing systems fail to account for their own effects."},
   {n:"11", tag:"Governance",  title:"The Appeal",       code:"NT-1128-C", x:270,  y:760,  rot:-1.5,
-   body:"Harvard's Lumen Database collects takedown notices without ruling on them. OONI and Citizen Lab measure internet censorship worldwide using standardized, volunteer-run categories. The EFF documents platform takedowns at the scale of the individual report. None of these projects say whether a restriction was justified. All of them make it visible enough that someone else can ask."},
-  {n:"12", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
-   body:"Kialo structures arguments as trees of pro and con, letting a reader hold both sides of a claim without being handed a verdict — a different mechanism aimed at the same goal as this archive. This project departs from, rather than extends, the Uncensored Library: Reporters Without Borders' position becomes one case among sixteen here, not the frame the rest of the project is judged against."},
+   qtag:"assignment 06 · community of practice (projects)",
+   body:"Several existing projects work in a related space. Harvard's Lumen Database collects takedown notices without adjudicating them. OONI, Citizen Lab, and the University of Michigan's Censored Planet measure internet censorship worldwide through standardized and largely automated methods, treating public servers as measurement points rather than relying on any single vantage point. The Electronic Frontier Foundation documents platform takedowns at the scale of individual user reports. The National Coalition Against Censorship maintains a public timeline of internet censorship in the United States, though its purpose is explicitly advocacy rather than neutral measurement, which distinguishes it from the other three. Kialo structures arguments as trees of supporting and opposing claims rather than as case files, offering a different mechanism aimed at a similar goal, allowing a reader to hold both sides of an argument without being handed a conclusion. The theoretical foundation this project draws from is addressed separately in File 07."},
+  {n:"07", tag:"Legitimacy",  title:"The Classifier",   code:"NT-0718-C", x:420,  y:530,  rot:-2,
+   qtag:"assignment 04 · intersecting fields / community of practice (readings)",
+   body:"This project does not belong to a single discipline. It sits at the intersection of information policy, platform governance, comparative law, data visualization, and archival science. Two theoretical positions underpin the project as a whole. Michel Foucault argued that power rarely announces itself through prohibition alone, and more often operates through surveillance and classification. Benjamin Bratton's account of computation as a layered and sovereign stack extends that argument into contemporary infrastructure. In both readings a censor functions primarily as a classifier. The same is true of an academic field, which must also decide which cases fall within its boundaries."},
+  {n:"10", tag:"Protocol",    title:"Sunset Clause",    code:"NT-1012-B", x:1230, y:330,  rot:2.5,
+   qtag:"assignment 13 · challenges",
+   body:"This project faces four categories of challenge. The technical challenge is preventing the five key terms from collapsing into another simplified, color coded chart. The research challenge is sourcing sixteen cases in sufficient depth without flattening their differences onto a single spectrum. The design challenge is representing infrastructures such as application programming interfaces and moderation queues, which resist being reduced to a fixed position on a board. The conceptual challenge is remaining descriptive rather than prescriptive, given that every act of classification already contains a judgment of its own."},
   {n:"13", tag:"Redaction",   title:"Declassified",     code:"NT-1301-A", x:900,  y:760,  rot:-2,
-   body:"The working direction: a fully sourced version of this archive, exhibited beside a physical object it can't replace — a printed page from a real banned book. Software and a two-hundred-year-old index, side by side, making the same argument in two different materials. Not a solution. A pairing."},
+   qtag:"assignment 12 · capstone direction",
+   body:"The working direction for this project is a fully sourced version of this archive exhibited alongside an object it cannot replace, a printed page from an actual banned book. Software and a four hundred year old index would be presented side by side, making the same argument through two different materials. This is not proposed as a solution. It is proposed as a pairing. The underlying question may never have been whether an archive can escape control, since this project concludes that it cannot. The more accurate question may be whether an archive can at least make its own conditions of control visible, rather than presenting itself as though no such conditions exist. That is the function the redaction bar has performed throughout this project, beginning with File 01. Whether that function is sufficient remains an open question."},
 ];
 const TITLE_POS = {x:20, y:60};
-const LINKS = [[0,1],[1,2],[2,3],[3,4],[5,6],[6,7],[7,8],[8,9],[10,11],[11,12],
-               [0,5],[1,6],[2,7],[3,8],[4,9],[5,10],[6,11],[7,12],[9,12]];
+// Index pairs below refer to POSITION in the FILES array above, not file number,
+// remapped after reordering FILES so the original web of connections (by file number) still holds.
+const LINKS = [[0,2],[2,3],[3,4],[4,6],[1,10],[10,7],[7,8],[8,11],[9,5],[5,12],
+               [0,1],[2,10],[3,7],[4,8],[6,11],[1,9],[10,5],[7,12],[11,12]];
 const camera = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>`;
 const PH_CLASSES = ['ph-pixel','ph-blur','ph-grain'];
 
@@ -55,8 +72,8 @@ titleNode.style.left = TITLE_POS.x+'px'; titleNode.style.top = TITLE_POS.y+'px';
 titleNode.innerHTML = `
   <div class="pin"></div>
   <div class="paper">
-    <div class="eyebrow">Case File Archive · 13 Documents · 16-Case Index</div>
-    <div class="thesis">&ldquo;Who decides what remains unseen — and why?&rdquo;</div>
+    <div class="eyebrow">Case File Archive · 13 Documents · 16 Case Index</div>
+    <div class="thesis">&ldquo;Who decides what remains unseen, and why?&rdquo;</div>
     <div class="keywords">GOVERNANCE<span class="dot">·</span>LEGITIMACY<span class="dot">·</span>REDACTION<br>THRESHOLD<span class="dot">·</span>PROTOCOL</div>
   </div>`;
 boardCanvas.appendChild(titleNode);
@@ -222,18 +239,86 @@ window.addEventListener('resize', ()=>{
 fitToViewport();
 
 /* -------- slide docs -------- */
+
+// Default number of photos a document gets if it doesn't define its own `photos` array.
+const DEFAULT_PHOTO_COUNT = 2;
+
+// Scatters a photo somewhere over the document: random side (left/right), random vertical
+// position across the doc's height, random rotation, and slight size variation so they don't
+// all look like identical prints. Retries against already-placed photos on the same document
+// so two photos never overlap each other (a 16px buffer is kept between them too).
+function randomPhotoPlacement(existingRects){
+  const docWidth = 480; // matches .slide-doc-wrap width
+  const pad = 16;
+  let best = null;
+  for(let tries=0; tries<50; tries++){
+    const side = Math.random() < 0.5 ? 'left' : 'right';
+    const sideVal = Math.round(-90 + Math.random()*130);   // can bleed past the doc edge
+    const topVal = Math.round(-50 + Math.random()*560);    // spread across the full doc height
+    const rot = Math.round(Math.random()*26 - 13);         // -13deg .. 13deg
+    const w = Math.round(128 + Math.random()*46);          // 128px .. 174px
+    const h = Math.round(w * 0.74);
+    const left = side === 'left' ? sideVal : (docWidth - sideVal - w);
+    const rect = {left: left-pad, top: topVal-pad, right: left+w+pad, bottom: topVal+h+pad};
+    const overlaps = (existingRects||[]).some(r =>
+      rect.left < r.right && rect.right > r.left && rect.top < r.bottom && rect.bottom > r.top);
+    const candidate = {side, sideVal, topVal, rot, w, h, rect};
+    if(!overlaps) return candidate;
+    if(!best) best = candidate; // fallback if 50 tries can't find a free spot
+  }
+  return best;
+}
+
+function renderPhotos(f){
+  // To add your own images to a file: give that FILES entry a `photos` array of image
+  // paths/URLs, e.g. photos:['images/file01-a.jpg','images/file01-b.jpg','images/file01-c.jpg'].
+  // Any number of entries works, they don't have to be exactly 2. Leave `photos` off (or empty)
+  // and the file falls back to DEFAULT_PHOTO_COUNT placeholder camera-icon photos instead.
+  const list = (f.photos && f.photos.length) ? f.photos : new Array(DEFAULT_PHOTO_COUNT).fill(null);
+  const placedRects = [];
+  return list.map((src, i)=>{
+    const p = randomPhotoPlacement(placedRects);
+    placedRects.push(p.rect);
+    const inner = src
+      ? `<img src="${src}" alt="" draggable="false">`
+      : `${camera}<span>Photo pending</span>`;
+    return `<div class="slide-photo" id="photo-${f.n}-${i}"
+      style="top:${p.topVal}px; ${p.side}:${p.sideVal}px; width:${p.w}px; height:${p.h}px; --rot:${p.rot}deg; z-index:${5+i};">
+      <div class="pin"></div>${inner}
+    </div>`;
+  }).join('');
+}
+
+// Up to two photos per document can be zoomed at once. Zooming a third evicts
+// whichever of the two was zoomed first (oldest-in, oldest-out).
+const zoomedOrder = new WeakMap();
+function toggleZoom(photo){
+  const wrap = photo.closest('.slide-doc-wrap');
+  const wasZoomed = photo.classList.contains('zoomed');
+  let order = zoomedOrder.get(wrap) || [];
+  if(wasZoomed){
+    photo.classList.remove('zoomed');
+    order = order.filter(p => p !== photo);
+  } else {
+    if(order.length >= 2){
+      const oldest = order.shift();
+      oldest.classList.remove('zoomed');
+    }
+    photo.classList.add('zoomed');
+    order.push(photo);
+  }
+  zoomedOrder.set(wrap, order);
+}
+
 FILES.forEach((f,idx)=>{
   const wrap = document.createElement('div');
   wrap.className='slide-doc-wrap';
   wrap.id='slide-'+f.n;
-  /* random-but-overlapping placement for the photo — seeded per file so it's stable across visits */
-  const rTop = Math.round(-58 + Math.random()*50);   // -58 .. -8
-  const rRight = Math.round(-78 + Math.random()*46); // -78 .. -32
-  const rRot = Math.round(Math.random()*18 - 9);     // -9 .. 9
   wrap.innerHTML = `
-    <div class="slide-photo" id="photo-${f.n}" style="top:${rTop}px; right:${rRight}px; transform:rotate(${rRot}deg);"><div class="pin"></div>${camera}<span>Photo pending</span></div>
+    ${renderPhotos(f)}
     <div class="slide-doc">
-      <div class="doc-head"><span class="doc-num">FILE ${f.n} — ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
+      <div class="doc-head"><span class="doc-num">FILE ${f.n}, ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
+      <div class="doc-qtag">${f.qtag}</div>
       <h2 class="doc-title">${f.title}</h2>
       <div class="text-wrap">
         <p class="doc-body">${f.body}<span class="hint">Case notes continue in appendix</span></p>
@@ -242,32 +327,43 @@ FILES.forEach((f,idx)=>{
           <div class="stamp-hint">Declassifying…</div>
         </div>
       </div>
-      ${f.gateway ? `<button class="open-archive-btn" id="openArchiveBtn">Open the full case index &rarr;</button>` : ``}
+      ${f.gateway ? `<div class="gateway-btns">
+        <button class="open-archive-btn" id="openArchiveBtn">Open the case index &rarr;</button>
+        <button class="open-archive-btn" id="openWordmapBtn">Open the threshold map &rarr;</button>
+      </div>` : ``}
       <div class="stamp">DECLASSIFIED</div>
     </div>`;
   slideStage.appendChild(wrap);
   wrap.querySelector('.redaction').addEventListener('click', ()=> wrap.classList.add('revealed'));
   if(f.gateway){
     wrap.querySelector('#openArchiveBtn').addEventListener('click', openArchive);
+    wrap.querySelector('#openWordmapBtn').addEventListener('click', openWordmap);
   }
 
-  /* draggable photo */
-  const photo = wrap.querySelector('.slide-photo');
-  let pdrag=false, px=0, py=0, ox=0, oy=0;
-  photo.addEventListener('pointerdown', e=>{
-    e.stopPropagation();
-    pdrag=true; px=e.clientX; py=e.clientY;
-    const style=getComputedStyle(photo);
-    ox=parseFloat(style.right)|| -46; oy=parseFloat(style.top)|| -30;
-    photo.setPointerCapture(e.pointerId);
+  /* draggable + click-to-zoom photos */
+  wrap.querySelectorAll('.slide-photo').forEach(photo=>{
+    let pdrag=false, moved=false, px=0, py=0, ox=0, oy=0, sideProp='right';
+    photo.addEventListener('pointerdown', e=>{
+      e.stopPropagation();
+      pdrag=true; moved=false; px=e.clientX; py=e.clientY;
+      sideProp = photo.style.left ? 'left' : 'right';
+      const style=getComputedStyle(photo);
+      ox=parseFloat(style[sideProp]) || 0; oy=parseFloat(style.top) || 0;
+      photo.setPointerCapture(e.pointerId);
+    });
+    photo.addEventListener('pointermove', e=>{
+      if(!pdrag || photo.classList.contains('zoomed')) return;
+      const dx=e.clientX-px, dy=e.clientY-py;
+      if(Math.abs(dx)>3 || Math.abs(dy)>3) moved = true;
+      photo.style[sideProp] = (sideProp==='right' ? ox-dx : ox+dx)+'px';
+      photo.style.top = (oy+dy)+'px';
+    });
+    photo.addEventListener('pointerup', ()=>{
+      if(pdrag && !moved) toggleZoom(photo);
+      pdrag=false;
+    });
+    photo.addEventListener('pointerleave', ()=>{ pdrag=false; });
   });
-  photo.addEventListener('pointermove', e=>{
-    if(!pdrag) return;
-    const dx=e.clientX-px, dy=e.clientY-py;
-    photo.style.right = (ox-dx)+'px';
-    photo.style.top = (oy+dy)+'px';
-  });
-  ['pointerup','pointerleave'].forEach(ev=>photo.addEventListener(ev, ()=>{ pdrag=false; }));
 });
 
 /* -------- navigation -------- */
@@ -279,6 +375,8 @@ function go(n){
     const prev = document.getElementById('slide-'+current);
     clearTimeout(prev._revealTimer);
     prev.classList.remove('active','revealed');
+    prev.querySelectorAll('.slide-photo.zoomed').forEach(p=>p.classList.remove('zoomed'));
+    zoomedOrder.delete(prev);
   }
   current = n;
   const wrap = document.getElementById('slide-'+n);
@@ -296,6 +394,8 @@ function goHome(){
     const prev = document.getElementById('slide-'+current);
     clearTimeout(prev._revealTimer);
     prev.classList.remove('active','revealed');
+    prev.querySelectorAll('.slide-photo.zoomed').forEach(p=>p.classList.remove('zoomed'));
+    zoomedOrder.delete(prev);
   }
   current = null;
   document.getElementById('slide-view').classList.remove('active');
@@ -329,38 +429,102 @@ window.addEventListener('hashchange', ()=>{
 /* -------- the 16-case archive (nested inside File 08) -------- */
 const ARCHIVE_TAGS = ["Governance","Legitimacy","Redaction","Threshold","Protocol"];
 const ARCHIVE_CASES = [
-  {id:'01', title:'The Great Firewall', tag:'Governance', actor:'state', outcome:'normalized',
+  {id:'01', title:'The Great Firewall', tag:'Governance', actor:'state', outcome:'normalized', pos:90,
+   note:'Rated toward the concentrated end. Filtering runs at the national gateway with no independent appeal.',
+   year:'1998 to ongoing', location:'China',
+   mechanism:'DNS filtering, IP blocking, and keyword inspection at the national gateway level',
+   kw:['china','infrastructure','ongoing'],
    summary:'A national infrastructure of filtering and blocking that restricts access to foreign platforms and search results, justified as sovereignty over domestic information space.'},
-  {id:'02', title:'NetzDG Takedown Law', tag:'Redaction', actor:'state', outcome:'contested',
+  {id:'02', title:'NetzDG Takedown Law', tag:'Redaction', actor:'state', outcome:'contested', pos:55,
+   note:'Rated mid scale. The state sets the rule, but a private platform executes it under fine pressure, and the law itself has faced public and legal challenge.',
+   year:'2017', location:'Germany',
+   mechanism:'Statutory 24 hour takedown mandate enforced through fines on platform operators',
+   kw:['germany','platform law','hate speech'],
    summary:'A law requiring platforms to remove hate speech and illegal content within 24 hours or face heavy fines, pushing moderation decisions onto private companies.'},
-  {id:'03', title:'Gayssot Act', tag:'Legitimacy', actor:'state', outcome:'upheld',
+  {id:'03', title:'Gayssot Act', tag:'Legitimacy', actor:'state', outcome:'upheld', pos:50,
+   note:'Rated mid scale. Speech is criminalized, but prosecution runs through ordinary courts with appeal rights attached.',
+   year:'1990', location:'France',
+   mechanism:'Criminal statute prosecuted through the French courts',
+   kw:['france','historical memory','upheld'],
    summary:'A law criminalizing Holocaust denial, framed as protecting historical fact and public dignity rather than restricting general political speech.'},
-  {id:'04', title:"Children's Online Privacy Rule", tag:'Threshold', actor:'state', outcome:'upheld',
+  {id:'04', title:"Children's Online Privacy Rule", tag:'Threshold', actor:'state', outcome:'upheld', pos:36,
+   note:'Rated toward the checked end, and still the lowest score in this archive. A public rulemaking process and agency oversight exist, but an agency still unilaterally restricts, so no case gets to be purely protective.',
+   year:'1998 (COPPA), rule active', location:'United States',
+   mechanism:'FTC regulatory rule enforced through civil penalties',
+   kw:['usa','minors','data'],
    summary:'Federal rules restricting how services can collect data from and target content toward children under 13.'},
-  {id:'05', title:'2017 Wikipedia Block', tag:'Governance', actor:'state', outcome:'overturned',
+  {id:'05', title:'2017 Wikipedia Block', tag:'Governance', actor:'state', outcome:'overturned', pos:78,
+   note:'Rated toward the concentrated end. Full administrative authority was exercised for over two years before any court intervened.',
+   year:'2017 to 2020', location:'Turkey',
+   mechanism:'Administrative ISP level block, later reversed by constitutional court ruling',
+   kw:['turkey','overturned','court ruling'],
    summary:"A nationwide block of Wikipedia lasting more than two years before being ruled unconstitutional and reversed."},
-  {id:'06', title:'Regional Internet Shutdowns', tag:'Governance', actor:'state', outcome:'contested',
+  {id:'06', title:'Regional Internet Shutdowns', tag:'Governance', actor:'state', outcome:'contested', pos:79,
+   note:'Rated toward the concentrated end. Regional authorities can repeat the order with little independent review each time.',
+   year:'2012 to ongoing', location:'India',
+   mechanism:'Mobile network shutdown orders issued by regional authorities',
+   kw:['india','security','recurring'],
    summary:'Repeated, localized mobile internet shutdowns during unrest, justified on public order and security grounds.'},
-  {id:'07', title:'Platform Misinformation Removal', tag:'Legitimacy', actor:'platform', outcome:'contested',
-   summary:'Extensive removal and demotion of posts flagged as health or election misinformation — private editorial judgment at public-square scale.'},
-  {id:'08', title:'Podcast Delisting Disputes', tag:'Redaction', actor:'platform', outcome:'contested',
-   summary:'Selective removal of specific episodes accused of misinformation while the show itself stays available — a partial, editorial form of moderation.'},
-  {id:'09', title:'Protection from Online Falsehoods Act', tag:'Legitimacy', actor:'state', outcome:'contested',
+  {id:'07', title:'Platform Misinformation Removal', tag:'Legitimacy', actor:'platform', outcome:'contested', pos:56,
+   note:'Rated mid scale. A private platform applies its own criteria at public scale, with an appeal path that stays largely opaque.',
+   year:'2020 to 2022', location:'Global (US centered)',
+   mechanism:'Private platform policy enforcement via automated and human review',
+   kw:['platform policy','health','elections'],
+   summary:'Extensive removal and demotion of posts flagged as health or election misinformation, private editorial judgment at public square scale.'},
+  {id:'08', title:'Podcast Delisting Disputes', tag:'Redaction', actor:'platform', outcome:'contested', pos:51,
+   note:'Rated mid scale. Narrower in reach than platform wide moderation, but still one company\'s unilateral call.',
+   year:'2022', location:'United States',
+   mechanism:'Selective episode removal under platform content policy',
+   kw:['audio platform','selective removal'],
+   summary:'Selective removal of specific episodes accused of misinformation while the show itself stays available, a partial, editorial form of moderation.'},
+  {id:'09', title:'Protection from Online Falsehoods Act', tag:'Legitimacy', actor:'state', outcome:'contested', pos:83,
+   note:'Rated toward the concentrated end. A minister can order a correction or takedown directly, with little independent review built into the process.',
+   year:'2019', location:'Singapore',
+   mechanism:'Ministerial correction and takedown directives under statute (POFMA)',
+   kw:['singapore','fake news law'],
    summary:'A law empowering ministers to order correction notices or takedowns of statements deemed false, criticized as a tool for suppressing dissent.'},
-  {id:'10', title:'Online Safety Act', tag:'Threshold', actor:'state', outcome:'upheld',
+  {id:'10', title:'Online Safety Act', tag:'Threshold', actor:'state', outcome:'upheld', pos:47,
+   note:'Rated toward the checked end. A statutory regulator enforces the rule, and formal appeal routes exist even though the penalties are real.',
+   year:'2023', location:'United Kingdom',
+   mechanism:'Statutory duty of care enforced by regulator (Ofcom) with age verification requirements',
+   kw:['uk','minors','platform duty'],
    summary:'Legislation requiring platforms to shield minors from harmful content and enforce age verification.'},
-  {id:'11', title:'DMCA Takedown Notices', tag:'Protocol', actor:'commercial', outcome:'normalized',
-   summary:'A system letting rights holders request removal of infringing content via formal notice — routine, and occasionally used to suppress criticism.'},
-  {id:'12', title:'School Library Book Removals', tag:'Redaction', actor:'institution', outcome:'contested',
-   summary:'District-level removal of books in response to content disputes, driven by local pressure rather than national law.'},
-  {id:'13', title:'Social Credit Content Restriction', tag:'Governance', actor:'state', outcome:'normalized',
+  {id:'11', title:'DMCA Takedown Notices', tag:'Protocol', actor:'commercial', outcome:'normalized', pos:44,
+   note:'Rated toward the checked end. Any rights holder can trigger a takedown unilaterally, but a counter notice process exists, even if the two sides remain unevenly matched.',
+   year:'1998 to ongoing', location:'United States',
+   mechanism:'Formal notice and takedown procedure under federal copyright law',
+   kw:['usa','copyright','routine'],
+   summary:'A system letting rights holders request removal of infringing content via formal notice, routine, and occasionally used to suppress criticism.'},
+  {id:'12', title:'School Library Book Removals', tag:'Redaction', actor:'institution', outcome:'contested', pos:61,
+   note:'Rated mid scale. An elected local board makes the call, which offers some accountability, though the pattern is often driven by ideological pressure.',
+   year:'2021 to ongoing', location:'United States (multiple districts)',
+   mechanism:'Local school board review and removal decisions',
+   kw:['usa','education','local'],
+   summary:'District level removal of books in response to content disputes, driven by local pressure rather than national law.'},
+  {id:'13', title:'Social Credit Content Restriction', tag:'Governance', actor:'state', outcome:'normalized', pos:93,
+   note:'Rated toward the concentrated end. Criteria stay opaque and cross domains, with little independent appeal.',
+   year:'2014 to ongoing', location:'China',
+   mechanism:'Scoring system linking online conduct to access restrictions on services',
+   kw:['china','scoring system','ongoing'],
    summary:'Access to services tied to a citizen scoring system that can be affected by online speech, blending financial and expressive consequences.'},
-  {id:'14', title:'Film Ratings Board', tag:'Threshold', actor:'institution', outcome:'normalized',
-   summary:'A self-regulating industry body assigning age ratings that restrict theatrical release and marketing.'},
-  {id:'15', title:'Political Account Suspensions', tag:'Legitimacy', actor:'platform', outcome:'contested',
+  {id:'14', title:'Film Ratings Board', tag:'Threshold', actor:'institution', outcome:'normalized', pos:41,
+   note:'Rated toward the checked end. An unelected industry board still controls real distribution and marketing access, which is why even a voluntary system does not score near the floor.',
+   year:'1968 to ongoing', location:'United States',
+   mechanism:'Voluntary industry self regulation (MPA rating system) tied to distribution and marketing',
+   kw:['industry regulation','film','longstanding'],
+   summary:'A self regulating industry body assigning age ratings that restrict theatrical release and marketing.'},
+  {id:'15', title:'Political Account Suspensions', tag:'Legitimacy', actor:'platform', outcome:'contested', pos:65,
+   note:'Rated mid scale. Global private platforms enforce the same rule inconsistently across accounts and countries.',
+   year:'2018 to 2023', location:'Global (multiple countries)',
+   mechanism:'Platform trust and safety enforcement against political accounts',
+   kw:['platform policy','politicians','global'],
    summary:'Suspension of prominent political accounts across several countries, with disputes over whether the standard was applied evenly.'},
-  {id:'16', title:'Wartime Press Censorship', tag:'Protocol', actor:'state', outcome:'contested',
-   summary:'Government review and restriction of war reporting to prevent aiding an adversary — historically normalized, still ethically disputed.'},
+  {id:'16', title:'Wartime Press Censorship', tag:'Protocol', actor:'state', outcome:'contested', pos:71,
+   note:'Rated toward the concentrated end. Wartime executive power historically left little room to contest a decision while the review board was active.',
+   year:'1917 to 1945 (recurring)', location:'United States / United Kingdom',
+   mechanism:'Government pre publication review boards for war reporting',
+   kw:['historical','wartime','press'],
+   summary:'Government review and restriction of war reporting to prevent aiding an adversary, historically normalized, still ethically disputed.'},
 ];
 
 const archiveOverlay = document.getElementById('archiveOverlay');
@@ -398,11 +562,13 @@ function renderArchiveGrid(){
       <div class="ac-pin"></div>
       <div class="ac-head"><span class="ac-id">CASE ${c.id}</span><span class="ac-tag">${c.tag}</span></div>
       <h4 class="ac-title">${c.title}</h4>
+      <div class="ac-loc">${c.location} &middot; ${c.year}</div>
       <div class="ac-mask">
         <div class="ac-bars"><div></div><div></div><div></div></div>
         <div class="ac-hint">click to declassify</div>
       </div>
       <p class="ac-summary">${c.summary}</p>
+      <p class="ac-mechanism"><span>mechanism</span> ${c.mechanism}</p>
       <div class="ac-meta">${c.actor} &middot; ${c.outcome}</div>`;
     card.addEventListener('click', ()=> card.classList.toggle('ac-open'));
     archiveGrid.appendChild(card);
@@ -416,3 +582,204 @@ function closeArchive(){ archiveOverlay.classList.remove('open'); }
 document.getElementById('archiveClose').addEventListener('click', closeArchive);
 archiveOverlay.addEventListener('click', e=>{ if(e.target===archiveOverlay) closeArchive(); });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && archiveOverlay.classList.contains('open')) closeArchive(); });
+
+/* -------- the threshold map (word map, second gateway from File 08) -------- */
+const wordmapOverlay = document.getElementById('wordmapOverlay');
+const wordFieldEl = document.getElementById('wordField');
+const wmSlider = document.getElementById('wmSlider');
+const wmReadout = document.getElementById('wmReadout');
+const wmResults = document.getElementById('wmResults');
+
+function hashSign(str){ let s=0; for(let i=0;i<str.length;i++) s+=str.charCodeAt(i); return (s%2===0)?1:-1; }
+
+const wordMap = {};
+ARCHIVE_CASES.forEach(c=>{
+  c.kw.forEach(w=>{
+    if(!wordMap[w]) wordMap[w] = { cases:[] };
+    wordMap[w].cases.push(c);
+  });
+});
+ARCHIVE_TAGS.forEach(tag=>{
+  const inTag = ARCHIVE_CASES.filter(c=>c.tag===tag);
+  wordMap[tag.toLowerCase()] = { cases:inTag };
+});
+const WORDS = Object.entries(wordMap).map(([word,data])=>{
+  const avgPos = Math.round(data.cases.reduce((s,c)=>s+c.pos,0)/data.cases.length);
+  return { word, cases:data.cases, pos:avgPos, freq:data.cases.length, rotSign:hashSign(word), el:null };
+}).sort(()=>Math.random()-0.5);
+
+let wordmapBuilt = false;
+let selectedWord = null;
+
+function seededRand(str, salt){
+  let s=0; for(let i=0;i<str.length;i++) s = (s*31 + str.charCodeAt(i) + salt) % 100000;
+  return (s%1000)/1000;
+}
+
+function bgForPos(pos){
+  if(pos < 50) return 'light';   // authority still checked by process, appeal, or oversight
+  if(pos <= 72) return 'dark';   // authority contested, mixed accountability
+  return 'red';                  // authority concentrated, minimal independent check
+}
+
+function buildWordField(){
+  WORDS.forEach(w=>{
+    const span = document.createElement('span');
+    span.className = 'wm-word';
+    span.dataset.bg = bgForPos(w.pos);
+    const label = document.createElement('span');
+    label.className = 'wm-label';
+    span.appendChild(label);
+    span.onclick = ()=>{ selectedWord = (selectedWord===w.word) ? null : w.word; refreshWordField(); renderWmResults(w); };
+    w.el = span;
+    w.labelEl = label;
+    // not appended yet, presence in the field is what visibility means
+  });
+  wordmapBuilt = true;
+}
+
+// typewriter reveal for a single cell
+function typeWord(w){
+  clearInterval(w.typeTimer);
+  const text = w.word;
+  w.labelEl.textContent = '';
+  w.labelEl.classList.add('wm-caret');
+  let i = 0;
+  w.typeTimer = setInterval(()=>{
+    i++;
+    w.labelEl.textContent = text.slice(0, i);
+    if(i >= text.length){
+      clearInterval(w.typeTimer);
+      setTimeout(()=>{ w.labelEl.classList.remove('wm-caret'); }, 350);
+    }
+  }, 55);
+}
+
+// group a run of visible words into variable-length rows, Lego-brick style,
+// budgeting by estimated pixel width (which depends on each word's own font-size)
+// rather than raw character count, so rows never overflow the field.
+function buildRows(shown){
+  const rows = [];
+  let row = [], width = 0, rowIdx = 0;
+  const containerWidth = (wordFieldEl.clientWidth || 900) - 6;
+  shown.forEach(w=>{
+    const fs = parseFloat(w.el.style.fontSize) || 14;
+    const wpx = w.word.length * fs * 0.62 + fs * 1.3; // rough cell width incl padding, monospace
+    const target = containerWidth * (0.82 + seededRand('row'+rowIdx, 13) * 0.14);
+    if(row.length && width + wpx > target){ rows.push(row); row = []; width = 0; rowIdx++; }
+    row.push(w); width += wpx;
+  });
+  if(row.length) rows.push(row);
+  return rows;
+}
+
+function refreshWordField(firstLoad){
+  const v = +wmSlider.value;
+
+  // FIRST: record current on-screen rect of every cell currently mounted (FLIP technique)
+  const before = new Map();
+  if(!firstLoad){
+    WORDS.forEach(w=>{ if(w.el.isConnected) before.set(w.word, w.el.getBoundingClientRect()); });
+  }
+
+  const newlyShown = [];
+  const shown = [];
+  WORDS.forEach(w=>{
+    const declassified = w.pos <= v;
+    const wasShown = w.el.isConnected;
+    const distance = Math.abs(w.pos - v);
+    const proximity = Math.pow(1 - (distance/100), 0.7);
+    const variety = 0.85 + seededRand(w.word, 5) * 0.3;
+    const fontSize = (9 + proximity*15 + Math.min(w.freq,4)*0.9) * variety;
+    w.el.style.fontSize = fontSize.toFixed(1)+'px';
+    w.el.classList.toggle('wm-selected', selectedWord===w.word);
+    if(!declassified){ clearInterval(w.typeTimer); return; }
+    shown.push(w);
+    if(!wasShown) newlyShown.push(w);
+  });
+
+  // rebuild the justified row structure, this is what produces the Lego brick reflow.
+  // Each word keeps its own natural size (so text never gets clipped); leftover width in a
+  // row is absorbed by blank filler cells scattered through the row, not one gap at the end.
+  wordFieldEl.innerHTML = '';
+  buildRows(shown).forEach((row, ri)=>{
+    const rowEl = document.createElement('div');
+    rowEl.className = 'wm-row';
+    row.forEach((w,i)=>{
+      rowEl.appendChild(w.el);
+      const isLast = i === row.length - 1;
+      // roughly half the gaps between words become filler cells; never after the very last word
+      if(!isLast && seededRand(w.word+ri, 41) < 0.55){
+        const filler = document.createElement('div');
+        filler.className = 'wm-filler';
+        rowEl.appendChild(filler);
+      }
+    });
+    wordFieldEl.appendChild(rowEl);
+  });
+
+  // LAST + INVERT + PLAY
+  requestAnimationFrame(()=>{
+    shown.forEach(w=>{
+      const last = w.el.getBoundingClientRect();
+      if(newlyShown.includes(w)){
+        w.el.style.transition = 'none';
+        w.el.style.transform = 'scale(.35)'; w.el.style.opacity = '0';
+        requestAnimationFrame(()=>{
+          w.el.style.transition = 'transform .4s cubic-bezier(.34,1.56,.64,1), opacity .25s ease';
+          w.el.style.transform = ''; w.el.style.opacity = '1';
+        });
+        typeWord(w);
+        return;
+      }
+      const first = before.get(w.word);
+      if(!first || firstLoad) return;
+      const dx = first.left - last.left, dy = first.top - last.top;
+      const sx = first.width / last.width, sy = first.height / last.height;
+      if(Math.abs(dx)<0.5 && Math.abs(dy)<0.5 && Math.abs(sx-1)<0.02 && Math.abs(sy-1)<0.02) return;
+      w.el.style.transition = 'none';
+      w.el.style.transform = `translate(${dx}px,${dy}px) scale(${sx},${sy})`;
+      requestAnimationFrame(()=>{
+        w.el.style.transition = 'transform .5s cubic-bezier(.4,0,.2,1)';
+        w.el.style.transform = '';
+      });
+    });
+  });
+
+  if(firstLoad){ shown.forEach(w=> typeWord(w)); }
+}
+
+function wmLabelFor(v){
+  if(v<40) return 'A threshold this narrow admits almost nothing, no case in this archive is checked enough to qualify.';
+  if(v<55) return 'A threshold that admits only cases where process, appeal, or oversight still constrained the authority.';
+  if(v<75) return 'A threshold that tolerates mixed or contested accountability, as long as some justification was offered.';
+  return 'A wide threshold, admitting even concentrated, largely unchecked authority.';
+}
+function updateWmThreshold(firstLoad){
+  const v = +wmSlider.value;
+  const inLine = ARCHIVE_CASES.filter(c=>c.pos<=v).length;
+  wmReadout.innerHTML = `<span class="wm-stat">${v}</span> / 100 &nbsp;&middot;&nbsp; <span class="wm-stat">${inLine}</span> of ${ARCHIVE_CASES.length} cases fall within this threshold.<br>${wmLabelFor(v)}`;
+  if(wordmapBuilt) refreshWordField(firstLoad);
+}
+wmSlider.addEventListener('input', ()=>updateWmThreshold(false));
+
+function renderWmResults(w){
+  wmResults.innerHTML = `<div class="wm-results-head">"${w.word}" with ${w.cases.length} case${w.cases.length===1?'':'s'}</div>` +
+    w.cases.map(c=>`<div class="wm-result-row">
+      <div class="wm-rtop"><span class="wm-rid">CASE ${c.id}</span><span class="wm-rtitle">${c.title}</span></div>
+      <div class="wm-rnote">${c.note}</div>
+    </div>`).join('');
+  wmResults.classList.add('open');
+}
+
+function openWordmap(){
+  const isFirst = !wordmapBuilt;
+  if(isFirst) buildWordField();
+  wordmapOverlay.classList.add('open');
+  requestAnimationFrame(()=>{ updateWmThreshold(isFirst); });
+}
+function closeWordmap(){ wordmapOverlay.classList.remove('open'); }
+document.getElementById('wordmapClose').addEventListener('click', closeWordmap);
+wordmapOverlay.addEventListener('click', e=>{ if(e.target===wordmapOverlay) closeWordmap(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && wordmapOverlay.classList.contains('open')) closeWordmap(); });
+document.getElementById('wmBrowseAll').addEventListener('click', ()=>{ closeWordmap(); openArchive(); });
