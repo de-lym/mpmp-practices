@@ -136,7 +136,7 @@ titleNode.innerHTML = `
   <div class="pin"></div>
   <div class="paper">
     <div class="eyebrow">The Censorship Casefile</div>
-    <div class="thesis">&ldquo;Who decides what remains unseen, and why?&rdquo;</div>
+    <div class="thesis">&ldquo;Who decides what remains invisible, and why?&rdquo;</div>
     <div class="keywords">from the history of censorship to the sustainability of archive undere the computational technology</div>
   </div>`;
 boardCanvas.appendChild(titleNode);
