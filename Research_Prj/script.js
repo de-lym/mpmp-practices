@@ -3,85 +3,86 @@
 const FILES = [
   {n:"01", tag:"Governance",  title:"The First Mark",   code:"NT-0117-A", x:280,  y:70,   rot:-2,
    qtag:"01 introduction",
-   body:"In 1559 the Catholic Church published its own version of a case file system, the Index Librorum Prohibitorum, a list of prohibited books revised repeatedly until it was discontinued in 1966. That is where the material of this project starts. Not only because it is an early example, but because it establishes the basic shape every case after it repeats, a governing body, a list, and the ongoing work of keeping that list current. This project continues that same practice under a different form of authority, using computational methods in place of a printed index. A case file documents a single instance that remains open to appeal rather than closed into a final record. Each of the thirteen files on this board, and each of the sixteen cases in the archive behind it, is written and organized as exactly that, a documented instance rather than a settled verdict.",
-   photos:['./img/01-index-1.jpeg', './img/01-index-2.jpg', './img/01-index-3.jpg']},
-  {n:"02", tag:"Governance",  title:"Category",     code:"NT-0602-B", x:130,  y:450,  rot:1,
-   qtag:"02 keywords",
-   body:"Five terms structure this entire project. Governance refers to who holds the authority to restrict information. Legitimacy refers to whether that authority is broadly accepted as valid. Redaction refers to the specific technique used, which is to cover material rather than delete it. Threshold refers to the point at which a restriction stops functioning as protection and begins to function as control. Protocol refers to the underlying system through which a restriction is carried out, whether that system is digital, institutional, or physical.",
-   photos:['./img/02-legitimacy.jpg', './img/02-Office_Of_Censorship_1945.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/02-threshold.png', './img/02-threshold.jpeg'],
-   // Front page keeps exactly one line of body text (instead of the usual
-   // auto-picked two) — the hub diagram below takes over from there.
-   snippets:["Five terms structure this entire project."],
-   // ===================================================================
-   // PUT YOUR OWN DIAGRAM IMAGES HERE. `center.image` is the middle
-   // image (always shown, never redacted). Each `nodes[i].image` is
-   // that node's own thumbnail — set any of these to an image path/URL,
-   // e.g. 'images/governance.jpg'. Leave one unset and a camera
-   // placeholder shows instead until you fill it in.
-   // ===================================================================
-   diagram:{
-     center:{ image:'./image/censorship.png' },
-     nodes:[
-       {n:"01", label:"Governance", desc:"Who holds the authority to restrict.",       image:'./image/governance.png'},
-       {n:"02", label:"Legitimacy", desc:"Whether that authority is accepted.",        image:'./image/legitimacy.png'},
-       {n:"03", label:"Redaction",  desc:"Cover material rather than delete it.",      image:'./image/redaction.png'},
-       {n:"04", label:"Threshold",  desc:"Where protection turns into control.",       image:'./image/threshold.png'},
-       {n:"05", label:"Protocol",   desc:"The system a restriction runs on.",          image:'./image/protocol.png'},
-     ]}
+   body:"The project starts with the Catholic Church's Index Librorum Prohibitorum, a list of banned books founded in 1559 and revised continuously until 1966.",
+   photos:['./img/01-index-1.jpeg', './img/01-index-2.jpg', './img/01-index-3.jpg']
   },
-  {n:"03", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
-   qtag:"03 research question",
-   body:"This project asks how cartography can reveal the infrastructures that negotiate visibility without determining whether any single negotiation was justified. Every restriction documented in this archive can be read in two ways. It can be read as protection by the party enforcing it, or as repression by the party losing access. Instead of attempting to resolve the disagreement, this research asks a narrower and more answerable question. Who holds the authority to approve a restriction, and does that authority remain credible once it is made visible?",
-   photos:[]
+  {n:"02", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
+   qtag:"02 historical lineage",
+   body:"From there, censorship keeps returning in new forms. It becomes a production code enforced by the American film industry from 1934 to 1968. It becomes a terms of service agreement on digital platforms. Eventually, it shows up inside a digital library built inside a commercial video game.",
+   photos:['./img/07s-benjamin.png', './img/07-hayscode.jpg', './img/05-precedent-1.png']
   },
-  {n:"04", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
-   qtag:"04 visual representation",
-   body:"The visual system of this project functions as an argument rather than as decoration. Case files are pinned and layered across the board the way evidence is arranged during an active investigation. Each redaction bar represents a specific passage that was removed from a document, and the interaction of reading it by clicking reproduces the friction of an actual declassification review. The overall visual language, drawn directly from government case file conventions, claims that this file is a form of interpretation.",
-   photos:['./img/04-redaction-1.jpg', './img/04-redaction-2.jpg', './img/04-redaction-5.jpg']
-  },
-  {n:"05", tag:"Threshold",   title:"Precedent",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
-   qtag:"05 situated technology",
-   body:"In 2020 Reporters Without Borders rebuilt banned journalism inside the video game Minecraft, placing censored reporting on servers that a national firewall could not reach. Readers living under state restriction could open the game and read reporting their own government had blocked through conventional channels. The library did not escape governance so much as relocate within it. It moved from the authority of a state firewall to the authority of a private platform, subject to Mojang's terms of service and Microsoft's moderation policy, both of which retain the right to remove the project entirely.",
+  {n:"03", tag:"Threshold",   title:"Precedent",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
+   qtag:"03 situated technology",
+   body:"That project is the Uncensored Library, created in 2020 by Reporters Without Borders. The idea was to place censored journalism inside Minecraft, a space a national firewall could not reach. But the library did not really escape control. It simply moved from the authority of a state firewall to the authority of a private platform, becoming subject to Mojang's terms of service and Microsoft's moderation policy.",
    photos:['./img/05-precedent-2.png', './img/05-precedent-3.jpg', './img/05-precedent-4.png', './img/05-precedent-5.jpg']
   },
-  {n:"06", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
-   qtag:"06 rhetorical argument",
-   body:"This project does not argue that any single restriction documented in this archive was justified. It argues something narrower and more controversal: archive is never released from control; It is only transferred from one controller to another. <br>A platform's terms of service comes to occupy the position previously held by a state's firewall. A private scoring system comes to occupy the position previously held by a censor's published list. No single case in this archive proves that claim on its own, but the sixteen cases considered together begin to. Whoever currently holds infrastructural power has little incentive to relinquish it, and no technology identified in this research, however protective in intent, removes that asymmetry. It only relocates it, or makes it briefly visible before it moves again. Decentralized protocols and public documentation both complicate this claim, and this project treats that complication as an open question rather than a resolved one.",
+  {n:"04", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
+   qtag:"04 rhetorical argument",
+   body:"This case shows something important. The format of an archive does not matter, because visibility is never fully released from control. Authority is only ever transferred from one controller to another.",
    photos:['./img/06-404.png', './img/06-instagram.jpg', './img/06-tiktok.png']
   },
-  {n:"07", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
-   qtag:"07 historical lineage",
-   body:"The mechanism used to control visibility has changed hands repeatedly across four centuries, moving from a printed index maintained by a religious institution, to a production code enforced by the American film industry itself between 1934 and 1968, to Benjamin Bratton's theory of computation as its own layered form of sovereignty spanning earth, cloud, city, address, interface, and user, to a digital library built inside a commercial video game. Each new arrangement presents itself as an escape from the one before it, yet none of them escape the need for an underlying protocol. <br>A comparable pattern appears twice in United States internet law. Section 230 protected platforms from legal liability for user content in 1996. The FOSTA and SESTA legislation opened an exception to that protection in 2018, and that same exception is now driving the platform moderation practices documented in three cases in this archive.",
-   photos:['./img/07-benjamin.png', './img/07-hayscode.jpg', './img/05-precedent-1.png']
+  {n:"05", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
+   qtag:"05 research question",
+   body:"Still, censorship is not simply repression. It can protect and restrict depending on who is asking. So the real question is not whether censorship is good or bad, but what makes a restriction turn into control, and who decides that.",
+   photos:[]
   },
-  {n:"08", tag:"Redaction",   title:"The Archive",      code:"NT-0825-D", x:700,  y:500,  rot:1.5,
-   qtag:"08 · computational experiments",
-   body:"Two computational experiments support this archive. The first is a case index containing sixteen documented restrictions, filterable by the five terms used throughout this project. The second is a threshold map, which plots the same sixteen cases along a spectrum from clearly protective to clearly repressive. The placement of the threshold itself is left to the reader rather than fixed by the project, which is intentional. The purpose of both experiments is not to resolve the classification of any single case, but to make the act of classification itself visible and available for scrutiny.",
+  {n:"06", tag:"Governance",  title:"Category",     code:"NT-0602-B", x:130,  y:450,  rot:1,
+  qtag:"06 keywords",
+  body:"To investigate this, the project works through five terms. Governance is who holds authority to restrict. Legitimacy is whether that authority is accepted. Redaction is the technique used to cover information. Threshold is the point where restriction becomes control. Protocol is the system a restriction runs on.<br>These terms lead to one central question. Would the authority behind a decision about visibility remain credible once that decision became transparent?",
+  photos:['./img/02-legitimacy.jpg', './img/02-Office_Of_Censorship_1945.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/02-threshold.png', './img/02-threshold.jpeg']
+  // Front page keeps exactly one line of body text (instead of the usual
+  // auto-picked two) — the hub diagram below takes over from there.
+  snippets:["Five terms structure this entire project."],
+  // ===================================================================
+  // PUT YOUR OWN DIAGRAM IMAGES HERE. `center.image` is the middle
+  // image (always shown, never redacted). Each `nodes[i].image` is
+  // that node's own thumbnail — set any of these to an image path/URL,
+  // e.g. 'images/governance.jpg'. Leave one unset and a camera
+  // placeholder shows instead until you fill it in.
+  // ===================================================================
+  diagram:{
+    center:{ image:'./image/censorship.png' },
+    nodes:[
+      {n:"01", label:"Governance", desc:"Who holds the authority to restrict.",       image:"./image/governance.png"},
+      {n:"02", label:"Legitimacy", desc:"Whether that authority is accepted.",        image:"./image/legitimacy.png"},
+      {n:"03", label:"Redaction",  desc:"Cover material rather than delete it.",      image:"./image/redaction.png"},
+      {n:"04", label:"Threshold",  desc:"Where protection turns into control.",       image:"./image/threshold.png"},
+      {n:"05", label:"Protocol",   desc:"The system a restriction runs on.",          image:"./image/protocol.png"},
+    ]}
+  },
+  {n:"07", tag:"Redaction",   title:"The Archive",      code:"NT-0825-D", x:700,  y:500,  rot:1.5,
+   qtag:"07 computational experiments",
+   body:"To work through that question, the archive holds sixteen historical and contemporary cases, each filtered through the five terms. A case index lists all sixteen restrictions categorized under five terms. A threshold map plots each case somewhere between protective and repressive, and readers can adjust a lever representing the concentration of authority. As they move it, related keywords be revealed.",
    gateway:true, photos:['./img/08-archive-1.png', './img/08-archive-2.png', './img/08-archive-3.png', './img/08-archive-4.jpg', './img/08-archive-5.jpg']
   },
+  {n:"08", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
+   qtag:"08 visual representation",
+   body:"Each redaction bar represents an authorized decision to censor something. As audiences engage with it, they gradually remove that restriction themselves. Instead of deciding for the audience, the archive makes the act of classifying something as censorship visible, and the whole system is built to recreate the friction of an actual declassification review.",
+   photos:['./img/04-redaction-1.jpg', './img/04-redaction-2.jpg', './img/04-redaction-5.jpg']
+  },
   {n:"09", tag:"Threshold",   title:"Application",       code:"NT-0904-A", x:980,  y:430,  rot:-1,
-   qtag:"09 · methods",
-   body:"This project relies on four methods. Comparative case coding was used to identify patterns across the sixteen documented restrictions. Archival research was conducted using primary sources including statutes, court rulings, platform policy documents, and press coverage. An interactive interface was designed specifically to perform the argument rather than simply illustrate it. Protocol analysis was applied to infrastructures including Minecraft, Microsoft, OpenAI, and X, though this method has a clear limitation: it can document the effects of these infrastructures without being able to fully examine their internal systems. Computation does not resolve the problem of censorship in this project. It is used instead to reveal where existing systems fail to account for their own effects.",
+   qtag:"09 methods",
+   body:"The project itself is composed of three parts, material, dataset, and archive. Material is a physical index of censorship cases drawn from legislative history in the United States. Dataset is a network diagram mapping raw historical data against rhetorical keywords, left intentionally dense because it represents data that has not yet been classified. Archive is the interactive format I just described, where selected cases become something audiences can actually explore.",
    photos:['./img/09-methods-1.jpg', './img/09-methods-2.png', './img/09-methods-3.jpeg']
   },
   {n:"10", tag:"Governance",  title:"The Appeal",       code:"NT-1128-C", x:270,  y:760,  rot:-1.5,
    qtag:"10 community of practice (projects)",
-   body:"Several existing projects work in a related space. <br>Harvard's Lumen Database collects takedown notices without adjudicating them. OONI, Citizen Lab, and the University of Michigan's Censored Planet measure internet censorship worldwide through standardized and largely automated methods, treating public servers as measurement points rather than relying on any single vantage point. The Electronic Frontier Foundation documents platform takedowns at the scale of individual user reports. The National Coalition Against Censorship maintains a public timeline of internet censorship in the United States, though its purpose is explicitly advocacy rather than neutral measurement, which distinguishes it from the other three. Kialo structures arguments as trees of supporting and opposing claims rather than as case files, offering a different mechanism aimed at a similar goal, allowing a reader to hold both sides of an argument without being handed a conclusion.",
+   body:"This project builds on related work. Harvard's Lumen Database collects takedown notices without judging them. OONI, Citizen Lab, and the University of Michigan's Censored Planet measure internet censorship worldwide through automated methods. The Electronic Frontier Foundation documents platform takedowns case by case. The National Coalition Against Censorship keeps a public timeline for advocacy rather than neutral measurement. Kialo structures arguments as trees instead of case files, a different approach toward a similar goal.",
    photos:['./img/10-project-1.png', './img/10-project-2.png', './img/10-project-3.png', './img/10-project-4.png', './img/10-project-5.png']
   },
   {n:"11", tag:"Legitimacy",  title:"The Classifier",   code:"NT-0718-C", x:420,  y:530,  rot:-2,
    qtag:"11 intersecting fields · community of practice (readings)",
-   body:"This project does not belong to a single discipline. It sits at the intersection of information policy, platform governance, comparative law, data visualization, and archival science. Two theoretical positions underpin the project as a whole. Michel Foucault argued that power rarely announces itself through prohibition alone, and more often operates through surveillance and classification. Benjamin Bratton's account of computation as a layered and sovereign stack extends that argument into contemporary infrastructure. In both readings a censor functions primarily as a classifier. The same is true of an academic field, which must also decide which cases fall within its boundaries.",
+   body:"The theoretical foundation draws on three ideas, and each one shapes a specific decision in the project.<br>Michel Foucault argued that power rarely works through outright prohibition. It works through surveillance and classification, through the quiet act of sorting information into categories. That is why this archive treats classification itself as the object of study. The five terms and the threshold map do not just describe restrictions, they make the act of classifying something as censorship visible, which is the exact mechanism Foucault said usually stays hidden.<br>Benjamin Bratton describes computation as a layered, sovereign stack, where authority moves between states, platforms, and infrastructure instead of sitting in one place. The Uncensored Library case shows this directly. When the project moved from a state firewall into Minecraft, it did not leave sovereignty behind, it moved into a different layer of the same stack, from national governance to platform governance.<br>Data feminism argues that data is never neutral, because personal narrative always shapes how information gets collected and used. That is why the archive gives the audience a lever instead of a conclusion. Interpretation stays with the audience, not with the provider.",
    photos:['./img/11-bretton.jpg', './img/11-data-femi.jpg', './img/11-derrida.jpeg', './img/11-foucault.jpg']
   },
   {n:"12", tag:"Protocol",    title:"Sunset Clause",    code:"NT-1012-B", x:1230, y:330,  rot:2.5,
    qtag:"12 challenges",
-   body:"So far, this project faced five categories of challenge. The technical challenge was preventing the five key terms from collapsing into another simplified, color coded chart. The research challenge was sourcing sixteen cases in sufficient depth without flattening their differences onto a single spectrum. The design challenge was representing infrastructures such as application programming interfaces and moderation queues, which resist a fixed position on a board. The conceptual challenge was remaining descriptive rather than prescriptive, since every act of classification already carries a judgment of its own. <br>Now, the largest challenge remained is that the work completed so far, gathering and documenting information into a database, constitutes a process rather than a decision. It poses a question rather than answering one. Since the project's purpose has been to keep information transparent enough for audiences to reach their own interpretation, the central challenge is determining what comes next, without returning to censorship, building a new system, or occupying a position between the two.",
+   body:"This case file borrows its structure from the Index, but it is meant to stay open to appeal, not to act as a closed verdict.<br>That said, this project is still more of a database raising questions than a method answering them. So the real challenge going forward is deciding what comes next. Not returning to censorship. Not building a completely new system. Not settling somewhere in between either. The goal has always been to give audiences authority over their own interpretation, instead of handing that authority to the provider.",
    photos:['./img/12-challenge-1.png', './img/12-challenge-3.jpg', './img/12-challenge-5.png']
   },
   {n:"13", tag:"Redaction",   title:"Declassified",     code:"NT-1301-A", x:900,  y:760,  rot:-2,
    qtag:"13 capstone direction",
-   body:"One possible working direction is exhibiting the fully sourced archive alongside an object it cannot replace, such as a printed page from an actual banned book or an archival document. Presenting the software and a physical artifact side by side allows the same argument to be made through two different materials, as I attempted in this presentation. However, this is offered as a curatorial proposal rather than as a solution. <br>The underlying question may never have been whether an archive can escape control, since this project concludes that it cannot. The more accurate question may be whether an archive can at least make its own conditions of control visible, rather than presenting itself as though no such conditions exist. Beyond that, the project shifts the discussion from how to escape censorship toward how we understand and design within its conditions. That is the function the redaction bar has performed throughout this project, though whether that function is sufficient remains an open question.",
+   body:"So can an archive ever escape control? Based on this research, it cannot. But that leads to a more useful question. Can an archive at least make its own conditions of control visible, instead of pretending those conditions do not exist? This project does not answer that fully. It leaves the question open.",
    photos:['./img/13-1.png', './img/13-2.jpg', './img/13-3.jpg', './img/13-8.jpeg']
   },
 ];
