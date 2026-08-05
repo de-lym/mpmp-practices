@@ -17,7 +17,7 @@ const FILES = [
    qtag:"03 situated technology",
    body:"The Uncensored Library is created in 2020 by Reporters Without Borders. The idea was to place censored journalism inside Minecraft, a virtual game space that would be safe from the national firewall. However, the library did not really escape control. It simply moved from the authority of a government to the authority of a private platform, becoming subject to Mojang's terms of service and Microsoft's moderation policy.",
    photos:['./img/05-precedent-2.png', './img/05-precedent-3.jpg', './img/05-precedent-4.png', './img/05-precedent-5.jpg'],
-   snippets:["A Library built to escape a national firewall ended up governed by a private platform instead."]
+   snippets:["A Library built to escape a national firewall ended up governed by a private platform."]
   },
   {n:"04", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
    qtag:"04 rhetorical argument",
