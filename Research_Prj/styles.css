@@ -361,7 +361,7 @@
      these need nudging together.
      =================================================================== */
   .doc-diagram{ position:relative; width:100%; margin:22px 0 4px; }
-  .dgm-canvas{ position:relative; width:100%; height:560px; }
+  .dgm-canvas{ position:relative; width:100%; height:500px; }
   .dgm-lines{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
   .dgm-lines path{ fill:none; stroke:var(--string); stroke-width:1.4px; opacity:.7; }
   .dgm-lines circle{ fill:var(--pin); opacity:.85; }
