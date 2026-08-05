@@ -373,7 +373,7 @@ window.addEventListener('load', ()=>{
     introPlayed = true;
     setTimeout(()=>{
       if(!interacted && !current) zoomToTitleIntro();
-    }, 1000);
+    }, 450);
   }
 });
 window.addEventListener('resize', ()=>{

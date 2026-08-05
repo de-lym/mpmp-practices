@@ -323,7 +323,7 @@
   .doc-snippet-block{ margin:50px 4px; }
   .doc-snippet-line{ position:relative; overflow:hidden; margin:3px 0; }
   .doc-snippet{
-    font-family:'Special Elite', monospace; font-size:17px; line-height:1.5;
+    font-family:'Spectral',serif; font-size:17px; line-height:1.5;
     color:var(--ink); margin:0; display:block; white-space:nowrap;
   }
   .redact-bar{
