@@ -323,7 +323,7 @@
   .doc-snippet-block{ margin:50px 4px; }
   .doc-snippet-line{ position:relative; overflow:hidden; margin:3px 0; }
   .doc-snippet{
-    font-family:'Spectral',serif; font-size:17px; line-height:1.5;
+    font-family:'Spectral',serif; font-size:21px; line-height:1.5;
     color:var(--ink); margin:0; display:block; white-space:nowrap;
   }
   .redact-bar{
@@ -383,11 +383,11 @@
   /* left/right nodes bleed slightly past the page edge (negative offset) —
      there's room for it in .slide-doc-wrap's own padding around the sheet,
      same trick used by .slide-photo elsewhere in this file */
-  .dgm-pos-top{   top:0;    left:50%; transform:translateX(-50%); }
+  .dgm-pos-top{   top:5%;    left:50%; transform:translateX(-50%); }
   .dgm-pos-left{  top:170px; left:-22px; }
   .dgm-pos-right{ top:170px; right:-22px; }
-  .dgm-pos-bl{    top:410px; left:-10px; }
-  .dgm-pos-br{    top:410px; right:-10px; }
+  .dgm-pos-bl{    top:340px; left:-10px; }
+  .dgm-pos-br{    top:340px; right:-10px; }
 
   .dgm-tag{
     font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:600;

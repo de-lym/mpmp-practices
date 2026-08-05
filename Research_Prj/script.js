@@ -543,10 +543,10 @@ const DGM_POS = ['top','left','right','bl','br'];
 // and the 350×560 .dgm-canvas box. Center hub sits at (175,225), 50px radius.
 const DGM_LINES = [
   'M175,180 L175,84',   // hub -> top
-  'M129,201 L60,206',   // hub -> left
-  'M221,201 L290,206',  // hub -> right
-  'M148,258 L30,444',    // hub -> bottom-left top-middle
-  'M202,258 L320,444',   // hub -> bottom-right top-middle
+  'M129,221 L60,206',   // hub -> left
+  'M221,221 L290,206',  // hub -> right
+  'M148,258 L50,350',    // hub -> bottom-left top-middle
+  'M202,258 L300,350',   // hub -> bottom-right top-middle
 ];
 function renderDiagram(d, startLi){
   const centerInner = d.center && d.center.image
