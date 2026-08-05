@@ -9,7 +9,7 @@ const FILES = [
   },
   {n:"02", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
    qtag:"02 historical lineage",
-   body:"From there, censorship keeps returning in new forms. It becomes a production code enforced by the American film industry from 1934 to 1968. It becomes a terms of service agreement on digital platforms. Eventually, it shows up inside a digital library built inside a commercial video game.",
+   body:"From there, censorship keeps returning in new forms. It becomes the Motion Picture Production Code enforced by the American film industry from 1934 to 1968. Then it reappears as terms-of-service agreements on digital platforms. In response to these restrictions, it eventually leads to the creation of a digital library built inside a commercial video game that provides access to information censored in certain countries.",
    photos:[ './img/07-hayscode.jpg', './img/06-instagram.jpg', './img/05-precedent-1.png'],
    snippets:["The mechanism of censorship keeps reappearing in new forms."]
   },
@@ -85,7 +85,7 @@ const FILES = [
    qtag:"11 intersecting fields · community of practice (readings)",
    body:"The theoretical foundation draws on three ideas, and each one shapes a specific decision in the project.<br>Michel Foucault argued that power rarely works through outright prohibition. It works through surveillance and classification, through the quiet act of sorting information into categories. That is why this archive treats classification itself as the object of study. The five terms and the threshold map do not just describe restrictions, they make the act of classifying something as censorship visible, which is the exact mechanism Foucault said usually stays hidden.<br>Benjamin Bratton describes computation as a layered, sovereign stack, where authority moves between states, platforms, and infrastructure instead of sitting in one place. The Uncensored Library case shows this directly. When the project moved from a state firewall into Minecraft, it did not leave sovereignty behind, it moved into a different layer of the same stack, from national governance to platform governance.<br>Data feminism argues that data is never neutral, because personal narrative always shapes how information gets collected and used. That is why the archive gives the audience a lever instead of a conclusion. Interpretation stays with the audience, not with the provider.",
    photos:['./img/11-bretton.jpg', './img/11-data-femi.jpg', './img/11-foucault.jpg'],
-   snippets:[" Foucault, Bratton, and data feminism each explain a specific design choice, not just a general framing, classification made visible, authority as layered, interpretation left to the audience."]
+   snippets:["Foucault, Bratton, and data feminism each explain a specific design choice, not just a general framing, classification made visible, authority as layered, interpretation left to the audience."]
   },
   {n:"12", tag:"Protocol",    title:"Sunset Clause",    code:"NT-1012-B", x:1230, y:330,  rot:2.5,
    qtag:"12 challenges",
@@ -542,11 +542,11 @@ const DGM_POS = ['top','left','right','bl','br'];
 // Connector line endpoints, hand-matched to the .dgm-pos-* CSS positions
 // and the 350×560 .dgm-canvas box. Center hub sits at (175,225), 50px radius.
 const DGM_LINES = [
-  'M175,175 L175,84',   // hub -> top
+  'M175,180 L175,84',   // hub -> top
   'M129,201 L60,206',   // hub -> left
   'M221,201 L290,206',  // hub -> right
-  'M148,258 L96,444',    // hub -> bottom-left top-middle
-  'M202,258 L254,444',   // hub -> bottom-right top-middle
+  'M148,258 L30,444',    // hub -> bottom-left top-middle
+  'M202,258 L320,444',   // hub -> bottom-right top-middle
 ];
 function renderDiagram(d, startLi){
   const centerInner = d.center && d.center.image

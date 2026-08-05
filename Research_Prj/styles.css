@@ -291,7 +291,7 @@
      text blocks */
   .doc-front{
     z-index:3;
-    transform: translate(-40px,-32px) rotate(var(--front-rot, -2.4deg));
+    transform: translate(-100px,25px) rotate(var(--front-rot, -2.4deg));
     box-shadow:0 16px 32px rgba(0,0,0,.55);
   }
   .doc-front-body{ position:relative; margin-top:4px; }
@@ -320,7 +320,7 @@
      its own redaction bar, so the reveal cascades line by line rather
      than all at once. Title, heading and qtag are never wrapped in this
      — only front-page body text lines. */
-  .doc-snippet-block{ margin:16px 4px; }
+  .doc-snippet-block{ margin:50px 4px; }
   .doc-snippet-line{ position:relative; overflow:hidden; margin:3px 0; }
   .doc-snippet{
     font-family:'Special Elite', monospace; font-size:17px; line-height:1.5;
@@ -429,7 +429,7 @@
      single flip, same direction) and re-blur it. */
   .doc-back{
     position:absolute; top:0; left:0; width:100%; z-index:2;
-    transform: translate(58px,62px) rotate(var(--back-rot, 3deg));
+    transform: translate(150px,50px) rotate(var(--back-rot, 3deg));
     cursor:pointer;
     transform-style: preserve-3d;
     perspective: 3800px; /* centered on this element (the sheet's own direct
