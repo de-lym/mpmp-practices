@@ -96,11 +96,6 @@
     transform-origin:0 0;
     touch-action:none;
   }
-  /* used only for the one-time opening zoom into the title card; removed
-     right after so normal dragging/pinching stays instant, untransitioned */
-  .board-canvas.intro-transition{
-    transition: transform 1.15s cubic-bezier(.65,0,.35,1);
-  }
   .zoom-controls{
     position:absolute; bottom:14px; right:16px; z-index:10;
     display:flex; flex-direction:column; gap:4px;
@@ -237,15 +232,14 @@
     display:none;
     position:relative;
     width:480px; max-width:100%;
-    padding:34px 64px 70px 16px;
   }
   .slide-doc-wrap.active{ display:block; }
 
   .slide-photo{
-    position:absolute; top:-30px; right:-46px; width:190px; height:141px;
+    position:absolute; top:-30px; right:-46px; width:150px; height:112px;
     background:var(--paper);
     border:5px solid #f4f1e9; box-shadow:0 8px 18px rgba(0,0,0,.6);
-    transform:rotate(var(--rot,7deg)); z-index:50; cursor:zoom-in; overflow:hidden;
+    transform:rotate(var(--rot,7deg)); z-index:5; cursor:zoom-in; overflow:hidden;
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
     touch-action:none;
     transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
@@ -263,228 +257,18 @@
   }
   .slide-photo.zoomed{
     transform: scale(2.3) rotate(0deg);
-    z-index:90; cursor:zoom-out;
+    z-index:80; cursor:zoom-out;
     box-shadow:0 24px 60px rgba(0,0,0,.8);
   }
 
-  /* corner photo: always the same fixed spot, sitting ON TOP of the top-right
-     corner of the whole document stack, above both sheets no matter which one
-     is in front — positioned so it also partially covers the DECLASSIFIED
-     stamp beneath it (not fully, just some overlap). Only its rotation is
-     randomized. Nudge top/right here if your stamp text runs longer/shorter. */
-  .slide-photo-corner{ top:-16px; right:34px; z-index:70; }
-
-  /* -------- the two physical sheets, clearly separate, with visible
-     detachment between them rather than a tight overlap. Same size/box
-     treatment on both — only the content differs. Each sheet keeps its
-     own fixed position and angle at all times (never translated), so it
-     always reads as two distinct, static pages. -------- */
-  .doc-stack{ position:relative; width:100%; }
-  .doc-sheet{
-    background:var(--paper); border:1px solid #b2ab97;
-    padding:24px 24px 28px; position:relative;
-    min-height:560px;
-    transition: box-shadow .4s ease;
+  .slide-doc{
+    background:var(--paper);
+    border:1px solid #b2ab97;
+    box-shadow:0 22px 40px rgba(0,0,0,.65);
+    padding:26px 26px 30px;
+    min-height:640px;
+    position:relative;
   }
-
-  /* front sheet: title + an optional image + one or two angled redacted
-     text blocks */
-  .doc-front{
-    z-index:3;
-    transform: translate(-40px,-32px) rotate(var(--front-rot, -2.4deg));
-    box-shadow:0 16px 32px rgba(0,0,0,.55);
-  }
-  .doc-front-body{ position:relative; margin-top:4px; }
-
-  /* ===================================================================
-     PUT YOUR OWN FRONT-PAGE IMAGE(S) HERE.
-     Each FILES[] entry (further down in the JS) can set:
-       frontImage: 'images/your-file.jpg'
-     ...to show a single inline image under the title, above the text.
-     See the `.doc-front-image` rule right below, and the `imageHTML`
-     line inside `renderFrontBody()` in the script, for where it's
-     inserted. Want more than one inline image, or a different spot
-     (e.g. between the two text blocks)? Duplicate/move the
-     `imageHTML` line inside renderFrontBody() to taste.
-     =================================================================== */
-  .doc-front-image{
-    width:150px; height:110px; margin:2px 0 16px;
-    border:1px solid var(--ink); overflow:hidden;
-    display:flex; align-items:center; justify-content:center;
-    background:var(--paper-2);
-  }
-  .doc-front-image img{ width:100%; height:100%; object-fit:cover; }
-  .doc-front-image svg{ width:22px; height:22px; opacity:.5; color:var(--ink); }
-
-  /* each text block (snippet) is broken into individual lines, each with
-     its own redaction bar, so the reveal cascades line by line rather
-     than all at once. Title, heading and qtag are never wrapped in this
-     — only front-page body text lines. */
-  .doc-snippet-block{ margin:16px 4px; }
-  .doc-snippet-line{ position:relative; overflow:hidden; margin:3px 0; }
-  .doc-snippet{
-    font-family:'Special Elite', monospace; font-size:17px; line-height:1.5;
-    color:var(--ink); margin:0; display:block; white-space:nowrap;
-  }
-  .redact-bar{
-    position:absolute; inset:0; background:var(--redact);
-    transform-origin:right center;
-    animation: redactSlideOff .55s cubic-bezier(.65,0,.35,1) forwards;
-    animation-delay: calc(var(--li, 0) * .22s + .35s);
-    pointer-events:none;
-  }
-  @keyframes redactSlideOff{
-    0%{ transform:scaleX(1); }
-    100%{ transform:scaleX(0); }
-  }
-
-  /* ===================================================================
-     FRONT-PAGE HUB DIAGRAM (currently only used by File 06, "Need to
-     Know" — set via that FILES[] entry's `diagram` field). A center
-     image with five labeled satellite nodes around it, each linked back
-     to the center by a thin red string, mirroring the collage reference.
-     The center image is always visible. Every node's label and
-     thumbnail are wrapped in the same `.redact-bar` used for front-page
-     text, so they redact/reveal exactly like everything else — no extra
-     JS needed, `replayRedactBars()` already re-triggers every
-     `.redact-bar` on the page.
-
-     PUT YOUR OWN DIAGRAM IMAGES HERE: on the File 06 FILES[] entry,
-     `diagram.center.image` is the middle image, and each
-     `diagram.nodes[i].image` is that node's thumbnail. Leave any of
-     them unset and a camera placeholder is used instead, same as
-     `frontImage`/`photos` elsewhere in this file.
-
-     Node positions and the connector line coordinates are hand-placed
-     for this fixed 350×520 layout (see .dgm-pos-* below and the <path>
-     points in renderDiagram()) — if the document width ever changes,
-     these need nudging together.
-     =================================================================== */
-  .doc-diagram{ position:relative; width:100%; margin:22px 0 4px; }
-  .dgm-canvas{ position:relative; width:100%; height:560px; }
-  .dgm-lines{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
-  .dgm-lines path{ fill:none; stroke:var(--string); stroke-width:1.4px; opacity:.7; }
-  .dgm-lines circle{ fill:var(--pin); opacity:.85; }
-
-  .dgm-center{
-    position:absolute; left:50%; top:225px; transform:translate(-50%,-50%);
-    width:100px; height:100px; z-index:3;
-    background:var(--paper-2); border:1px solid var(--ink);
-    display:flex; align-items:center; justify-content:center; overflow:hidden;
-    box-shadow:0 8px 18px rgba(0,0,0,.4);
-  }
-  .dgm-center img{ width:100%; height:100%; object-fit:cover; }
-  .dgm-center svg{ width:24px; height:24px; opacity:.5; color:var(--ink); }
-
-  .dgm-node{
-    position:absolute; width:122px; z-index:2;
-    display:flex; flex-direction:column; align-items:center; text-align:center; gap:4px;
-  }
-  /* left/right nodes bleed slightly past the page edge (negative offset) —
-     there's room for it in .slide-doc-wrap's own padding around the sheet,
-     same trick used by .slide-photo elsewhere in this file */
-  .dgm-pos-top{   top:0;    left:50%; transform:translateX(-50%); }
-  .dgm-pos-left{  top:170px; left:-22px; }
-  .dgm-pos-right{ top:170px; right:-22px; }
-  .dgm-pos-bl{    top:410px; left:-10px; }
-  .dgm-pos-br{    top:410px; right:-10px; }
-
-  .dgm-tag{
-    font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:600;
-    letter-spacing:.14em; color:var(--pin);
-  }
-  .dgm-label-wrap{ position:relative; overflow:hidden; }
-  .dgm-label{
-    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:10.5px;
-    letter-spacing:.07em; text-transform:uppercase; color:var(--ink); white-space:nowrap;
-  }
-  .dgm-desc{ font-family:'Spectral',serif; font-size:10.5px; line-height:1.4; color:var(--ink-soft); }
-
-  .dgm-thumb-wrap{
-    position:relative; width:88px; height:64px; overflow:hidden;
-    border:1px solid var(--ink); background:var(--paper-2); cursor:zoom-in;
-    box-shadow:0 6px 14px rgba(0,0,0,.35);
-    transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
-  }
-  .dgm-thumb-wrap img{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
-  .dgm-thumb-wrap svg{ width:20px; height:20px; opacity:.5; color:var(--ink); }
-  .dgm-thumb-wrap.zoomed{
-    transform:scale(2.7); z-index:90; cursor:zoom-out;
-    box-shadow:0 24px 50px rgba(0,0,0,.75);
-  }
-
-  /* back sheet: same box, same title-area structure, full paragraph body.
-     It stays fixed in its own spot and angle at all times — the outer
-     .doc-back is a bare positioning shell only (never itself painted,
-     never itself rotated). The actual paper — background, border,
-     shadow — lives on .doc-back-flip, so the whole physical sheet turns
-     as one piece, not just its text. A single hinge turn per click,
-     pivoting on the page's own vertical centerline (transform-origin:
-     center), always continuing in the same direction (never reversing
-     mid-motion), always landing flat. It has two stacked content faces
-     (blurred front / clear back) so the flip only ever crosses edge-on
-     once and is fully readable — never mirrored — the instant it
-     settles. On open it rises above the front sheet (but always stays
-     below the photographs). Click again to flip it back down (a further
-     single flip, same direction) and re-blur it. */
-  .doc-back{
-    position:absolute; top:0; left:0; width:100%; z-index:2;
-    transform: translate(58px,62px) rotate(var(--back-rot, 3deg));
-    cursor:pointer;
-    transform-style: preserve-3d;
-    perspective: 3800px; /* centered on this element (the sheet's own direct
-      parent), not the outer .doc-stack — so the flip's vanishing point lines
-      up with the page itself even though it's shifted by the translate
-      above, keeping the foreshortening even instead of lopsided */
-    transition: z-index 0s .33s;
-  }
-  .doc-back.open{ z-index:4; }
-  /* the flip: this IS the paper (background/border/shadow come from the
-     shared .doc-sheet rule below), isolated from the static tilt above
-     so the two never compose into one skewed axis. Pivots at its own
-     centerline. */
-  .doc-back-flip{
-    width:100%; box-shadow:0 28px 52px rgba(0,0,0,.7);
-    transform-style: preserve-3d;
-    transform-origin: center center;
-    transform: rotateY(var(--flip-rot, 0deg));
-    transition: box-shadow .4s ease;
-  }
-  .doc-back.open .doc-back-flip{ box-shadow:0 20px 40px rgba(0,0,0,.6); }
-  /* one-shot flip animation, played exactly once per click via a
-     JS-toggled class (see the click handler in the script). --flip-from
-     and --flip-to are set by JS right before each play, always 180deg
-     apart and always continuing in the same rotational direction, so
-     every click is exactly one hinge flip — never a round trip. */
-  .doc-back-flip.flip-play{
-    animation: flipOnce .5s cubic-bezier(.45,0,.55,1);
-  }
-  @keyframes flipOnce{
-    0%   { transform: rotateY(var(--flip-from, 0deg)); }
-    100% { transform: rotateY(var(--flip-to, -180deg)); }
-  }
-  /* two content faces, each hidden when turned away from the viewer, so
-     the flip always reveals a correctly-oriented (never mirrored) face
-     at rest. Front = blurred/closed. Back = clear/open, pre-rotated
-     180deg so it reads normally once the sheet has turned. The paper
-     itself (.doc-back-flip, background+border via .doc-sheet) has no
-     backface-hidden of its own — a blank sheet of paper looks the same
-     turned over, so it stays visible as the one physical object flipping
-     the whole time; only its printed content needs to swap. */
-  .doc-back-face{ backface-visibility:hidden; -webkit-backface-visibility:hidden; }
-  .doc-back-face-front{ filter: blur(2.2px); }
-  .doc-back-face-back{
-    position:absolute; inset:0;
-    padding: inherit; /* match .doc-sheet's padding so this face's content
-      box lines up exactly with the front face's — position:absolute + inset:0
-      sizes to the parent's border edge, not its padding edge, so without this
-      the back face was rendering wider/taller and flush to the paper's
-      physical edges instead of matching the front face's proportions */
-    box-sizing: border-box;
-    transform: rotateY(180deg);
-  }
-
-
   .doc-head{
     display:flex; justify-content:space-between; align-items:baseline;
     border-bottom:1px dashed #a49c85; padding-bottom:8px; margin-bottom:14px;
@@ -496,23 +280,43 @@
     font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
     color:var(--pin); margin:0 0 6px; font-weight:600;
   }
-  .doc-body{ margin:0; color:var(--ink); font-size:14px; line-height:1.65; }
 
-  /* rubber-stamp slam animation, replayed every time the file is opened
-     (see replayStamp() in the script) */
+  .text-wrap{ position:relative; min-height:340px; }
+  .doc-body{ margin:0; color:var(--ink); font-size:14px; line-height:1.65; }
+  .doc-body .hint{ display:block; margin-top:10px; font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:.08em; color:var(--ink-soft); text-transform:uppercase; }
+
+  .redaction{
+    position:absolute; inset:0; display:flex; flex-direction:column; gap:8px; cursor:pointer;
+  }
+  .bar{
+    height:13px; background:var(--redact);
+    clip-path: polygon(0 10%,3% 0,97% 5%,100% 15%,98% 90%,100% 100%,2% 95%,0 85%);
+    transition: transform .55s cubic-bezier(.65,0,.35,1), opacity .4s ease .1s;
+  }
+  .bar:nth-child(1){width:97%;} .bar:nth-child(2){width:88%;} .bar:nth-child(3){width:92%;}
+  .bar:nth-child(4){width:76%;} .bar:nth-child(5){width:82%;} .bar:nth-child(6){width:64%;}
+  .bar:nth-child(7){width:90%;} .bar:nth-child(8){width:58%;}
+  .redaction .stamp-hint{
+    margin-top:auto; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em;
+    color:#8a8272; text-transform:uppercase; text-align:center; padding-top:8px;
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+  .slide-doc-wrap.revealed .bar{ transition-delay: calc(var(--i) * .06s); transform:translateX(130%) rotate(2deg); opacity:0; }
+  .slide-doc-wrap.revealed .redaction{ pointer-events:none; }
+  .slide-doc-wrap.revealed .redaction .stamp-hint{ display:none; }
+  .bar:nth-child(1){--i:0;} .bar:nth-child(2){--i:1;} .bar:nth-child(3){--i:2;} .bar:nth-child(4){--i:3;}
+  .bar:nth-child(5){--i:4;} .bar:nth-child(6){--i:5;} .bar:nth-child(7){--i:6;} .bar:nth-child(8){--i:7;}
+
   .stamp{
     position:absolute; top:14px; right:22px;
     font-family:'Special Elite', monospace; font-size:15px; letter-spacing:.06em;
     color:var(--ink); border:2.5px solid var(--ink); padding:4px 10px;
-    animation: stampSlam .45s cubic-bezier(.34,1.56,.64,1) both;
-    animation-delay: 1.2s;
+    transform:rotate(-9deg) scale(0); opacity:0; pointer-events:none;
   }
-  @keyframes stampSlam{
-    0%{ transform:rotate(-9deg) scale(3); opacity:0; }
-    55%{ transform:rotate(-9deg) scale(.88); opacity:.95; }
-    78%{ transform:rotate(-9deg) scale(1.06); opacity:.95;}
-    100%{ transform:rotate(-9deg) scale(1); opacity:.9; }
-  }
+  .slide-doc-wrap.revealed .stamp{ animation: stampdown .45s cubic-bezier(.2,1.4,.4,1) .5s forwards; }
+  @keyframes stampdown{ 0%{transform:rotate(-9deg) scale(2.6);opacity:0;} 60%{transform:rotate(-9deg) scale(.9);opacity:1;} 100%{transform:rotate(-9deg) scale(1);opacity:1;} }
 
   .node:focus-visible, .tab:focus-visible, .ctl-btn:focus-visible{ outline:3px solid var(--pin); outline-offset:2px; }
 
@@ -527,6 +331,8 @@
     transition: background .15s ease, color .15s ease;
   }
   .open-archive-btn:hover{ background:var(--pin); border-color:var(--pin); color:#f8ede6; }
+  .slide-doc-wrap:not(.revealed) .gateway-btns{ opacity:0; pointer-events:none; }
+  .slide-doc-wrap.revealed .gateway-btns{ opacity:1; transition:opacity .3s ease .6s; }
 
   /* ================= ARCHIVE OVERLAY (16-case index) ================= */
   .archive-overlay{

@@ -8,7 +8,7 @@ const FILES = [
   {n:"02", tag:"Governance",  title:"Category",     code:"NT-0602-B", x:130,  y:450,  rot:1,
    qtag:"02 keywords",
    body:"Five terms structure this entire project. Governance refers to who holds the authority to restrict information. Legitimacy refers to whether that authority is broadly accepted as valid. Redaction refers to the specific technique used, which is to cover material rather than delete it. Threshold refers to the point at which a restriction stops functioning as protection and begins to function as control. Protocol refers to the underlying system through which a restriction is carried out, whether that system is digital, institutional, or physical.",
-   photos:['./img/02-legitimacy.jpg', './img/02-Office_Of_Censorship_1945.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/02-threshold.png', './img/02-threshold.jpeg'],
+   photos:['./img/02-legitimacy.jpg', './img/02-Office_Of_Censorship_1945.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/02-threshold.png', './img/02-threshold.jpeg']
    // Front page keeps exactly one line of body text (instead of the usual
    // auto-picked two) — the hub diagram below takes over from there.
    snippets:["Five terms structure this entire project."],
@@ -112,9 +112,6 @@ FILES.forEach(f=>{
 const titleNode = document.createElement('div');
 titleNode.className = 'title-node';
 titleNode.style.left = TITLE_POS.x+'px'; titleNode.style.top = TITLE_POS.y+'px';
-titleNode.tabIndex = 0;
-titleNode.style.cursor = 'pointer';
-titleNode.setAttribute('aria-label', 'Zoom into title card');
 titleNode.innerHTML = `
   <div class="pin"></div>
   <div class="paper">
@@ -133,7 +130,6 @@ titleNode.addEventListener('keydown', e=>{
 FILES.forEach((f,idx)=>{
   const node = document.createElement('div');
   node.className='node';
-  node.dataset.n = f.n;
   node.style.left=f.x+'px'; node.style.top=f.y+'px';
   node.style.zIndex = 5+idx;
   node.tabIndex=0;
@@ -259,8 +255,6 @@ viewport.addEventListener('pointerdown', e=>{
   if(pointers.size===1){
     dragging=true; viewport.classList.add('dragging');
     sx=e.clientX; sy=e.clientY; startX=panX; startY=panY;
-    clickCandidate = e.target.closest('.node, .title-node');
-    clickStartX = e.clientX; clickStartY = e.clientY;
   } else if(pointers.size===2){
     dragging=false;
     const pts=[...pointers.values()];
@@ -589,36 +583,30 @@ FILES.forEach((f,idx)=>{
   const wrap = document.createElement('div');
   wrap.className='slide-doc-wrap';
   wrap.id='slide-'+f.n;
-  const angles = sheetAngles();
-  // shared markup for the back sheet's content, reused for both faces
-  // (front=blurred/closed, back=clear/open) so a single flip can reveal
-  // the correctly-oriented face rather than the same one rotated.
-  const backContentHTML = `
-    <div class="doc-head"><span class="doc-num">FILE ${f.n}, ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
-    <div class="doc-qtag">${f.qtag}</div>
-    <h2 class="doc-title">${f.title}</h2>
-    <p class="doc-body">${f.body}</p>`;
   wrap.innerHTML = `
     ${renderPhotos(f)}
-    <div class="doc-stack" style="--front-rot:${angles.front.toFixed(1)}deg; --back-rot:${angles.back.toFixed(1)}deg;">
-      <div class="doc-sheet doc-front">
-        <div class="doc-head"><span class="doc-num">FILE ${f.n}, ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
-        <div class="doc-qtag">${f.qtag}</div>
-        <h2 class="doc-title">${f.title}</h2>
-        <div class="doc-front-body">${renderFrontBody(f)}</div>
-        <div class="stamp">DECLASSIFIED</div>
-      </div>
-      <div class="doc-back" role="button" aria-label="Reveal document ${f.n}">
-        <div class="doc-sheet doc-back-flip">
-          <div class="doc-back-face doc-back-face-front">${backContentHTML}</div>
-          <div class="doc-back-face doc-back-face-back">${backContentHTML}</div>
+    <div class="slide-doc">
+      <div class="doc-head"><span class="doc-num">FILE ${f.n}, ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
+      <div class="doc-qtag">${f.qtag}</div>
+      <h2 class="doc-title">${f.title}</h2>
+      <div class="text-wrap">
+        <p class="doc-body">${f.body}<span class="hint">Case notes continue in appendix</span></p>
+        <div class="redaction" role="button" aria-label="Reveal document ${f.n}">
+          ${Array(8).fill('<div class="bar"></div>').join('')}
+          <div class="stamp-hint">Declassifying…</div>
         </div>
       </div>
+      ${f.gateway ? `<div class="gateway-btns">
+        <button class="open-archive-btn" id="openArchiveBtn">Open the case index &rarr;</button>
+        <button class="open-archive-btn" id="openWordmapBtn">Open the threshold map &rarr;</button>
+      </div>` : ``}
+      <div class="stamp">DECLASSIFIED</div>
     </div>`;
   slideStage.appendChild(wrap);
+  wrap.querySelector('.redaction').addEventListener('click', ()=> wrap.classList.add('revealed'));
   if(f.gateway){
-    wrap.querySelector('#openArchiveBtn').addEventListener('click', e=>{ e.stopPropagation(); openArchive(); });
-    wrap.querySelector('#openWordmapBtn').addEventListener('click', e=>{ e.stopPropagation(); openWordmap(); });
+    wrap.querySelector('#openArchiveBtn').addEventListener('click', openArchive);
+    wrap.querySelector('#openWordmapBtn').addEventListener('click', openWordmap);
   }
 
   /* the flip plays on .doc-back-flip (isolated from the outer sheet's
@@ -715,15 +703,17 @@ function go(n){
   document.getElementById('slide-view').classList.add('active');
   if(current){
     const prev = document.getElementById('slide-'+current);
-    prev.classList.remove('active');
-    prev.querySelectorAll('.slide-photo.zoomed, .dgm-thumb-wrap.zoomed').forEach(p=>p.classList.remove('zoomed'));
-    resetBackFlip(prev.querySelector('.doc-back'));
+    clearTimeout(prev._revealTimer);
+    prev.classList.remove('active','revealed');
+    prev.querySelectorAll('.slide-photo.zoomed').forEach(p=>p.classList.remove('zoomed'));
+    zoomedOrder.delete(prev);
   }
   current = n;
   const wrap = document.getElementById('slide-'+n);
   wrap.classList.add('active');
-  replayRedactBars(wrap);
-  replayStamp(wrap);
+  wrap.classList.remove('revealed');
+  clearTimeout(wrap._revealTimer);
+  wrap._revealTimer = setTimeout(()=> wrap.classList.add('revealed'), 450);
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+n).classList.add('active');
   updateNav();
@@ -732,9 +722,10 @@ function go(n){
 function goHome(){
   if(current){
     const prev = document.getElementById('slide-'+current);
-    prev.classList.remove('active');
-    prev.querySelectorAll('.slide-photo.zoomed, .dgm-thumb-wrap.zoomed').forEach(p=>p.classList.remove('zoomed'));
-    resetBackFlip(prev.querySelector('.doc-back'));
+    clearTimeout(prev._revealTimer);
+    prev.classList.remove('active','revealed');
+    prev.querySelectorAll('.slide-photo.zoomed').forEach(p=>p.classList.remove('zoomed'));
+    zoomedOrder.delete(prev);
   }
   current = null;
   document.getElementById('slide-view').classList.remove('active');

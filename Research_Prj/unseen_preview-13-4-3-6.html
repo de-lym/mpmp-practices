@@ -1,14 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Censorship Case File</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:         #0a0a0a;
+    --bg-2:       #050505;
+    --paper:      #efece4;
+    --paper-2:    #ddd9cd;
+    --ink:        #1b1a17;
+    --ink-soft:   #58564e;
+    --redact:     #0d0d0d;
+    --pin:        #b23b2c;
+    --string:     #b23b2c;
+    --tab-base:   #c7ab72;
+    --tab-active: #b23b2c;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Spectral', serif;
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  button{font-family:inherit;}
+
+  .app{ display:flex; height:100vh; width:100vw; }
+
+  /* ================= SIDEBAR, file tags (colored, left) ================= */
+  .sidebar{
+    flex:0 0 108px;
+    background:var(--bg-2);
+    padding:16px 0;
+    overflow-y:auto; overflow-x:hidden;
+    z-index:60;
+    display:flex; flex-direction:column; gap:5px;
+    border-right:2px solid rgba(255,255,255,.06);
+  }
+  .sb-brand{
+    font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.18em;
+    color:#7d7566; text-transform:uppercase; text-align:center; padding:0 8px 12px;
+    border-bottom:1px dashed rgba(255,255,255,.12); margin:0 10px 8px;
+  }
+  .tab{
+    position:relative;
+    border:none; cursor:pointer; text-align:left;
+    padding:9px 26px 9px 13px;
+    color:#8f897a;
+    background:var(--paper);
+    font-family:'JetBrains Mono',monospace;
+    display:flex; flex-direction:column; gap:3px;
+    clip-path: polygon(0 0, 78% 0, 100% 50%, 78% 100%, 0 100%);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.4));
+    transition: filter .18s ease, background .18s ease;
+  }
+  .tab::after{
+    content:''; position:absolute; right:15px; top:50%; transform:translateY(-50%);
+    width:5px; height:5px; border-radius:50%;
+    background:var(--bg-2);
+    box-shadow:0 0 0 1px rgba(27,26,23,.35) inset;
+  }
+  .tab .n{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:10px; letter-spacing:.1em;
+    color:var(--pin); width:max-content; padding-bottom:2px;
+    border-bottom:1.5px solid var(--pin);
+    transition: color .18s ease, border-color .18s ease;
+  }
+  .tab .t{font-size:7.5px; letter-spacing:.05em; text-transform:uppercase; opacity:.8; line-height:1.25; color:#a29c8c; transition:color .18s ease;}
+  .tab:hover,
+  .tab.active{
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.55));
+    background:var(--pin);
+    color:#f8ede6;
+  }
+  .tab:hover .n,
+  .tab.active .n{ color:#fff; border-bottom-color:#f8ede6; }
+  .tab:hover .t,
+  .tab.active .t{ color:#f8ede6; }
+
+  /* ================= MAIN ================= */
+  .main{ flex:1; position:relative; min-width:0; height:100vh; overflow:hidden;}
+  .view{ position:absolute; inset:0; display:none; }
+  .view.active{ display:flex; flex-direction:column; }
+
+  /* ================= HOME BOARD ================= */
+  #home-view .board-viewport{
+    flex:1; position:relative; overflow:hidden; cursor:grab;
+    touch-action:none;
+    background:
+      radial-gradient(ellipse at 30% 15%, rgba(255,255,255,.035), transparent 55%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 1px, transparent 1px 3px);
+  }
+  #home-view .board-viewport.dragging{cursor:grabbing;}
+  .board-canvas{
+    position:absolute; top:0; left:0;
+    width:1560px; height:1220px;
+    transform-origin:0 0;
+    touch-action:none;
+  }
+  /* used only for the one-time opening zoom into the title card; removed
+     right after so normal dragging/pinching stays instant, untransitioned */
+  .board-canvas.intro-transition{
+    transition: transform 1.15s cubic-bezier(.65,0,.35,1);
+  }
+  .zoom-controls{
+    position:absolute; bottom:14px; right:16px; z-index:10;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .zoom-controls button{
+    width:30px; height:30px; border:1px solid #3a3a3a; background:#161616; color:#ddd7c8;
+    font-family:'JetBrains Mono',monospace; font-size:15px; cursor:pointer; line-height:1;
+  }
+  .zoom-controls button:hover{ background:#242424; }
+  svg.strings{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+  svg.strings path{ fill:none; stroke:var(--string); stroke-width:1.6px; opacity:.7; filter:drop-shadow(0 1px 1px rgba(0,0,0,.6)); }
+  svg.strings circle{ fill:var(--pin); opacity:.85; }
+
+  .board-hint{
+    position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+    font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.1em;
+    color:#8a8272; opacity:.65; text-transform:uppercase; pointer-events:none;
+  }
+
+  /* ---- title card (pinned to board, no photo) ---- */
+  .title-node{
+    position:absolute; width:320px; z-index:20; user-select:none;
+  }
+  .title-node .pin{
+    position:absolute; top:-8px; left:50%; transform:translateX(-50%);
+    width:14px; height:14px; border-radius:50%; z-index:4;
+    background:radial-gradient(circle at 35% 30%, #e8776a, var(--pin) 70%);
+    box-shadow:0 3px 4px rgba(0,0,0,.6);
+  }
+  .title-node .paper{
+    background:var(--paper); border:1px solid #b2ab97;
+    padding:18px 18px 16px; box-shadow:0 14px 26px rgba(0,0,0,.6);
+    transform:rotate(-1.2deg);
+  }
+  .title-node .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:9.5px; letter-spacing:.24em;
+    color:var(--ink-soft); text-transform:uppercase; border-bottom:1px dashed #a49c85; padding-bottom:8px; margin-bottom:10px;
+  }
+  .title-node .thesis{
+    font-family:'Special Elite', monospace; color:var(--ink);
+    font-size:19px; line-height:1.3; margin:0 0 12px;
+  }
+  .title-node .keywords{
+    font-family:'JetBrains Mono', monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-soft); line-height:1.9;
+  }
+  .title-node .keywords .dot{color:var(--pin); margin:0 5px;}
+
+  /* ---- document nodes (grayscale, overlapping) ---- */
+  .node{
+    position:absolute; width:250px; cursor:pointer; user-select:none;
+  }
+  .node-pin{
+    position:absolute; top:-8px; left:50%; transform:translateX(-50%);
+    width:13px; height:13px; border-radius:50%; z-index:4;
+    background:radial-gradient(circle at 35% 30%, #e8776a, var(--pin) 70%);
+    box-shadow:0 3px 4px rgba(0,0,0,.6);
+  }
+  .node-doc{
+    background:var(--paper);
+    border:1px solid var(--ink);
+    padding:12px 18px 14px 24px;
+    box-shadow:0 10px 20px rgba(0,0,0,.55);
+    transition: transform .15s ease, box-shadow .15s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  /* perforated ticket-stub edge */
+  .node-doc::before{
+    content:'';
+    position:absolute; left:9px; top:0; bottom:0; width:0;
+    border-left:1.5px dashed var(--ink);
+    opacity:.55;
+  }
+  .node-doc::after{
+    content:'';
+    position:absolute; left:2.5px; top:6px; bottom:6px; width:1px;
+    background-image: radial-gradient(circle, var(--ink) 1.6px, transparent 1.7px);
+    background-size: 100% 13px; background-repeat: repeat-y;
+    opacity:.6;
+  }
+  .node:hover .node-doc{ transform:translateY(-4px) !important; box-shadow:0 16px 28px rgba(0,0,0,.65); }
+  .node-head{ display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dashed var(--ink); padding-bottom:5px; margin-bottom:7px;}
+  .node-doc .num{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:9.5px; color:var(--ink); letter-spacing:.06em;}
+  .node-doc .cat{ font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--pin); text-transform:uppercase; letter-spacing:.09em; font-weight:600;}
+  .node-doc .title{ font-family:'JetBrains Mono',monospace; font-weight:600; text-transform:uppercase; font-size:12.5px; letter-spacing:.03em; margin:0 0 8px; color:var(--ink); line-height:1.3;}
+  .node-doc .pagemark{
+    position:absolute; right:3px; top:10px; bottom:10px;
+    writing-mode:vertical-rl; text-orientation:mixed;
+    font-family:'JetBrains Mono',monospace; font-size:7.5px; letter-spacing:.14em;
+    color:var(--ink); opacity:.4; pointer-events:none;
+  }
+
+  .node-photo{
+    width:100%; height:96px; margin-bottom:8px; position:relative; overflow:hidden;
+    border:1px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .node-photo svg{ width:22px; height:22px; opacity:.6; color:var(--ink); position:relative; z-index:1; }
+  .ph-pixel{ background:repeating-linear-gradient(45deg, var(--ink-soft) 0 1px, transparent 1px 7px) var(--paper); }
+  .ph-blur{ background:repeating-linear-gradient(-45deg, var(--ink-soft) 0 1px, transparent 1px 7px) var(--paper); }
+  .ph-grain{ background:repeating-linear-gradient(90deg, var(--ink-soft) 0 1px, transparent 1px 6px) var(--paper); }
+
+  .node-bars{display:flex; flex-direction:column; gap:4px;}
+  .node-bars div{height:6px; background:var(--redact);}
+  .node-bars div:nth-child(1){width:94%;}
+  .node-bars div:nth-child(2){width:74%;}
+  .node-bars div:nth-child(3){width:86%;}
+  .node-bars div:nth-child(4){width:58%;}
+
+  /* ================= SLIDE VIEW ================= */
+  #slide-view{ align-items:stretch; }
+  .slide-controls{
+    flex:0 0 auto; display:flex; align-items:center; justify-content:space-between;
+    padding:10px 24px; gap:10px;
+  }
+  .slide-controls .grp{display:flex; gap:8px;}
+  .ctl-btn{
+    background:#141414; color:#ddd7c8; border:1px solid #3a3a3a;
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.06em;
+    padding:8px 12px; cursor:pointer; text-transform:uppercase;
+    transition: background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .ctl-btn:hover{ background:var(--pin); border-color:var(--pin); color:#f8f2e6; }
+  .ctl-btn:disabled{ opacity:.3; cursor:default; }
+  .ctl-btn:disabled:hover{ background:#141414; border-color:#3a3a3a; color:#ddd7c8; }
+
+  .slide-stage{
+    flex:1; position:relative; overflow:auto;
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .slide-doc-wrap{
+    display:none;
+    position:relative;
+    width:480px; max-width:100%;
+    padding:34px 64px 70px 16px;
+  }
+  .slide-doc-wrap.active{ display:block; }
+
+  .slide-photo{
+    position:absolute; top:-30px; right:-46px; width:190px; height:141px;
+    background:var(--paper);
+    border:5px solid #f4f1e9; box-shadow:0 8px 18px rgba(0,0,0,.6);
+    transform:rotate(var(--rot,7deg)); z-index:50; cursor:zoom-in; overflow:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    touch-action:none;
+    transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+    will-change: transform;
+  }
+  .slide-photo:active{cursor:grabbing;}
+  .slide-photo img{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
+  .slide-photo svg{width:26px;height:26px;opacity:.5;}
+  .slide-photo span{font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; opacity:.65; background:rgba(255,255,255,.5); padding:1px 4px;}
+  .slide-photo .pin{
+    position:absolute; top:-8px; left:50%; transform:translateX(-50%);
+    width:13px;height:13px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #e8776a, var(--pin) 70%);
+    box-shadow:0 2px 3px rgba(0,0,0,.6);
+  }
+  .slide-photo.zoomed{
+    transform: scale(2.3) rotate(0deg);
+    z-index:90; cursor:zoom-out;
+    box-shadow:0 24px 60px rgba(0,0,0,.8);
+  }
+
+  /* corner photo: always the same fixed spot, sitting ON TOP of the top-right
+     corner of the whole document stack, above both sheets no matter which one
+     is in front — positioned so it also partially covers the DECLASSIFIED
+     stamp beneath it (not fully, just some overlap). Only its rotation is
+     randomized. Nudge top/right here if your stamp text runs longer/shorter. */
+  .slide-photo-corner{ top:-16px; right:34px; z-index:70; }
+
+  /* -------- the two physical sheets, clearly separate, with visible
+     detachment between them rather than a tight overlap. Same size/box
+     treatment on both — only the content differs. Each sheet keeps its
+     own fixed position and angle at all times (never translated), so it
+     always reads as two distinct, static pages. -------- */
+  .doc-stack{ position:relative; width:100%; }
+  .doc-sheet{
+    background:var(--paper); border:1px solid #b2ab97;
+    padding:24px 24px 28px; position:relative;
+    min-height:560px;
+    transition: box-shadow .4s ease;
+  }
+
+  /* front sheet: title + an optional image + one or two angled redacted
+     text blocks */
+  .doc-front{
+    z-index:3;
+    transform: translate(-40px,-32px) rotate(var(--front-rot, -2.4deg));
+    box-shadow:0 16px 32px rgba(0,0,0,.55);
+  }
+  .doc-front-body{ position:relative; margin-top:4px; }
+
+  /* ===================================================================
+     PUT YOUR OWN FRONT-PAGE IMAGE(S) HERE.
+     Each FILES[] entry (further down in the JS) can set:
+       frontImage: 'images/your-file.jpg'
+     ...to show a single inline image under the title, above the text.
+     See the `.doc-front-image` rule right below, and the `imageHTML`
+     line inside `renderFrontBody()` in the script, for where it's
+     inserted. Want more than one inline image, or a different spot
+     (e.g. between the two text blocks)? Duplicate/move the
+     `imageHTML` line inside renderFrontBody() to taste.
+     =================================================================== */
+  .doc-front-image{
+    width:150px; height:110px; margin:2px 0 16px;
+    border:1px solid var(--ink); overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--paper-2);
+  }
+  .doc-front-image img{ width:100%; height:100%; object-fit:cover; }
+  .doc-front-image svg{ width:22px; height:22px; opacity:.5; color:var(--ink); }
+
+  /* each text block (snippet) is broken into individual lines, each with
+     its own redaction bar, so the reveal cascades line by line rather
+     than all at once. Title, heading and qtag are never wrapped in this
+     — only front-page body text lines. */
+  .doc-snippet-block{ margin:16px 4px; }
+  .doc-snippet-line{ position:relative; overflow:hidden; margin:3px 0; }
+  .doc-snippet{
+    font-family:'Special Elite', monospace; font-size:17px; line-height:1.5;
+    color:var(--ink); margin:0; display:block; white-space:nowrap;
+  }
+  .redact-bar{
+    position:absolute; inset:0; background:var(--redact);
+    transform-origin:right center;
+    animation: redactSlideOff .55s cubic-bezier(.65,0,.35,1) forwards;
+    animation-delay: calc(var(--li, 0) * .22s + .35s);
+    pointer-events:none;
+  }
+  @keyframes redactSlideOff{
+    0%{ transform:scaleX(1); }
+    100%{ transform:scaleX(0); }
+  }
+
+  /* ===================================================================
+     FRONT-PAGE HUB DIAGRAM (currently only used by File 06, "Need to
+     Know" — set via that FILES[] entry's `diagram` field). A center
+     image with five labeled satellite nodes around it, each linked back
+     to the center by a thin red string, mirroring the collage reference.
+     The center image is always visible. Every node's label and
+     thumbnail are wrapped in the same `.redact-bar` used for front-page
+     text, so they redact/reveal exactly like everything else — no extra
+     JS needed, `replayRedactBars()` already re-triggers every
+     `.redact-bar` on the page.
+
+     PUT YOUR OWN DIAGRAM IMAGES HERE: on the File 06 FILES[] entry,
+     `diagram.center.image` is the middle image, and each
+     `diagram.nodes[i].image` is that node's thumbnail. Leave any of
+     them unset and a camera placeholder is used instead, same as
+     `frontImage`/`photos` elsewhere in this file.
+
+     Node positions and the connector line coordinates are hand-placed
+     for this fixed 350×520 layout (see .dgm-pos-* below and the <path>
+     points in renderDiagram()) — if the document width ever changes,
+     these need nudging together.
+     =================================================================== */
+  .doc-diagram{ position:relative; width:100%; margin:22px 0 4px; }
+  .dgm-canvas{ position:relative; width:100%; height:560px; }
+  .dgm-lines{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+  .dgm-lines path{ fill:none; stroke:var(--string); stroke-width:1.4px; opacity:.7; }
+  .dgm-lines circle{ fill:var(--pin); opacity:.85; }
+
+  .dgm-center{
+    position:absolute; left:50%; top:225px; transform:translate(-50%,-50%);
+    width:100px; height:100px; z-index:3;
+    background:var(--paper-2); border:1px solid var(--ink);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    box-shadow:0 8px 18px rgba(0,0,0,.4);
+  }
+  .dgm-center img{ width:100%; height:100%; object-fit:cover; }
+  .dgm-center svg{ width:24px; height:24px; opacity:.5; color:var(--ink); }
+
+  .dgm-node{
+    position:absolute; width:122px; z-index:2;
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:4px;
+  }
+  /* left/right nodes bleed slightly past the page edge (negative offset) —
+     there's room for it in .slide-doc-wrap's own padding around the sheet,
+     same trick used by .slide-photo elsewhere in this file */
+  .dgm-pos-top{   top:0;    left:50%; transform:translateX(-50%); }
+  .dgm-pos-left{  top:170px; left:-22px; }
+  .dgm-pos-right{ top:170px; right:-22px; }
+  .dgm-pos-bl{    top:410px; left:-10px; }
+  .dgm-pos-br{    top:410px; right:-10px; }
+
+  .dgm-tag{
+    font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:600;
+    letter-spacing:.14em; color:var(--pin);
+  }
+  .dgm-label-wrap{ position:relative; overflow:hidden; }
+  .dgm-label{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:10.5px;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--ink); white-space:nowrap;
+  }
+  .dgm-desc{ font-family:'Spectral',serif; font-size:10.5px; line-height:1.4; color:var(--ink-soft); }
+
+  .dgm-thumb-wrap{
+    position:relative; width:88px; height:64px; overflow:hidden;
+    border:1px solid var(--ink); background:var(--paper-2); cursor:zoom-in;
+    box-shadow:0 6px 14px rgba(0,0,0,.35);
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+  }
+  .dgm-thumb-wrap img{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
+  .dgm-thumb-wrap svg{ width:20px; height:20px; opacity:.5; color:var(--ink); }
+  .dgm-thumb-wrap.zoomed{
+    transform:scale(2.7); z-index:90; cursor:zoom-out;
+    box-shadow:0 24px 50px rgba(0,0,0,.75);
+  }
+
+  /* back sheet: same box, same title-area structure, full paragraph body.
+     It stays fixed in its own spot and angle at all times — the outer
+     .doc-back is a bare positioning shell only (never itself painted,
+     never itself rotated). The actual paper — background, border,
+     shadow — lives on .doc-back-flip, so the whole physical sheet turns
+     as one piece, not just its text. A single hinge turn per click,
+     pivoting on the page's own vertical centerline (transform-origin:
+     center), always continuing in the same direction (never reversing
+     mid-motion), always landing flat. It has two stacked content faces
+     (blurred front / clear back) so the flip only ever crosses edge-on
+     once and is fully readable — never mirrored — the instant it
+     settles. On open it rises above the front sheet (but always stays
+     below the photographs). Click again to flip it back down (a further
+     single flip, same direction) and re-blur it. */
+  .doc-back{
+    position:absolute; top:0; left:0; width:100%; z-index:2;
+    transform: translate(58px,62px) rotate(var(--back-rot, 3deg));
+    cursor:pointer;
+    transform-style: preserve-3d;
+    perspective: 3800px; /* centered on this element (the sheet's own direct
+      parent), not the outer .doc-stack — so the flip's vanishing point lines
+      up with the page itself even though it's shifted by the translate
+      above, keeping the foreshortening even instead of lopsided */
+    transition: z-index 0s .33s;
+  }
+  .doc-back.open{ z-index:4; }
+  /* the flip: this IS the paper (background/border/shadow come from the
+     shared .doc-sheet rule below), isolated from the static tilt above
+     so the two never compose into one skewed axis. Pivots at its own
+     centerline. */
+  .doc-back-flip{
+    width:100%; box-shadow:0 28px 52px rgba(0,0,0,.7);
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    transform: rotateY(var(--flip-rot, 0deg));
+    transition: box-shadow .4s ease;
+  }
+  .doc-back.open .doc-back-flip{ box-shadow:0 20px 40px rgba(0,0,0,.6); }
+  /* one-shot flip animation, played exactly once per click via a
+     JS-toggled class (see the click handler in the script). --flip-from
+     and --flip-to are set by JS right before each play, always 180deg
+     apart and always continuing in the same rotational direction, so
+     every click is exactly one hinge flip — never a round trip. */
+  .doc-back-flip.flip-play{
+    animation: flipOnce .5s cubic-bezier(.45,0,.55,1);
+  }
+  @keyframes flipOnce{
+    0%   { transform: rotateY(var(--flip-from, 0deg)); }
+    100% { transform: rotateY(var(--flip-to, -180deg)); }
+  }
+  /* two content faces, each hidden when turned away from the viewer, so
+     the flip always reveals a correctly-oriented (never mirrored) face
+     at rest. Front = blurred/closed. Back = clear/open, pre-rotated
+     180deg so it reads normally once the sheet has turned. The paper
+     itself (.doc-back-flip, background+border via .doc-sheet) has no
+     backface-hidden of its own — a blank sheet of paper looks the same
+     turned over, so it stays visible as the one physical object flipping
+     the whole time; only its printed content needs to swap. */
+  .doc-back-face{ backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+  .doc-back-face-front{ filter: blur(2.2px); }
+  .doc-back-face-back{
+    position:absolute; inset:0;
+    padding: inherit; /* match .doc-sheet's padding so this face's content
+      box lines up exactly with the front face's — position:absolute + inset:0
+      sizes to the parent's border edge, not its padding edge, so without this
+      the back face was rendering wider/taller and flush to the paper's
+      physical edges instead of matching the front face's proportions */
+    box-sizing: border-box;
+    transform: rotateY(180deg);
+  }
+
+
+  .doc-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:1px dashed #a49c85; padding-bottom:8px; margin-bottom:14px;
+  }
+  .doc-num{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-soft); letter-spacing:.05em;}
+  .doc-cat{font-family:'JetBrains Mono',monospace; font-weight:600; font-size:9.5px; color:var(--pin); text-transform:uppercase; letter-spacing:.08em;}
+  .doc-title{ font-family:'Special Elite', monospace; font-size:22px; margin:0 0 18px; color:var(--ink); }
+  .doc-qtag{
+    font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--pin); margin:0 0 6px; font-weight:600;
+  }
+  .doc-body{ margin:0; color:var(--ink); font-size:14px; line-height:1.65; }
+
+  /* rubber-stamp slam animation, replayed every time the file is opened
+     (see replayStamp() in the script) */
+  .stamp{
+    position:absolute; top:14px; right:22px;
+    font-family:'Special Elite', monospace; font-size:15px; letter-spacing:.06em;
+    color:var(--ink); border:2.5px solid var(--ink); padding:4px 10px;
+    animation: stampSlam .45s cubic-bezier(.34,1.56,.64,1) both;
+    animation-delay: 1.2s;
+  }
+  @keyframes stampSlam{
+    0%{ transform:rotate(-9deg) scale(3); opacity:0; }
+    55%{ transform:rotate(-9deg) scale(.88); opacity:.95; }
+    78%{ transform:rotate(-9deg) scale(1.06); opacity:.95;}
+    100%{ transform:rotate(-9deg) scale(1); opacity:.9; }
+  }
+
+  .node:focus-visible, .tab:focus-visible, .ctl-btn:focus-visible{ outline:3px solid var(--pin); outline-offset:2px; }
+
+  /* ================= OPEN-ARCHIVE BUTTON (File 08) ================= */
+  .gateway-btns{ display:flex; flex-direction:column; gap:8px; margin-top:16px; }
+  .open-archive-btn{
+    display:block; width:100%;
+    background:var(--ink); color:var(--paper);
+    border:1.5px solid var(--ink);
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em;
+    padding:12px 14px; cursor:pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .open-archive-btn:hover{ background:var(--pin); border-color:var(--pin); color:#f8ede6; }
+
+  /* ================= ARCHIVE OVERLAY (16-case index) ================= */
+  .archive-overlay{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(5,5,5,.86);
+    display:none; align-items:flex-start; justify-content:center;
+    padding:22px 20px; overflow-y:auto;
+  }
+  .archive-overlay.open{ display:flex; }
+  .archive-panel{
+    background:var(--bg-2); border:1px solid #3a3a3a;
+    width:100%; max-width:1040px; padding:20px 26px 24px;
+    box-shadow:0 30px 60px rgba(0,0,0,.7);
+  }
+  .archive-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    border-bottom:1px dashed #3a3a3a; padding-bottom:16px; margin-bottom:18px;
+  }
+  .archive-eyebrow{ font-size:9.5px; letter-spacing:.24em; color:var(--pin); text-transform:uppercase; margin-bottom:6px; }
+  .archive-head h2{ font-family:'Special Elite', monospace; color:#ddd7c8; font-size:19px; margin:0; }
+
+  .archive-filters{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
+  .af-chip{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    border:1px solid #3a3a3a; background:transparent; color:#a29c8c;
+    padding:7px 14px; cursor:pointer; transition:all .18s cubic-bezier(.34,1.56,.64,1);
+    transform:translateY(0) scale(1);
+  }
+  .af-chip:hover{
+    transform:translateY(-4px) scale(1.05);
+    border-color:var(--pin); color:#f2ede0;
+    box-shadow:0 8px 16px rgba(0,0,0,.45);
+  }
+  .af-chip.active{
+    background:var(--pin); border-color:var(--pin); color:#f8ede6;
+    transform:translateY(-4px) scale(1.05);
+    box-shadow:0 8px 18px rgba(178,59,44,.5);
+  }
+
+  .archive-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:16px;
+  }
+  .archive-card{
+    background:var(--paper); border:1px solid var(--ink);
+    padding:12px 14px 14px; position:relative; cursor:pointer;
+    box-shadow:0 6px 14px rgba(0,0,0,.45);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .archive-card.ac-hidden{ display:none; }
+  .ac-pin{
+    position:absolute; top:-6px; left:16px; width:10px; height:10px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #e8776a, var(--pin) 70%);
+    box-shadow:0 2px 3px rgba(0,0,0,.6);
+  }
+  .ac-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .ac-id{ font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--ink-soft); letter-spacing:.05em; }
+  .ac-tag{ font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--pin); text-transform:uppercase; letter-spacing:.08em; font-weight:600; }
+  .ac-title{ font-family:'JetBrains Mono',monospace; font-weight:600; text-transform:uppercase; font-size:11.5px; letter-spacing:.02em; margin:0 0 4px; color:var(--ink); line-height:1.3; }
+  .ac-loc{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.05em; color:var(--ink-soft); margin:0 0 8px; }
+  .ac-mechanism{ display:none; font-size:11px; line-height:1.5; color:var(--ink-soft); margin:0 0 8px; font-style:italic; }
+  .ac-mechanism span{ font-family:'JetBrains Mono',monospace; font-style:normal; font-size:8px; text-transform:uppercase; letter-spacing:.08em; color:var(--pin); font-weight:600; margin-right:5px; }
+  .archive-card.ac-open .ac-mechanism{ display:block; }
+
+  .ac-mask{
+    background:var(--redact); padding:10px; display:flex; flex-direction:column; gap:6px;
+    transition:opacity .3s ease, max-height .3s ease; overflow:hidden;
+  }
+  .ac-bars div{ height:6px; background:#3a382f; margin-bottom:5px; }
+  .ac-bars div:nth-child(1){width:92%;} .ac-bars div:nth-child(2){width:70%;} .ac-bars div:nth-child(3){width:84%;}
+  .ac-hint{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; color:#8a8272; text-align:center; }
+  .ac-summary{ display:none; font-size:12px; line-height:1.55; color:var(--ink-soft); margin:0 0 8px; }
+  .ac-meta{ display:none; font-family:'JetBrains Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); }
+
+  .archive-card.ac-open .ac-mask{ display:none; }
+  .archive-card.ac-open .ac-summary{ display:block; }
+  .archive-card.ac-open .ac-meta{ display:block; }
+
+  @media (max-width:640px){
+    .archive-panel{ padding:20px 16px 26px; }
+    .archive-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:420px){
+    .archive-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ================= THRESHOLD MAP (word map, File 08 second gateway) ================= */
+  .wm-panel{ max-width:960px; }
+  .wm-desc{ font-family:'Spectral', serif; font-size:12.5px; line-height:1.5; color:#a29c8c; max-width:600px; margin:0 0 12px; }
+
+  .word-field{
+    position:relative;
+    min-height:160px;
+    display:flex; flex-direction:column;
+    background:#0a0a0a;
+    border:2px solid #0a0a0a;
+    margin-bottom:14px;
+  }
+  .wm-row{ display:flex; width:100%; align-items:stretch; }
+  .wm-word{
+    display:flex; /* presence in the DOM = visible; hidden words are simply not appended */
+    align-items:center; justify-content:center;
+    box-sizing:border-box;
+    flex:0 0 auto; /* size to fit its own text, never stretched or squeezed */
+    padding:.55em .7em;
+    font-family:'JetBrains Mono', monospace; font-weight:700;
+    letter-spacing:.02em; text-transform:lowercase;
+    cursor:pointer; white-space:nowrap;
+    border:1px solid rgba(0,0,0,.5);
+  }
+  .wm-word[data-bg="dark"]{ background:#0d0d0d; color:var(--pin); -webkit-text-stroke:.6px var(--pin); border-color:rgba(255,255,255,.2); }
+  .wm-word[data-bg="light"]{ background:#efece4; color:#0d0d0d; }
+  .wm-word[data-bg="red"]{ background:var(--pin); color:#fff; -webkit-text-stroke:.6px #fff; }
+  .wm-word.wm-selected{ outline:3px solid #fff; outline-offset:-3px; z-index:2; }
+
+  .wm-filler{ flex:1 1 auto; min-width:14px; background:#0a0a0a; border:1px solid rgba(255,255,255,.06); }
+
+  .wm-label{ display:inline-block; overflow:hidden; text-overflow:clip; }
+  .wm-label.wm-caret{ border-right:2px solid currentColor; }
+  @media (prefers-reduced-motion: reduce){ .wm-word{ transition:none !important; } }
+
+  .wm-slider-row{
+    display:flex; align-items:center; gap:14px;
+    font-family:'JetBrains Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.08em;
+    color:#8a8272; margin-bottom:8px;
+  }
+  .wm-slider-row input[type=range]{
+    flex:1; -webkit-appearance:none; height:2px; background:#3a3a3a; outline:none;
+  }
+  .wm-slider-row input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+    background:var(--pin); cursor:pointer; border:2px solid var(--bg-2);
+  }
+  .wm-slider-row input[type=range]::-moz-range-thumb{
+    width:16px; height:16px; border-radius:50%; background:var(--pin); cursor:pointer; border:2px solid var(--bg-2);
+  }
+  .wm-readout{ font-family:'Special Elite', monospace; font-size:13px; color:#ddd7c8; line-height:1.5; margin-bottom:12px; }
+  .wm-stat{ color:var(--pin); }
+
+  .wm-results{ display:none; background:var(--paper); border:1px solid var(--ink); padding:14px 18px; margin-bottom:10px; }
+  .wm-results.open{ display:block; }
+  .wm-results-head{ font-family:'JetBrains Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--pin); margin-bottom:10px; }
+  .wm-result-row{ padding:8px 0; border-top:1px dashed #d8d2c0; font-size:13px; }
+  .wm-result-row:first-of-type{ border-top:none; }
+  .wm-rtop{ display:flex; gap:12px; margin-bottom:3px; }
+  .wm-rid{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--ink-soft); flex:0 0 60px; }
+  .wm-rtitle{ font-family:'Spectral', serif; color:var(--ink); }
+  .wm-rnote{ font-family:'Spectral', serif; font-size:12px; line-height:1.5; color:#8a8272; padding-left:72px; }
+  .wm-browse-btn{ margin-top:0; }
+
+  /* ================= MOBILE ================= */
+  @media (max-width: 820px){
+    body{overflow:auto;}
+    .app{flex-direction:column; height:auto;}
+    .sidebar{ flex-direction:row; flex:0 0 auto; width:100%; overflow-x:auto; overflow-y:hidden; padding:10px; gap:5px;}
+    .sb-brand{display:none;}
+    .tab{ clip-path:none; flex:0 0 auto; padding:8px 10px; }
+    .tab.active{transform:none;}
+    .main{height:auto; overflow:visible;}
+    .view.active{position:relative; display:flex;}
+    #home-view .board-viewport{ height:70vh; }
+    .slide-stage{ overflow:visible; padding:30px 14px; }
+    .slide-doc-wrap{ width:100%; max-width:420px; }
+    .slide-photo{ right:0; top:-24px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">Files</div>
+  </aside>
+
+  <div class="main">
+
+    <section id="home-view" class="view active">
+      <div class="board-viewport" id="boardViewport">
+        <div class="board-canvas" id="boardCanvas">
+          <svg class="strings" id="strings"></svg>
+        </div>
+      </div>
+      <div class="zoom-controls">
+        <button id="zoomIn" aria-label="Zoom in">+</button>
+        <button id="zoomOut" aria-label="Zoom out">&minus;</button>
+        <button id="zoomReset" aria-label="Reset view" style="font-size:10px;">FIT</button>
+      </div>
+      <div class="board-hint">Drag to explore &nbsp;·&nbsp; scroll or pinch to zoom &nbsp;·&nbsp; click a file to open it</div>
+    </section>
+
+    <section id="slide-view" class="view">
+      <div class="slide-controls">
+        <button class="ctl-btn" id="btnHome">&larr; Board</button>
+        <div class="grp">
+          <button class="ctl-btn" id="btnPrev">&larr; Prev</button>
+          <button class="ctl-btn" id="btnNext">Next &rarr;</button>
+        </div>
+      </div>
+      <div class="slide-stage" id="slideStage"></div>
+    </section>
+
+  </div>
+</div>
+
+<div class="archive-overlay" id="archiveOverlay">
+  <div class="archive-panel">
+    <div class="archive-head">
+      <div>
+        <div class="archive-eyebrow mono">full record</div>
+        <h2>Case Index of 16 Files</h2>
+      </div>
+      <button class="ctl-btn" id="archiveClose">Close &times;</button>
+    </div>
+    <div class="archive-filters" id="archiveFilters"></div>
+    <div class="archive-grid" id="archiveGrid"></div>
+  </div>
+</div>
+
+<div class="archive-overlay" id="wordmapOverlay">
+  <div class="archive-panel wm-panel">
+    <div class="archive-head">
+      <div>
+        <div class="archive-eyebrow mono">threshold map</div>
+        <h2>Vocabulary of Control</h2>
+      </div>
+      <button class="ctl-btn" id="wordmapClose">Close &times;</button>
+    </div>
+    <p class="wm-desc">No word here is colored by whether its cases were "protective" or "repressive," since every act of restriction can claim either. Color tracks how checked the deciding authority was. Cream means process, appeal, or oversight existed. Black means accountability was mixed or contested. Red means authority was concentrated with little independent check. Words stay invisible until they cross your threshold, so drag the line to declassify more, or less. Click a box to see which cases it belongs to.</p>
+    <div class="word-field" id="wordField"></div>
+    <div class="wm-slider-row">
+      <span>protective</span>
+      <input type="range" id="wmSlider" min="0" max="100" value="50">
+      <span>repressive</span>
+    </div>
+    <div class="wm-readout" id="wmReadout"></div>
+    <div class="wm-results" id="wmResults"></div>
+    <button class="open-archive-btn wm-browse-btn" id="wmBrowseAll">Browse the full case index &rarr;</button>
+  </div>
+</div>
+
+<script>
 // Array order = presentation/navigation order (sidebar + next/prev).
 // File numbers (n) and qtags stay fixed to the assignment's 13 required questions.
 const FILES = [
   {n:"01", tag:"Governance",  title:"The First Mark",   code:"NT-0117-A", x:280,  y:70,   rot:-2,
-   qtag:"01 introduction",
-   body:"In 1559 the Catholic Church published its own version of a case file system, the Index Librorum Prohibitorum, a list of prohibited books revised repeatedly until it was discontinued in 1966. That is where the material of this project starts. Not only because it is an early example, but because it establishes the basic shape every case after it repeats, a governing body, a list, and the ongoing work of keeping that list current. This project continues that same practice under a different form of authority, using computational methods in place of a printed index. A case file documents a single instance that remains open to appeal rather than closed into a final record. Each of the thirteen files on this board, and each of the sixteen cases in the archive behind it, is written and organized as exactly that, a documented instance rather than a settled verdict.",
-   photos:['./img/01-index-1.jpeg', './img/01-index-2.jpg', './img/01-index-3.jpg']},
-  {n:"02", tag:"Governance",  title:"Category",     code:"NT-0602-B", x:130,  y:450,  rot:1,
-   qtag:"02 keywords",
+   qtag:"assignment 01 · title",
+   body:"In 1559 the Catholic Church published its own version of a case file system, the Index Librorum Prohibitorum, a list of prohibited books revised repeatedly until it was discontinued in 1966. This project continues that same practice under a different form of authority, four centuries later. This is why the project is titled Censorship Case File rather than Censorship Atlas. An atlas claims to cover an entire territory. A case file documents a single instance that remains open to appeal rather than closed into a final record. Each of the thirteen files on this board, and each of the sixteen cases in the archive behind it, is written and organized as exactly that, a documented instance rather than a settled verdict."},
+  {n:"06", tag:"Governance",  title:"Need to Know",     code:"NT-0602-B", x:130,  y:450,  rot:1,
+   qtag:"assignment 03 · keywords",
    body:"Five terms structure this entire project. Governance refers to who holds the authority to restrict information. Legitimacy refers to whether that authority is broadly accepted as valid. Redaction refers to the specific technique used, which is to cover material rather than delete it. Threshold refers to the point at which a restriction stops functioning as protection and begins to function as control. Protocol refers to the underlying system through which a restriction is carried out, whether that system is digital, institutional, or physical.",
-   photos:['./img/02-legitimacy.jpg', './img/02-Office_Of_Censorship_1945.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/02-threshold.png', './img/02-threshold.jpeg'],
    // Front page keeps exactly one line of body text (instead of the usual
    // auto-picked two) — the hub diagram below takes over from there.
    snippets:["Five terms structure this entire project."],
@@ -20,70 +797,49 @@ const FILES = [
    // placeholder shows instead until you fill it in.
    // ===================================================================
    diagram:{
-     center:{ image:'./image/censorship.png' },
+     center:{ image:null },
      nodes:[
-       {n:"01", label:"Governance", desc:"Who holds the authority to restrict.",       image:'./image/governance.png'},
-       {n:"02", label:"Legitimacy", desc:"Whether that authority is accepted.",        image:'./image/legitimacy.png'},
-       {n:"03", label:"Redaction",  desc:"Cover material rather than delete it.",      image:'./image/redaction.png'},
-       {n:"04", label:"Threshold",  desc:"Where protection turns into control.",       image:'./image/threshold.png'},
-       {n:"05", label:"Protocol",   desc:"The system a restriction runs on.",          image:'./image/protocol.png'},
-     ]}
-  },
-  {n:"03", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
-   qtag:"03 research question",
-   body:"This project asks how cartography can reveal the infrastructures that negotiate visibility without determining whether any single negotiation was justified. Every restriction documented in this archive can be read in two ways. It can be read as protection by the party enforcing it, or as repression by the party losing access. Instead of attempting to resolve the disagreement, this research asks a narrower and more answerable question. Who holds the authority to approve a restriction, and does that authority remain credible once it is made visible?",
-   photos:[]
-  },
-  {n:"04", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
-   qtag:"04 visual representation",
-   body:"The visual system of this project functions as an argument rather than as decoration. Case files are pinned and layered across the board the way evidence is arranged during an active investigation. Each redaction bar represents a specific passage that was removed from a document, and the interaction of reading it by clicking reproduces the friction of an actual declassification review. The overall visual language, drawn directly from government case file conventions, claims that this file is a form of interpretation.",
-   photos:['./img/04-redaction-1.jpg', './img/04-redaction-2.jpg', './img/04-redaction-5.jpg']
-  },
-  {n:"05", tag:"Threshold",   title:"Precedent",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
-   qtag:"05 situated technology",
-   body:"In 2020 Reporters Without Borders rebuilt banned journalism inside the video game Minecraft, placing censored reporting on servers that a national firewall could not reach. Readers living under state restriction could open the game and read reporting their own government had blocked through conventional channels. The library did not escape governance so much as relocate within it. It moved from the authority of a state firewall to the authority of a private platform, subject to Mojang's terms of service and Microsoft's moderation policy, both of which retain the right to remove the project entirely.",
-   photos:['./img/05-precedent-2.png', './img/05-precedent-3.jpg', './img/05-precedent-4.png', './img/05-precedent-5.jpg']
-  },
-  {n:"06", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
-   qtag:"06 rhetorical argument",
-   body:"This project does not argue that any single restriction documented in this archive was justified. It argues something narrower and more controversal: archive is never released from control; It is only transferred from one controller to another. <br>A platform's terms of service comes to occupy the position previously held by a state's firewall. A private scoring system comes to occupy the position previously held by a censor's published list. No single case in this archive proves that claim on its own, but the sixteen cases considered together begin to. Whoever currently holds infrastructural power has little incentive to relinquish it, and no technology identified in this research, however protective in intent, removes that asymmetry. It only relocates it, or makes it briefly visible before it moves again. Decentralized protocols and public documentation both complicate this claim, and this project treats that complication as an open question rather than a resolved one.",
-   photos:['./img/06-404.png', './img/06-instagram.jpg', './img/06-tiktok.png']
-  },
-  {n:"07", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
-   qtag:"07 historical lineage",
-   body:"The mechanism used to control visibility has changed hands repeatedly across four centuries, moving from a printed index maintained by a religious institution, to a production code enforced by the American film industry itself between 1934 and 1968, to Benjamin Bratton's theory of computation as its own layered form of sovereignty spanning earth, cloud, city, address, interface, and user, to a digital library built inside a commercial video game. Each new arrangement presents itself as an escape from the one before it, yet none of them escape the need for an underlying protocol. <br>A comparable pattern appears twice in United States internet law. Section 230 protected platforms from legal liability for user content in 1996. The FOSTA and SESTA legislation opened an exception to that protection in 2018, and that same exception is now driving the platform moderation practices documented in three cases in this archive.",
-   photos:['./img/07-benjamin.png', './img/07-hayscode.jpg', './img/05-precedent-1.png']
-  },
+       {n:"01", label:"Governance", desc:"Who holds the authority to restrict.",       image:null},
+       {n:"02", label:"Legitimacy", desc:"Whether that authority is accepted.",        image:null},
+       {n:"03", label:"Redaction",  desc:"Cover material rather than delete it.",      image:null},
+       {n:"04", label:"Threshold",  desc:"Where protection turns into control.",       image:null},
+       {n:"05", label:"Protocol",   desc:"The system a restriction runs on.",          image:null},
+     ]
+   }},
+  {n:"02", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
+   qtag:"assignment 02 · research question",
+   body:"This project asks how cartography can reveal the infrastructures that negotiate visibility without determining whether any single negotiation was justified. Every restriction documented in this archive can be read in two ways. It can be read as protection by the party enforcing it, or as repression by the party losing access. This project does not attempt to resolve that disagreement. Instead it asks a narrower and more answerable question. Who holds the authority to approve a restriction, and does that authority remain credible once it is made visible?"},
+  {n:"03", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
+   qtag:"assignment 10 · visual representation",
+   body:"The visual system of this project functions as an argument rather than as decoration. Case files are pinned and layered across the board the way evidence is arranged during an active investigation. Each redaction bar represents a specific passage that was removed from a document, and the reader must click through it to continue, which reproduces the friction of an actual declassification review. The overall visual language, paper, string, red ink, and black bars, is drawn directly from government case file conventions. This project does not claim to be neutral. A case file is already a form of interpretation."},
+  {n:"04", tag:"Threshold",   title:"Line of Sight",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
+   qtag:"assignment 07 · situated technology",
+   body:"In 2020 Reporters Without Borders rebuilt banned journalism inside the video game Minecraft, placing censored reporting on servers that a national firewall could not reach. Readers living under state restriction could open the game and read reporting their own government had blocked through conventional channels. The library did not escape governance so much as relocate within it. It moved from the authority of a state firewall to the authority of a private platform, subject to Mojang's terms of service and Microsoft's moderation policy, both of which retain the right to remove the project entirely. Of the sixteen cases documented in this archive, this is the clearest demonstration of the claim advanced in File 12."},
+  {n:"12", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
+   qtag:"assignment 11 · rhetorical argument",
+   body:"This project does not argue that any single restriction documented in this archive was justified. It argues something narrower and more difficult to dismiss. Visibility is never released from control. It is only transferred from one controller to another. A platform's terms of service comes to occupy the position previously held by a state's firewall. A private scoring system comes to occupy the position previously held by a censor's published list. No single case in this archive proves that claim on its own, but the sixteen cases considered together begin to. Whoever currently holds infrastructural power has little incentive to relinquish it, and no technology identified in this research, however protective in intent, removes that asymmetry. It only relocates it, or makes it briefly visible before it moves again. This is not a neutral position. It is an argument, and one that remains open to challenge. Decentralized protocols and public documentation both complicate this claim, and this project treats that complication as an open question rather than a resolved one."},
+  {n:"05", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
+   qtag:"assignment 05 · historical lineage",
+   body:"The mechanism used to control visibility has changed hands repeatedly across four centuries, moving from a printed index maintained by a religious institution, to a production code enforced by the American film industry itself between 1934 and 1968, to Benjamin Bratton's theory of computation as its own layered form of sovereignty spanning earth, cloud, city, address, interface, and user, to a digital library built inside a commercial video game. Each new arrangement presents itself as an escape from the one before it, yet none of them escape the need for an underlying protocol. A comparable pattern appears twice in United States internet law. Section 230 protected platforms from legal liability for user content in 1996. The FOSTA and SESTA legislation opened an exception to that protection in 2018, and that same exception is now driving the platform moderation practices documented in three cases in this archive."},
   {n:"08", tag:"Redaction",   title:"The Archive",      code:"NT-0825-D", x:700,  y:500,  rot:1.5,
-   qtag:"08 · computational experiments",
+   qtag:"assignment 09 · computational experiments",
    body:"Two computational experiments support this archive. The first is a case index containing sixteen documented restrictions, filterable by the five terms used throughout this project. The second is a threshold map, which plots the same sixteen cases along a spectrum from clearly protective to clearly repressive. The placement of the threshold itself is left to the reader rather than fixed by the project, which is intentional. The purpose of both experiments is not to resolve the classification of any single case, but to make the act of classification itself visible and available for scrutiny.",
-   gateway:true, photos:['./img/08-archive-1.png', './img/08-archive-2.png', './img/08-archive-3.png', './img/08-archive-4.jpg', './img/08-archive-5.jpg']
-  },
-  {n:"09", tag:"Threshold",   title:"Application",       code:"NT-0904-A", x:980,  y:430,  rot:-1,
-   qtag:"09 · methods",
-   body:"This project relies on four methods. Comparative case coding was used to identify patterns across the sixteen documented restrictions. Archival research was conducted using primary sources including statutes, court rulings, platform policy documents, and press coverage. An interactive interface was designed specifically to perform the argument rather than simply illustrate it. Protocol analysis was applied to infrastructures including Minecraft, Microsoft, OpenAI, and X, though this method has a clear limitation: it can document the effects of these infrastructures without being able to fully examine their internal systems. Computation does not resolve the problem of censorship in this project. It is used instead to reveal where existing systems fail to account for their own effects.",
-   photos:['./img/09-methods-1.jpg', './img/09-methods-2.png', './img/09-methods-3.jpeg']
-  },
-  {n:"10", tag:"Governance",  title:"The Appeal",       code:"NT-1128-C", x:270,  y:760,  rot:-1.5,
-   qtag:"10 community of practice (projects)",
-   body:"Several existing projects work in a related space. <br>Harvard's Lumen Database collects takedown notices without adjudicating them. OONI, Citizen Lab, and the University of Michigan's Censored Planet measure internet censorship worldwide through standardized and largely automated methods, treating public servers as measurement points rather than relying on any single vantage point. The Electronic Frontier Foundation documents platform takedowns at the scale of individual user reports. The National Coalition Against Censorship maintains a public timeline of internet censorship in the United States, though its purpose is explicitly advocacy rather than neutral measurement, which distinguishes it from the other three. Kialo structures arguments as trees of supporting and opposing claims rather than as case files, offering a different mechanism aimed at a similar goal, allowing a reader to hold both sides of an argument without being handed a conclusion.",
-   photos:['./img/10-project-1.png', './img/10-project-2.png', './img/10-project-3.png', './img/10-project-4.png', './img/10-project-5.png']
-  },
-  {n:"11", tag:"Legitimacy",  title:"The Classifier",   code:"NT-0718-C", x:420,  y:530,  rot:-2,
-   qtag:"11 intersecting fields · community of practice (readings)",
-   body:"This project does not belong to a single discipline. It sits at the intersection of information policy, platform governance, comparative law, data visualization, and archival science. Two theoretical positions underpin the project as a whole. Michel Foucault argued that power rarely announces itself through prohibition alone, and more often operates through surveillance and classification. Benjamin Bratton's account of computation as a layered and sovereign stack extends that argument into contemporary infrastructure. In both readings a censor functions primarily as a classifier. The same is true of an academic field, which must also decide which cases fall within its boundaries.",
-   photos:['./img/11-bretton.jpg', './img/11-data-femi.jpg', './img/11-derrida.jpeg', './img/11-foucault.jpg']
-  },
-  {n:"12", tag:"Protocol",    title:"Sunset Clause",    code:"NT-1012-B", x:1230, y:330,  rot:2.5,
-   qtag:"12 challenges",
-   body:"So far, this project faced five categories of challenge. The technical challenge was preventing the five key terms from collapsing into another simplified, color coded chart. The research challenge was sourcing sixteen cases in sufficient depth without flattening their differences onto a single spectrum. The design challenge was representing infrastructures such as application programming interfaces and moderation queues, which resist a fixed position on a board. The conceptual challenge was remaining descriptive rather than prescriptive, since every act of classification already carries a judgment of its own. <br>Now, the largest challenge remained is that the work completed so far, gathering and documenting information into a database, constitutes a process rather than a decision. It poses a question rather than answering one. Since the project's purpose has been to keep information transparent enough for audiences to reach their own interpretation, the central challenge is determining what comes next, without returning to censorship, building a new system, or occupying a position between the two.",
-   photos:['./img/12-challenge-1.png', './img/12-challenge-3.jpg', './img/12-challenge-5.png']
-  },
+   gateway:true},
+  {n:"09", tag:"Threshold",   title:"What Leaks",       code:"NT-0904-A", x:980,  y:430,  rot:-1,
+   qtag:"assignment 08 · methods",
+   body:"This project relies on four methods. Comparative case coding was used to identify patterns across the sixteen documented restrictions. Archival research was conducted using primary sources including statutes, court rulings, platform policy documents, and press coverage. An interactive interface was designed specifically to perform the argument rather than simply illustrate it. Protocol analysis was applied to infrastructures including Minecraft, Microsoft, OpenAI, and X, though this method has a clear limitation. It can document the effects of these infrastructures without being able to fully examine their internal systems. Computation does not resolve the problem of censorship in this project. It is used instead to reveal where existing systems fail to account for their own effects."},
+  {n:"11", tag:"Governance",  title:"The Appeal",       code:"NT-1128-C", x:270,  y:760,  rot:-1.5,
+   qtag:"assignment 06 · community of practice (projects)",
+   body:"Several existing projects work in a related space. Harvard's Lumen Database collects takedown notices without adjudicating them. OONI, Citizen Lab, and the University of Michigan's Censored Planet measure internet censorship worldwide through standardized and largely automated methods, treating public servers as measurement points rather than relying on any single vantage point. The Electronic Frontier Foundation documents platform takedowns at the scale of individual user reports. The National Coalition Against Censorship maintains a public timeline of internet censorship in the United States, though its purpose is explicitly advocacy rather than neutral measurement, which distinguishes it from the other three. Kialo structures arguments as trees of supporting and opposing claims rather than as case files, offering a different mechanism aimed at a similar goal, allowing a reader to hold both sides of an argument without being handed a conclusion. The theoretical foundation this project draws from is addressed separately in File 07."},
+  {n:"07", tag:"Legitimacy",  title:"The Classifier",   code:"NT-0718-C", x:420,  y:530,  rot:-2,
+   qtag:"assignment 04 · intersecting fields / community of practice (readings)",
+   body:"This project does not belong to a single discipline. It sits at the intersection of information policy, platform governance, comparative law, data visualization, and archival science. Two theoretical positions underpin the project as a whole. Michel Foucault argued that power rarely announces itself through prohibition alone, and more often operates through surveillance and classification. Benjamin Bratton's account of computation as a layered and sovereign stack extends that argument into contemporary infrastructure. In both readings a censor functions primarily as a classifier. The same is true of an academic field, which must also decide which cases fall within its boundaries."},
+  {n:"10", tag:"Protocol",    title:"Sunset Clause",    code:"NT-1012-B", x:1230, y:330,  rot:2.5,
+   qtag:"assignment 13 · challenges",
+   body:"This project faces four categories of challenge. The technical challenge is preventing the five key terms from collapsing into another simplified, color coded chart. The research challenge is sourcing sixteen cases in sufficient depth without flattening their differences onto a single spectrum. The design challenge is representing infrastructures such as application programming interfaces and moderation queues, which resist being reduced to a fixed position on a board. The conceptual challenge is remaining descriptive rather than prescriptive, given that every act of classification already contains a judgment of its own."},
   {n:"13", tag:"Redaction",   title:"Declassified",     code:"NT-1301-A", x:900,  y:760,  rot:-2,
-   qtag:"13 capstone direction",
-   body:"One possible working direction is exhibiting the fully sourced archive alongside an object it cannot replace, such as a printed page from an actual banned book or an archival document. Presenting the software and a physical artifact side by side allows the same argument to be made through two different materials, as I attempted in this presentation. However, this is offered as a curatorial proposal rather than as a solution. <br>The underlying question may never have been whether an archive can escape control, since this project concludes that it cannot. The more accurate question may be whether an archive can at least make its own conditions of control visible, rather than presenting itself as though no such conditions exist. Beyond that, the project shifts the discussion from how to escape censorship toward how we understand and design within its conditions. That is the function the redaction bar has performed throughout this project, though whether that function is sufficient remains an open question.",
-   photos:['./img/13-1.png', './img/13-2.jpg', './img/13-3.jpg', './img/13-8.jpeg']
-  },
+   qtag:"assignment 12 · capstone direction",
+   body:"The working direction for this project is a fully sourced version of this archive exhibited alongside an object it cannot replace, a printed page from an actual banned book. Software and a four hundred year old index would be presented side by side, making the same argument through two different materials. This is not proposed as a solution. It is proposed as a pairing. The underlying question may never have been whether an archive can escape control, since this project concludes that it cannot. The more accurate question may be whether an archive can at least make its own conditions of control visible, rather than presenting itself as though no such conditions exist. That is the function the redaction bar has performed throughout this project, beginning with File 01. Whether that function is sufficient remains an open question."},
 ];
 const TITLE_POS = {x:20, y:60};
 // Index pairs below refer to POSITION in the FILES array above, not file number,
@@ -118,9 +874,9 @@ titleNode.setAttribute('aria-label', 'Zoom into title card');
 titleNode.innerHTML = `
   <div class="pin"></div>
   <div class="paper">
-    <div class="eyebrow">The Censorship Casefile</div>
+    <div class="eyebrow">Case File Archive · 13 Documents · 16 Case Index</div>
     <div class="thesis">&ldquo;Who decides what remains unseen, and why?&rdquo;</div>
-    <div class="keywords">from the history of censorship to the sustainability of archive undere the computational technology</div>
+    <div class="keywords">GOVERNANCE<span class="dot">·</span>LEGITIMACY<span class="dot">·</span>REDACTION<br>THRESHOLD<span class="dot">·</span>PROTOCOL</div>
   </div>`;
 boardCanvas.appendChild(titleNode);
 // keyboard equivalent of tapping the title card (see clickCandidate below
@@ -133,10 +889,10 @@ titleNode.addEventListener('keydown', e=>{
 FILES.forEach((f,idx)=>{
   const node = document.createElement('div');
   node.className='node';
-  node.dataset.n = f.n;
   node.style.left=f.x+'px'; node.style.top=f.y+'px';
   node.style.zIndex = 5+idx;
   node.tabIndex=0;
+  node.dataset.n = f.n;
   const ph = PH_CLASSES[idx % PH_CLASSES.length];
   node.innerHTML = `
     <div class="node-pin"></div>
@@ -262,6 +1018,7 @@ viewport.addEventListener('pointerdown', e=>{
     clickCandidate = e.target.closest('.node, .title-node');
     clickStartX = e.clientX; clickStartY = e.clientY;
   } else if(pointers.size===2){
+    clickCandidate = null;
     dragging=false;
     const pts=[...pointers.values()];
     pinchStartDist = dist(pts[0],pts[1]);
@@ -475,7 +1232,7 @@ function splitIntoRedactedLines(text, wordsPerLine){
 }
 function renderFrontBody(f){
   const snippets = (f.snippets && f.snippets.length) ? f.snippets : autoSnippets(f.body);
-  
+
   // ===================================================================
   // PUT YOUR OWN FRONT-PAGE IMAGE(S) HERE.
   // Give a FILES[] entry `frontImage: 'images/your-file.jpg'` to show a
@@ -515,8 +1272,6 @@ function renderFrontBody(f){
   </div>` : ``;
   return imageHTML + snippetsHTML + diagramHTML + gatewayHTML;
 }
-
-//NEED TO BE REVISED
 
 // Renders the hub-and-spoke diagram (center image + 5 labeled satellite
 // nodes) used on File 06's front page. `startLi` continues the page's
@@ -616,6 +1371,7 @@ FILES.forEach((f,idx)=>{
       </div>
     </div>`;
   slideStage.appendChild(wrap);
+  const stack = wrap.querySelector('.doc-stack');
   if(f.gateway){
     wrap.querySelector('#openArchiveBtn').addEventListener('click', e=>{ e.stopPropagation(); openArchive(); });
     wrap.querySelector('#openWordmapBtn').addEventListener('click', e=>{ e.stopPropagation(); openWordmap(); });
@@ -671,7 +1427,7 @@ FILES.forEach((f,idx)=>{
     photo.addEventListener('pointerleave', ()=>{ pdrag=false; });
   });
 
-  // diagram thumbnails (section 02): plain click-to-zoom, no drag — click
+  // diagram thumbnails (File 06): plain click-to-zoom, no drag — click
   // again (or click elsewhere on the thumb) to shrink back to normal size
   wrap.querySelectorAll('.dgm-thumb-wrap').forEach(thumb=>{
     thumb.addEventListener('click', e=>{
@@ -768,13 +1524,13 @@ window.addEventListener('hashchange', ()=>{
 /* -------- the 16-case archive (nested inside File 08) -------- */
 const ARCHIVE_TAGS = ["Governance","Legitimacy","Redaction","Threshold","Protocol"];
 const ARCHIVE_CASES = [
-  {id:'01', title:'The Great Firewall', tag:'Governance', actor:'state', outcome:'normalized', pos:87,
+  {id:'01', title:'The Great Firewall', tag:'Governance', actor:'state', outcome:'normalized', pos:90,
    note:'Rated toward the concentrated end. Filtering runs at the national gateway with no independent appeal.',
    year:'1998 to ongoing', location:'China',
    mechanism:'DNS filtering, IP blocking, and keyword inspection at the national gateway level',
    kw:['china','infrastructure','ongoing'],
    summary:'A national infrastructure of filtering and blocking that restricts access to foreign platforms and search results, justified as sovereignty over domestic information space.'},
-  {id:'02', title:'NetzDG Takedown Law', tag:'Redaction', actor:'state', outcome:'contested', pos:51,
+  {id:'02', title:'NetzDG Takedown Law', tag:'Redaction', actor:'state', outcome:'contested', pos:55,
    note:'Rated mid scale. The state sets the rule, but a private platform executes it under fine pressure, and the law itself has faced public and legal challenge.',
    year:'2017', location:'Germany',
    mechanism:'Statutory 24 hour takedown mandate enforced through fines on platform operators',
@@ -786,13 +1542,13 @@ const ARCHIVE_CASES = [
    mechanism:'Criminal statute prosecuted through the French courts',
    kw:['france','historical memory','upheld'],
    summary:'A law criminalizing Holocaust denial, framed as protecting historical fact and public dignity rather than restricting general political speech.'},
-  {id:'04', title:"Children's Online Privacy Rule", tag:'Threshold', actor:'state', outcome:'upheld', pos:26,
+  {id:'04', title:"Children's Online Privacy Rule", tag:'Threshold', actor:'state', outcome:'upheld', pos:36,
    note:'Rated toward the checked end, and still the lowest score in this archive. A public rulemaking process and agency oversight exist, but an agency still unilaterally restricts, so no case gets to be purely protective.',
    year:'1998 (COPPA), rule active', location:'United States',
    mechanism:'FTC regulatory rule enforced through civil penalties',
    kw:['usa','minors','data'],
    summary:'Federal rules restricting how services can collect data from and target content toward children under 13.'},
-  {id:'05', title:'2017 Wikipedia Block', tag:'Governance', actor:'state', outcome:'overturned', pos:75,
+  {id:'05', title:'2017 Wikipedia Block', tag:'Governance', actor:'state', outcome:'overturned', pos:78,
    note:'Rated toward the concentrated end. Full administrative authority was exercised for over two years before any court intervened.',
    year:'2017 to 2020', location:'Turkey',
    mechanism:'Administrative ISP level block, later reversed by constitutional court ruling',
@@ -810,7 +1566,7 @@ const ARCHIVE_CASES = [
    mechanism:'Private platform policy enforcement via automated and human review',
    kw:['platform policy','health','elections'],
    summary:'Extensive removal and demotion of posts flagged as health or election misinformation, private editorial judgment at public square scale.'},
-  {id:'08', title:'Podcast Delisting Disputes', tag:'Redaction', actor:'platform', outcome:'contested', pos:47,
+  {id:'08', title:'Podcast Delisting Disputes', tag:'Redaction', actor:'platform', outcome:'contested', pos:51,
    note:'Rated mid scale. Narrower in reach than platform wide moderation, but still one company\'s unilateral call.',
    year:'2022', location:'United States',
    mechanism:'Selective episode removal under platform content policy',
@@ -822,31 +1578,31 @@ const ARCHIVE_CASES = [
    mechanism:'Ministerial correction and takedown directives under statute (POFMA)',
    kw:['singapore','fake news law'],
    summary:'A law empowering ministers to order correction notices or takedowns of statements deemed false, criticized as a tool for suppressing dissent.'},
-  {id:'10', title:'Online Safety Act', tag:'Threshold', actor:'state', outcome:'upheld', pos:43,
+  {id:'10', title:'Online Safety Act', tag:'Threshold', actor:'state', outcome:'upheld', pos:47,
    note:'Rated toward the checked end. A statutory regulator enforces the rule, and formal appeal routes exist even though the penalties are real.',
    year:'2023', location:'United Kingdom',
    mechanism:'Statutory duty of care enforced by regulator (Ofcom) with age verification requirements',
    kw:['uk','minors','platform duty'],
    summary:'Legislation requiring platforms to shield minors from harmful content and enforce age verification.'},
-  {id:'11', title:'DMCA Takedown Notices', tag:'Protocol', actor:'commercial', outcome:'normalized', pos:38,
+  {id:'11', title:'DMCA Takedown Notices', tag:'Protocol', actor:'commercial', outcome:'normalized', pos:44,
    note:'Rated toward the checked end. Any rights holder can trigger a takedown unilaterally, but a counter notice process exists, even if the two sides remain unevenly matched.',
    year:'1998 to ongoing', location:'United States',
    mechanism:'Formal notice and takedown procedure under federal copyright law',
    kw:['usa','copyright','routine'],
    summary:'A system letting rights holders request removal of infringing content via formal notice, routine, and occasionally used to suppress criticism.'},
-  {id:'12', title:'School Library Book Removals', tag:'Redaction', actor:'institution', outcome:'contested', pos:60,
+  {id:'12', title:'School Library Book Removals', tag:'Redaction', actor:'institution', outcome:'contested', pos:61,
    note:'Rated mid scale. An elected local board makes the call, which offers some accountability, though the pattern is often driven by ideological pressure.',
    year:'2021 to ongoing', location:'United States (multiple districts)',
    mechanism:'Local school board review and removal decisions',
    kw:['usa','education','local'],
    summary:'District level removal of books in response to content disputes, driven by local pressure rather than national law.'},
-  {id:'13', title:'Social Credit Content Restriction', tag:'Governance', actor:'state', outcome:'normalized', pos:90,
+  {id:'13', title:'Social Credit Content Restriction', tag:'Governance', actor:'state', outcome:'normalized', pos:93,
    note:'Rated toward the concentrated end. Criteria stay opaque and cross domains, with little independent appeal.',
    year:'2014 to ongoing', location:'China',
    mechanism:'Scoring system linking online conduct to access restrictions on services',
    kw:['china','scoring system','ongoing'],
    summary:'Access to services tied to a citizen scoring system that can be affected by online speech, blending financial and expressive consequences.'},
-  {id:'14', title:'Film Ratings Board', tag:'Threshold', actor:'institution', outcome:'normalized', pos:31,
+  {id:'14', title:'Film Ratings Board', tag:'Threshold', actor:'institution', outcome:'normalized', pos:41,
    note:'Rated toward the checked end. An unelected industry board still controls real distribution and marketing access, which is why even a voluntary system does not score near the floor.',
    year:'1968 to ongoing', location:'United States',
    mechanism:'Voluntary industry self regulation (MPA rating system) tied to distribution and marketing',
@@ -858,7 +1614,7 @@ const ARCHIVE_CASES = [
    mechanism:'Platform trust and safety enforcement against political accounts',
    kw:['platform policy','politicians','global'],
    summary:'Suspension of prominent political accounts across several countries, with disputes over whether the standard was applied evenly.'},
-  {id:'16', title:'Wartime Press Censorship', tag:'Protocol', actor:'state', outcome:'contested', pos:70,
+  {id:'16', title:'Wartime Press Censorship', tag:'Protocol', actor:'state', outcome:'contested', pos:71,
    note:'Rated toward the concentrated end. Wartime executive power historically left little room to contest a decision while the review board was active.',
    year:'1917 to 1945 (recurring)', location:'United States / United Kingdom',
    mechanism:'Government pre publication review boards for war reporting',
@@ -1122,3 +1878,7 @@ document.getElementById('wordmapClose').addEventListener('click', closeWordmap);
 wordmapOverlay.addEventListener('click', e=>{ if(e.target===wordmapOverlay) closeWordmap(); });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && wordmapOverlay.classList.contains('open')) closeWordmap(); });
 document.getElementById('wmBrowseAll').addEventListener('click', ()=>{ closeWordmap(); openArchive(); });
+
+</script>
+</body>
+</html>

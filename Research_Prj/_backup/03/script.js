@@ -8,82 +8,51 @@ const FILES = [
   {n:"02", tag:"Governance",  title:"Category",     code:"NT-0602-B", x:130,  y:450,  rot:1,
    qtag:"02 keywords",
    body:"Five terms structure this entire project. Governance refers to who holds the authority to restrict information. Legitimacy refers to whether that authority is broadly accepted as valid. Redaction refers to the specific technique used, which is to cover material rather than delete it. Threshold refers to the point at which a restriction stops functioning as protection and begins to function as control. Protocol refers to the underlying system through which a restriction is carried out, whether that system is digital, institutional, or physical.",
-   photos:['./img/02-legitimacy.jpg', './img/02-Office_Of_Censorship_1945.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/02-threshold.png', './img/02-threshold.jpeg'],
-   // Front page keeps exactly one line of body text (instead of the usual
-   // auto-picked two) — the hub diagram below takes over from there.
-   snippets:["Five terms structure this entire project."],
-   // ===================================================================
-   // PUT YOUR OWN DIAGRAM IMAGES HERE. `center.image` is the middle
-   // image (always shown, never redacted). Each `nodes[i].image` is
-   // that node's own thumbnail — set any of these to an image path/URL,
-   // e.g. 'images/governance.jpg'. Leave one unset and a camera
-   // placeholder shows instead until you fill it in.
-   // ===================================================================
-   diagram:{
-     center:{ image:'./image/censorship.png' },
-     nodes:[
-       {n:"01", label:"Governance", desc:"Who holds the authority to restrict.",       image:'./image/governance.png'},
-       {n:"02", label:"Legitimacy", desc:"Whether that authority is accepted.",        image:'./image/legitimacy.png'},
-       {n:"03", label:"Redaction",  desc:"Cover material rather than delete it.",      image:'./image/redaction.png'},
-       {n:"04", label:"Threshold",  desc:"Where protection turns into control.",       image:'./image/threshold.png'},
-       {n:"05", label:"Protocol",   desc:"The system a restriction runs on.",          image:'./image/protocol.png'},
-     ]}
-  },
+   photos:['./img/02-legitimacy.jpg', './img/02-Office_Of_Censorship_1945.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/02-threshold.png', './img/02-threshold.jpeg']},
   {n:"03", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
    qtag:"03 research question",
    body:"This project asks how cartography can reveal the infrastructures that negotiate visibility without determining whether any single negotiation was justified. Every restriction documented in this archive can be read in two ways. It can be read as protection by the party enforcing it, or as repression by the party losing access. Instead of attempting to resolve the disagreement, this research asks a narrower and more answerable question. Who holds the authority to approve a restriction, and does that authority remain credible once it is made visible?",
-   photos:[]
-  },
+   photos:[]},
   {n:"04", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
    qtag:"04 visual representation",
    body:"The visual system of this project functions as an argument rather than as decoration. Case files are pinned and layered across the board the way evidence is arranged during an active investigation. Each redaction bar represents a specific passage that was removed from a document, and the interaction of reading it by clicking reproduces the friction of an actual declassification review. The overall visual language, drawn directly from government case file conventions, claims that this file is a form of interpretation.",
-   photos:['./img/04-redaction-1.jpg', './img/04-redaction-2.jpg', './img/04-redaction-5.jpg']
-  },
+   photos:['./img/04-redaction-1.jpg', './img/04-redaction-2.jpg', './img/04-redaction-5.jpg']},
   {n:"05", tag:"Threshold",   title:"Precedent",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
    qtag:"05 situated technology",
    body:"In 2020 Reporters Without Borders rebuilt banned journalism inside the video game Minecraft, placing censored reporting on servers that a national firewall could not reach. Readers living under state restriction could open the game and read reporting their own government had blocked through conventional channels. The library did not escape governance so much as relocate within it. It moved from the authority of a state firewall to the authority of a private platform, subject to Mojang's terms of service and Microsoft's moderation policy, both of which retain the right to remove the project entirely.",
-   photos:['./img/05-precedent-2.png', './img/05-precedent-3.jpg', './img/05-precedent-4.png', './img/05-precedent-5.jpg']
-  },
+   photos:['./img/05-precedent-2.png', './img/05-precedent-3.jpg', './img/05-precedent-4.png', './img/05-precedent-5.jpg']},
   {n:"06", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
    qtag:"06 rhetorical argument",
    body:"This project does not argue that any single restriction documented in this archive was justified. It argues something narrower and more controversal: archive is never released from control; It is only transferred from one controller to another. <br>A platform's terms of service comes to occupy the position previously held by a state's firewall. A private scoring system comes to occupy the position previously held by a censor's published list. No single case in this archive proves that claim on its own, but the sixteen cases considered together begin to. Whoever currently holds infrastructural power has little incentive to relinquish it, and no technology identified in this research, however protective in intent, removes that asymmetry. It only relocates it, or makes it briefly visible before it moves again. Decentralized protocols and public documentation both complicate this claim, and this project treats that complication as an open question rather than a resolved one.",
-   photos:['./img/06-404.png', './img/06-instagram.jpg', './img/06-tiktok.png']
-  },
+   photos:['./img/06-404.png', './img/06-instagram.jpg', './img/06-tiktok.png']},
   {n:"07", tag:"Protocol",    title:"Chain of Custody", code:"NT-0521-A", x:1030, y:100,  rot:2,
    qtag:"07 historical lineage",
    body:"The mechanism used to control visibility has changed hands repeatedly across four centuries, moving from a printed index maintained by a religious institution, to a production code enforced by the American film industry itself between 1934 and 1968, to Benjamin Bratton's theory of computation as its own layered form of sovereignty spanning earth, cloud, city, address, interface, and user, to a digital library built inside a commercial video game. Each new arrangement presents itself as an escape from the one before it, yet none of them escape the need for an underlying protocol. <br>A comparable pattern appears twice in United States internet law. Section 230 protected platforms from legal liability for user content in 1996. The FOSTA and SESTA legislation opened an exception to that protection in 2018, and that same exception is now driving the platform moderation practices documented in three cases in this archive.",
-   photos:['./img/07-benjamin.png', './img/07-hayscode.jpg', './img/05-precedent-1.png']
-  },
+   photos:['./img/07-benjamin.png', './img/07-hayscode.jpg', './img/05-precedent-1.png']},
   {n:"08", tag:"Redaction",   title:"The Archive",      code:"NT-0825-D", x:700,  y:500,  rot:1.5,
    qtag:"08 · computational experiments",
    body:"Two computational experiments support this archive. The first is a case index containing sixteen documented restrictions, filterable by the five terms used throughout this project. The second is a threshold map, which plots the same sixteen cases along a spectrum from clearly protective to clearly repressive. The placement of the threshold itself is left to the reader rather than fixed by the project, which is intentional. The purpose of both experiments is not to resolve the classification of any single case, but to make the act of classification itself visible and available for scrutiny.",
-   gateway:true, photos:['./img/08-archive-1.png', './img/08-archive-2.png', './img/08-archive-3.png', './img/08-archive-4.jpg', './img/08-archive-5.jpg']
-  },
+   gateway:true, photos:['./img/08-archive-1.png', './img/08-archive-2.png', './img/08-archive-3.png', './img/08-archive-4.jpg', './img/08-archive-5.jpg']},
   {n:"09", tag:"Threshold",   title:"Application",       code:"NT-0904-A", x:980,  y:430,  rot:-1,
    qtag:"09 · methods",
    body:"This project relies on four methods. Comparative case coding was used to identify patterns across the sixteen documented restrictions. Archival research was conducted using primary sources including statutes, court rulings, platform policy documents, and press coverage. An interactive interface was designed specifically to perform the argument rather than simply illustrate it. Protocol analysis was applied to infrastructures including Minecraft, Microsoft, OpenAI, and X, though this method has a clear limitation: it can document the effects of these infrastructures without being able to fully examine their internal systems. Computation does not resolve the problem of censorship in this project. It is used instead to reveal where existing systems fail to account for their own effects.",
-   photos:['./img/09-methods-1.jpg', './img/09-methods-2.png', './img/09-methods-3.jpeg']
-  },
+   photos:['./img/09-methods-1.jpg', './img/09-methods-2.png', './img/09-methods-3.jpeg']},
   {n:"10", tag:"Governance",  title:"The Appeal",       code:"NT-1128-C", x:270,  y:760,  rot:-1.5,
    qtag:"10 community of practice (projects)",
    body:"Several existing projects work in a related space. <br>Harvard's Lumen Database collects takedown notices without adjudicating them. OONI, Citizen Lab, and the University of Michigan's Censored Planet measure internet censorship worldwide through standardized and largely automated methods, treating public servers as measurement points rather than relying on any single vantage point. The Electronic Frontier Foundation documents platform takedowns at the scale of individual user reports. The National Coalition Against Censorship maintains a public timeline of internet censorship in the United States, though its purpose is explicitly advocacy rather than neutral measurement, which distinguishes it from the other three. Kialo structures arguments as trees of supporting and opposing claims rather than as case files, offering a different mechanism aimed at a similar goal, allowing a reader to hold both sides of an argument without being handed a conclusion.",
-   photos:['./img/10-project-1.png', './img/10-project-2.png', './img/10-project-3.png', './img/10-project-4.png', './img/10-project-5.png']
-  },
+   photos:['./img/10-project-1.png', './img/10-project-2.png', './img/10-project-3.png', './img/10-project-4.png', './img/10-project-5.png']},
   {n:"11", tag:"Legitimacy",  title:"The Classifier",   code:"NT-0718-C", x:420,  y:530,  rot:-2,
    qtag:"11 intersecting fields · community of practice (readings)",
    body:"This project does not belong to a single discipline. It sits at the intersection of information policy, platform governance, comparative law, data visualization, and archival science. Two theoretical positions underpin the project as a whole. Michel Foucault argued that power rarely announces itself through prohibition alone, and more often operates through surveillance and classification. Benjamin Bratton's account of computation as a layered and sovereign stack extends that argument into contemporary infrastructure. In both readings a censor functions primarily as a classifier. The same is true of an academic field, which must also decide which cases fall within its boundaries.",
-   photos:['./img/11-bretton.jpg', './img/11-data-femi.jpg', './img/11-derrida.jpeg', './img/11-foucault.jpg']
-  },
+   photos:['./img/11-bretton.jpg', './img/11-data-femi.jpg', './img/11-derrida.jpeg', './img/11-foucault.jpg']},
   {n:"12", tag:"Protocol",    title:"Sunset Clause",    code:"NT-1012-B", x:1230, y:330,  rot:2.5,
    qtag:"12 challenges",
    body:"So far, this project faced five categories of challenge. The technical challenge was preventing the five key terms from collapsing into another simplified, color coded chart. The research challenge was sourcing sixteen cases in sufficient depth without flattening their differences onto a single spectrum. The design challenge was representing infrastructures such as application programming interfaces and moderation queues, which resist a fixed position on a board. The conceptual challenge was remaining descriptive rather than prescriptive, since every act of classification already carries a judgment of its own. <br>Now, the largest challenge remained is that the work completed so far, gathering and documenting information into a database, constitutes a process rather than a decision. It poses a question rather than answering one. Since the project's purpose has been to keep information transparent enough for audiences to reach their own interpretation, the central challenge is determining what comes next, without returning to censorship, building a new system, or occupying a position between the two.",
-   photos:['./img/12-challenge-1.png', './img/12-challenge-3.jpg', './img/12-challenge-5.png']
-  },
+   photos:['./img/12-challenge-1.png', './img/12-challenge-3.jpg', './img/12-challenge-5.png']},
   {n:"13", tag:"Redaction",   title:"Declassified",     code:"NT-1301-A", x:900,  y:760,  rot:-2,
    qtag:"13 capstone direction",
    body:"One possible working direction is exhibiting the fully sourced archive alongside an object it cannot replace, such as a printed page from an actual banned book or an archival document. Presenting the software and a physical artifact side by side allows the same argument to be made through two different materials, as I attempted in this presentation. However, this is offered as a curatorial proposal rather than as a solution. <br>The underlying question may never have been whether an archive can escape control, since this project concludes that it cannot. The more accurate question may be whether an archive can at least make its own conditions of control visible, rather than presenting itself as though no such conditions exist. Beyond that, the project shifts the discussion from how to escape censorship toward how we understand and design within its conditions. That is the function the redaction bar has performed throughout this project, though whether that function is sufficient remains an open question.",
-   photos:['./img/13-1.png', './img/13-2.jpg', './img/13-3.jpg', './img/13-8.jpeg']
-  },
+   photos:['./img/13-1.png', './img/13-2.jpg', './img/13-3.jpg', './img/13-8.jpeg']},
 ];
 const TITLE_POS = {x:20, y:60};
 // Index pairs below refer to POSITION in the FILES array above, not file number,
@@ -112,9 +81,6 @@ FILES.forEach(f=>{
 const titleNode = document.createElement('div');
 titleNode.className = 'title-node';
 titleNode.style.left = TITLE_POS.x+'px'; titleNode.style.top = TITLE_POS.y+'px';
-titleNode.tabIndex = 0;
-titleNode.style.cursor = 'pointer';
-titleNode.setAttribute('aria-label', 'Zoom into title card');
 titleNode.innerHTML = `
   <div class="pin"></div>
   <div class="paper">
@@ -123,17 +89,11 @@ titleNode.innerHTML = `
     <div class="keywords">from the history of censorship to the sustainability of archive undere the computational technology</div>
   </div>`;
 boardCanvas.appendChild(titleNode);
-// keyboard equivalent of tapping the title card (see clickCandidate below
-// for the pointer/tap version) — replays the zoom-into-title flourish.
-titleNode.addEventListener('keydown', e=>{
-  if(e.key==='Enter'||e.key===' '){ e.preventDefault(); zoomToTitleIntro(); }
-});
 
 /* -------- home board nodes (overlapping, grayscale) -------- */
 FILES.forEach((f,idx)=>{
   const node = document.createElement('div');
   node.className='node';
-  node.dataset.n = f.n;
   node.style.left=f.x+'px'; node.style.top=f.y+'px';
   node.style.zIndex = 5+idx;
   node.tabIndex=0;
@@ -147,11 +107,7 @@ FILES.forEach((f,idx)=>{
       <div class="node-photo ${ph}">${camera}</div>
       <div class="node-bars"><div></div><div></div><div></div><div></div></div>
     </div>`;
-  /* navigation on pointer tap is handled centrally by the viewport's own
-     pointer handlers below (see clickCandidate) — the viewport captures
-     the pointer for panning, which can swallow a plain 'click' listener
-     here, so a tap is detected by movement distance instead. Keyboard
-     activation still works directly. */
+  node.addEventListener('click', ()=> go(f.n));
   node.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault(); go(f.n);} });
   boardCanvas.appendChild(node);
 });
@@ -175,26 +131,6 @@ FILES.forEach(f=>{ const c=centerOf(f); svgPaths += `<circle cx="${c.x}" cy="${c
 const CW=1560, CH=1220;
 strings.setAttribute('viewBox', `0 0 ${CW} ${CH}`);
 strings.innerHTML = svgPaths;
-
-/* -------- tight content bounds --------
-   The nominal canvas (CW x CH) is padded well beyond where the nodes
-   actually sit, so fitting to it leaves a lot of dead space. The FIT
-   button (and the initial view) instead fit to the real bounding box of
-   the title card + document nodes, computed once from their laid-out
-   positions. clampPan() still uses the full CW/CH so free dragging isn't
-   restricted to just the cluster. */
-function computeContentBounds(){
-  const els = boardCanvas.querySelectorAll('.node, .title-node');
-  let minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
-  els.forEach(el=>{
-    const l=el.offsetLeft, t=el.offsetTop, w=el.offsetWidth, h=el.offsetHeight;
-    minX=Math.min(minX,l); maxX=Math.max(maxX,l+w);
-    minY=Math.min(minY,t); maxY=Math.max(maxY,t+h);
-  });
-  const pad=28; // small allowance for pins/shadows overflowing each card's box
-  return {minX:minX-pad, minY:minY-pad, maxX:maxX+pad, maxY:maxY+pad};
-}
-const contentBounds = computeContentBounds();
 
 /* -------- draggable + zoomable board -------- */
 const viewport = document.getElementById('boardViewport');
@@ -220,11 +156,9 @@ function clampPan(){
 function fitToViewport(){
   const vw = viewport.clientWidth, vh = viewport.clientHeight;
   if(vw===0||vh===0) return;
-  const b = contentBounds;
-  const w = b.maxX-b.minX, h = b.maxY-b.minY;
-  scale = Math.min(vw/w, vh/h) * 0.96;
-  panX = (vw - w*scale)/2 - b.minX*scale;
-  panY = (vh - h*scale)/2 - b.minY*scale;
+  scale = Math.min(vw/CW, vh/CH) * 0.96;
+  panX = (vw - CW*scale)/2;
+  panY = (vh - CH*scale)/2;
   apply();
 }
 
@@ -242,16 +176,6 @@ function setScaleAtPoint(newScale, clientX, clientY){
   apply();
 }
 
-// tap-to-open a board node (or re-zoom the title card): the viewport
-// captures the pointer for panning (see setPointerCapture below), which
-// redirects the browser's own 'click' event to the viewport rather than
-// the element underneath it, so plain 'click' listeners on those elements
-// can't be relied on. Instead we track which element (if any) a
-// single-pointer gesture started on, and treat it as a tap only if the
-// pointer barely moved before lifting, distinguishing it from a drag/pan.
-let clickCandidate = null, clickStartX = 0, clickStartY = 0;
-const TAP_TOLERANCE = 6;
-
 viewport.addEventListener('pointerdown', e=>{
   interacted = true;
   pointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
@@ -259,8 +183,6 @@ viewport.addEventListener('pointerdown', e=>{
   if(pointers.size===1){
     dragging=true; viewport.classList.add('dragging');
     sx=e.clientX; sy=e.clientY; startX=panX; startY=panY;
-    clickCandidate = e.target.closest('.node, .title-node');
-    clickStartX = e.clientX; clickStartY = e.clientY;
   } else if(pointers.size===2){
     dragging=false;
     const pts=[...pointers.values()];
@@ -293,14 +215,6 @@ viewport.addEventListener('pointermove', e=>{
   }
 });
 function endPointer(e){
-  if(e.type==='pointerup' && clickCandidate){
-    const moved = Math.hypot(e.clientX-clickStartX, e.clientY-clickStartY);
-    if(moved < TAP_TOLERANCE){
-      if(clickCandidate.classList.contains('node')) go(clickCandidate.dataset.n);
-      else if(clickCandidate.classList.contains('title-node')) zoomToTitleIntro();
-    }
-  }
-  clickCandidate = null;
   pointers.delete(e.pointerId);
   if(pointers.size===0){ dragging=false; viewport.classList.remove('dragging'); }
   else if(pointers.size===1){
@@ -329,36 +243,7 @@ document.getElementById('zoomOut').addEventListener('click', ()=>{
 });
 document.getElementById('zoomReset').addEventListener('click', ()=>{ interacted=false; fitToViewport(); });
 
-// -------- one-time opening zoom into the title card --------
-// Plays only on the very first page load/refresh, after a beat, while the
-// board is showing. Returning to the board later via the "board" button
-// (goHome) does NOT replay this — it's a single opening flourish only.
-let introPlayed = false;
-function zoomToTitleIntro(){
-  const vw = viewport.clientWidth, vh = viewport.clientHeight;
-  if(vw===0||vh===0) return;
-  const targetScale = 1.75; // intensely close, near the max zoom level
-  // title card center, in board-canvas coordinates
-  const titleCenterX = TITLE_POS.x + 160; // title-node is 320px wide
-  const titleCenterY = TITLE_POS.y + 85;  // approx half its rendered height
-  scale = targetScale;
-  panX = vw/2 - titleCenterX*targetScale;
-  panY = vh/2 - titleCenterY*targetScale;
-  boardCanvas.classList.add('intro-transition');
-  apply();
-  boardCanvas.addEventListener('transitionend', ()=>{
-    boardCanvas.classList.remove('intro-transition');
-  }, {once:true});
-}
-window.addEventListener('load', ()=>{
-  fitToViewport();
-  if(!introPlayed && !current){
-    introPlayed = true;
-    setTimeout(()=>{
-      if(!interacted && !current) zoomToTitleIntro();
-    }, 1000);
-  }
-});
+window.addEventListener('load', fitToViewport);
 window.addEventListener('resize', ()=>{
   clearTimeout(window._fr);
   window._fr = setTimeout(()=>{ if(!interacted) fitToViewport(); else { clampPan(); apply(); } }, 120);
@@ -383,7 +268,7 @@ function randomPhotoPlacement(existingRects){
     const sideVal = Math.round(-90 + Math.random()*130);   // can bleed past the doc edge
     const topVal = Math.round(-50 + Math.random()*560);    // spread across the full doc height
     const rot = Math.round(Math.random()*26 - 13);         // -13deg .. 13deg
-    const w = Math.round(163 + Math.random()*58);          // 163px .. 221px
+    const w = Math.round(128 + Math.random()*46);          // 128px .. 174px
     const h = Math.round(w * 0.74);
     const left = side === 'left' ? sideVal : (docWidth - sideVal - w);
     const rect = {left: left-pad, top: topVal-pad, right: left+w+pad, bottom: topVal+h+pad};
@@ -396,39 +281,14 @@ function randomPhotoPlacement(existingRects){
   return best;
 }
 
-// The rect the corner photo occupies at its fixed, default CSS position
-// (top:-16px, right:34px, 150x112 — see .slide-photo-corner). Seeded into
-// the collision check below so the randomly-scattered photos never land
-// under it.
-const CORNER_PHOTO_RECT = (()=>{
-  const docWidth = 480, w = 190, h = 141, top = -16, right = 34, pad = 16;
-  const left = docWidth - right - w;
-  return {left:left-pad, top:top-pad, right:left+w+pad, bottom:top+h+pad};
-})();
-
 function renderPhotos(f){
   // To add your own images to a file: give that FILES entry a `photos` array of image
   // paths/URLs, e.g. photos:['images/file01-a.jpg','images/file01-b.jpg','images/file01-c.jpg'].
   // Any number of entries works, they don't have to be exactly 2. Leave `photos` off (or empty)
   // and the file falls back to DEFAULT_PHOTO_COUNT placeholder camera-icon photos instead.
-  const list = (f.photos && f.photos.length) ? f.photos : new Array(DEFAULT_PHOTO_COUNT).fill(null);
-
-  // First photo is the "corner" photo: always the same fixed spot, always sitting on
-  // top of and blocking the top-right corner of the whole stack. Only its rotation
-  // is randomized. Otherwise it behaves just like any other photo (draggable, zoomable).
-  const [cornerSrc, ...restSrcs] = list;
-  const cornerRot = Math.round(Math.random()*20 - 10); // -10deg .. 10deg
-  const cornerInner = cornerSrc
-    ? `<img src="${cornerSrc}" alt="" draggable="false">`
-    : `${camera}<span>Photo pending</span>`;
-  const cornerHTML = `<div class="slide-photo slide-photo-corner" id="photo-${f.n}-corner"
-      style="--rot:${cornerRot}deg;">
-      <div class="pin"></div>${cornerInner}
-    </div>`;
-
-  // Remaining photos: scattered, draggable, freely zoomable — avoiding the corner photo's spot.
-  const placedRects = [CORNER_PHOTO_RECT];
-  const scatterHTML = restSrcs.map((src, i)=>{
+  const list = (f.photos && f.photos.length) ? f.photos : (f.photos ? [] : new Array(DEFAULT_PHOTO_COUNT).fill(null));
+  const placedRects = [];
+  return list.map((src, i)=>{
     const p = randomPhotoPlacement(placedRects);
     placedRects.push(p.rect);
     const inner = src
@@ -439,214 +299,60 @@ function renderPhotos(f){
       <div class="pin"></div>${inner}
     </div>`;
   }).join('');
-
-  return cornerHTML + scatterHTML;
 }
 
-// If a file doesn't define its own `snippets` array, pull one or two short highlight
-// lines out of its body paragraph automatically (first ~10 words of a couple of sentences).
-function autoSnippets(body){
-  const sentences = (body.match(/[^.!?]+[.!?]+/g) || [body]).map(s=>s.trim()).filter(Boolean);
-  const trim = s=>{
-    const words = s.split(/\s+/);
-    return words.length>10 ? words.slice(0,10).join(' ')+'…' : s;
-  };
-  const picks = [];
-  if(sentences[0]) picks.push(trim(sentences[0]));
-  if(sentences.length>2) picks.push(trim(sentences[Math.min(2, sentences.length-1)]));
-  return picks.slice(0,2);
-}
-// Deterministic per-snippet tilt so two lines on the same file always angle differently.
-function snippetRot(f, i){
-  const seed = f.n.charCodeAt(0) + f.n.charCodeAt(1) + i*17;
-  const mag = 2 + (seed % 4); // 2..5deg
-  return (i % 2 === 0 ? -1 : 1) * mag;
-}
-// Breaks a snippet's text into short chunks so each one can get its own
-// redaction bar — this is what makes the reveal cascade line by line
-// instead of covering a whole paragraph with one bar.
-function splitIntoRedactedLines(text, wordsPerLine){
-  const words = text.split(/\s+/);
-  const lines = [];
-  for(let i=0; i<words.length; i+=wordsPerLine){
-    lines.push(words.slice(i, i+wordsPerLine).join(' '));
-  }
-  return lines;
-}
-function renderFrontBody(f){
-  const snippets = (f.snippets && f.snippets.length) ? f.snippets : autoSnippets(f.body);
-  
-  // ===================================================================
-  // PUT YOUR OWN FRONT-PAGE IMAGE(S) HERE.
-  // Give a FILES[] entry `frontImage: 'images/your-file.jpg'` to show a
-  // single inline image right under the title, above the redacted text
-  // (see the `.doc-front-image` CSS rule for its box/size). Want it to
-  // sit somewhere else, or want more than one, just move/duplicate the
-  // line below.
-  // ===================================================================
-  const imageHTML = f.frontImage
-    ? `<div class="doc-front-image"><img src="${f.frontImage}" alt=""></div>`
-    : ``;
-
-  // running line counter across ALL snippets on this page, so the
-  // redaction reveal cascades top to bottom across the whole front page
-  // rather than resetting per snippet
-  let lineCounter = 0;
-  const snippetsHTML = snippets.map((s,i)=>{
-    const lines = splitIntoRedactedLines(s, 4); // ~4 words per redacted line
-    const linesHTML = lines.map(line=>{
-      const li = lineCounter++;
-      return `<div class="doc-snippet-line" style="--li:${li}">
-        <p class="doc-snippet">${line}</p>
-        <span class="redact-bar"></span>
-      </div>`;
-    }).join('');
-    return `<div class="doc-snippet-block" style="transform:rotate(${snippetRot(f,i)}deg)">${linesHTML}</div>`;
-  }).join('');
-
-  // diagram section (currently only File 06 defines `diagram`) — placed
-  // right after the text, continuing the same running --li counter so its
-  // labels/thumbnails reveal in sequence right after the text above them
-  const diagramHTML = f.diagram ? renderDiagram(f.diagram, lineCounter) : ``;
-
-  const gatewayHTML = f.gateway ? `<div class="gateway-btns">
-    <button class="open-archive-btn" id="openArchiveBtn">Open the case index &rarr;</button>
-    <button class="open-archive-btn" id="openWordmapBtn">Open the threshold map &rarr;</button>
-  </div>` : ``;
-  return imageHTML + snippetsHTML + diagramHTML + gatewayHTML;
-}
-
-//NEED TO BE REVISED
-
-// Renders the hub-and-spoke diagram (center image + 5 labeled satellite
-// nodes) used on File 06's front page. `startLi` continues the page's
-// running redact-bar stagger index so these reveal right after the text.
-const DGM_POS = ['top','left','right','bl','br'];
-// Connector line endpoints, hand-matched to the .dgm-pos-* CSS positions
-// and the 350×560 .dgm-canvas box. Center hub sits at (175,225), 50px radius.
-const DGM_LINES = [
-  'M175,175 L175,84',   // hub -> top
-  'M129,201 L60,206',   // hub -> left
-  'M221,201 L290,206',  // hub -> right
-  'M148,258 L96,444',   // hub -> bottom-left
-  'M202,258 L254,444',  // hub -> bottom-right
-];
-function renderDiagram(d, startLi){
-  const centerInner = d.center && d.center.image
-    ? `<img src="${d.center.image}" alt="">`
-    : camera;
-
-  const nodesHTML = d.nodes.map((node,i)=>{
-    const li = startLi + i;
-    const thumbInner = node.image
-      ? `<img src="${node.image}" alt="" draggable="false">`
-      : camera;
-    return `<div class="dgm-node dgm-pos-${DGM_POS[i]}">
-      <div class="dgm-thumb-wrap" data-dgm-thumb style="--li:${li}">
-        ${thumbInner}
-        <span class="redact-bar"></span>
-      </div>
-      <div class="dgm-tag">${node.n}</div>
-      <div class="dgm-label-wrap" style="--li:${li}">
-        <div class="dgm-label">${node.label}</div>
-        <span class="redact-bar"></span>
-      </div>
-      <div class="dgm-desc">${node.desc}</div>
-    </div>`;
-  }).join('');
-
-  const linesHTML = DGM_LINES.map(p=>`<path d="${p}"/>`).join('')
-    + DGM_LINES.map(p=>{
-        const [, x, y] = p.match(/M([\d.]+),([\d.]+)/);
-        return `<circle cx="${x}" cy="${y}" r="3"/>`;
-      }).join('');
-
-  return `<div class="doc-diagram">
-    <div class="dgm-canvas">
-      <svg class="dgm-lines" viewBox="0 0 350 560" preserveAspectRatio="xMidYMid meet">${linesHTML}</svg>
-      <div class="dgm-center">${centerInner}</div>
-      ${nodesHTML}
-    </div>
-  </div>`;
-}
-
-// Any number of photos on a document can be zoomed at once — no cap,
-// no eviction. Each photo's zoom state is independent of the others.
+// Up to two photos per document can be zoomed at once. Zooming a third evicts
+// whichever of the two was zoomed first (oldest-in, oldest-out).
+const zoomedOrder = new WeakMap();
 function toggleZoom(photo){
-  photo.classList.toggle('zoomed');
-}
-
-// Each file gets its own fixed front/back sheet angles, generated once at build time
-// (kept moderate and pushed to opposite sides so the two sheets always read as distinct).
-function sheetAngles(){
-  const front = (Math.random()*3 + 1) * (Math.random()<0.5 ? -1 : 1); // ~1..4deg
-  let back = (Math.random()*3 + 2) * (Math.random()<0.5 ? -1 : 1);    // ~2..5deg
-  if(Math.sign(back)===Math.sign(front)) back *= -1; // keep them leaning opposite ways
-  return {front, back};
+  const wrap = photo.closest('.slide-doc-wrap');
+  const wasZoomed = photo.classList.contains('zoomed');
+  let order = zoomedOrder.get(wrap) || [];
+  if(wasZoomed){
+    photo.classList.remove('zoomed');
+    order = order.filter(p => p !== photo);
+  } else {
+    if(order.length >= 2){
+      const oldest = order.shift();
+      oldest.classList.remove('zoomed');
+    }
+    photo.classList.add('zoomed');
+    order.push(photo);
+  }
+  zoomedOrder.set(wrap, order);
 }
 
 FILES.forEach((f,idx)=>{
   const wrap = document.createElement('div');
   wrap.className='slide-doc-wrap';
   wrap.id='slide-'+f.n;
-  const angles = sheetAngles();
-  // shared markup for the back sheet's content, reused for both faces
-  // (front=blurred/closed, back=clear/open) so a single flip can reveal
-  // the correctly-oriented face rather than the same one rotated.
-  const backContentHTML = `
-    <div class="doc-head"><span class="doc-num">FILE ${f.n}, ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
-    <div class="doc-qtag">${f.qtag}</div>
-    <h2 class="doc-title">${f.title}</h2>
-    <p class="doc-body">${f.body}</p>`;
   wrap.innerHTML = `
     ${renderPhotos(f)}
-    <div class="doc-stack" style="--front-rot:${angles.front.toFixed(1)}deg; --back-rot:${angles.back.toFixed(1)}deg;">
-      <div class="doc-sheet doc-front">
-        <div class="doc-head"><span class="doc-num">FILE ${f.n}, ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
-        <div class="doc-qtag">${f.qtag}</div>
-        <h2 class="doc-title">${f.title}</h2>
-        <div class="doc-front-body">${renderFrontBody(f)}</div>
-        <div class="stamp">DECLASSIFIED</div>
-      </div>
-      <div class="doc-back" role="button" aria-label="Reveal document ${f.n}">
-        <div class="doc-sheet doc-back-flip">
-          <div class="doc-back-face doc-back-face-front">${backContentHTML}</div>
-          <div class="doc-back-face doc-back-face-back">${backContentHTML}</div>
+    <div class="slide-doc">
+      <div class="doc-head"><span class="doc-num">FILE ${f.n}, ${f.code}</span><span class="doc-cat">${f.tag}</span></div>
+      <div class="doc-qtag">${f.qtag}</div>
+      <h2 class="doc-title">${f.title}</h2>
+      <div class="text-wrap">
+        <p class="doc-body">${f.body}<span class="hint">Case notes continue in appendix</span></p>
+        <div class="redaction" role="button" aria-label="Reveal document ${f.n}">
+          ${Array(8).fill('<div class="bar"></div>').join('')}
+          <div class="stamp-hint">Declassifying…</div>
         </div>
       </div>
+      ${f.gateway ? `<div class="gateway-btns">
+        <button class="open-archive-btn" id="openArchiveBtn">Open the case index &rarr;</button>
+        <button class="open-archive-btn" id="openWordmapBtn">Open the threshold map &rarr;</button>
+      </div>` : ``}
+      <div class="stamp">DECLASSIFIED</div>
     </div>`;
   slideStage.appendChild(wrap);
+  wrap.querySelector('.redaction').addEventListener('click', ()=> wrap.classList.add('revealed'));
   if(f.gateway){
-    wrap.querySelector('#openArchiveBtn').addEventListener('click', e=>{ e.stopPropagation(); openArchive(); });
-    wrap.querySelector('#openWordmapBtn').addEventListener('click', e=>{ e.stopPropagation(); openWordmap(); });
+    wrap.querySelector('#openArchiveBtn').addEventListener('click', openArchive);
+    wrap.querySelector('#openWordmapBtn').addEventListener('click', openWordmap);
   }
 
-  /* the flip plays on .doc-back-flip (isolated from the outer sheet's
-     static position/tilt), pivoting on its own centerline, exactly one
-     hinge turn per click. Each click reverses the previous one — open
-     rotates 0 -> -180, and the next click rewinds -180 -> 0 back through
-     the same motion, rather than continuing on to -360. The front face
-     (blurred) and back face (clear) swap over via the flip itself. */
-  const back = wrap.querySelector('.doc-back');
-  const flipEl = wrap.querySelector('.doc-back-flip');
-  flipEl._flipOpen = false; // per-document resting state, reset on nav-away
-  back.addEventListener('click', ()=>{
-    const from = flipEl._flipOpen ? -180 : 0;
-    const to = flipEl._flipOpen ? 0 : -180; // rewind back the way it came, never past 0/-180
-    flipEl.style.setProperty('--flip-from', from+'deg');
-    flipEl.style.setProperty('--flip-to', to+'deg');
-    flipEl.classList.remove('flip-play');
-    void flipEl.offsetWidth; // force reflow so the animation can replay
-    flipEl.classList.add('flip-play');
-    flipEl._flipOpen = !flipEl._flipOpen;
-    back.classList.toggle('open', flipEl._flipOpen);
-    flipEl.addEventListener('animationend', ()=>{
-      flipEl.classList.remove('flip-play');
-      flipEl.style.setProperty('--flip-rot', to+'deg');
-    }, {once:true});
-  });
-
-  /* draggable + click-to-zoom photos, corner photo included */
+  /* draggable + click-to-zoom photos */
   wrap.querySelectorAll('.slide-photo').forEach(photo=>{
     let pdrag=false, moved=false, px=0, py=0, ox=0, oy=0, sideProp='right';
     photo.addEventListener('pointerdown', e=>{
@@ -670,60 +376,26 @@ FILES.forEach((f,idx)=>{
     });
     photo.addEventListener('pointerleave', ()=>{ pdrag=false; });
   });
-
-  // diagram thumbnails (section 02): plain click-to-zoom, no drag — click
-  // again (or click elsewhere on the thumb) to shrink back to normal size
-  wrap.querySelectorAll('.dgm-thumb-wrap').forEach(thumb=>{
-    thumb.addEventListener('click', e=>{
-      e.stopPropagation();
-      toggleZoom(thumb);
-    });
-  });
 });
 
 /* -------- navigation -------- */
-// replays the redaction-bar slide-off animation on a document's front page
-function replayRedactBars(wrap){
-  wrap.querySelectorAll('.redact-bar').forEach(bar=>{
-    bar.style.animation = 'none';
-    void bar.offsetWidth; // force reflow so the animation restarts
-    bar.style.animation = '';
-  });
-}
-// replays the DECLASSIFIED rubber-stamp slam animation
-function replayStamp(wrap){
-  wrap.querySelectorAll('.stamp').forEach(stamp=>{
-    stamp.style.animation = 'none';
-    void stamp.offsetWidth; // force reflow so the animation restarts
-    stamp.style.animation = '';
-  });
-}
-// resets a document's back sheet to its closed/blurred resting state
-// (used when navigating away, so revisiting a file starts fresh)
-function resetBackFlip(prevBack){
-  if(!prevBack) return;
-  prevBack.classList.remove('open');
-  const flipEl = prevBack.querySelector('.doc-back-flip');
-  if(!flipEl) return;
-  flipEl.classList.remove('flip-play');
-  flipEl._flipOpen = false;
-  flipEl.style.removeProperty('--flip-rot');
-}
 let current = null;
 function go(n){
   document.getElementById('home-view').classList.remove('active');
   document.getElementById('slide-view').classList.add('active');
   if(current){
     const prev = document.getElementById('slide-'+current);
-    prev.classList.remove('active');
-    prev.querySelectorAll('.slide-photo.zoomed, .dgm-thumb-wrap.zoomed').forEach(p=>p.classList.remove('zoomed'));
-    resetBackFlip(prev.querySelector('.doc-back'));
+    clearTimeout(prev._revealTimer);
+    prev.classList.remove('active','revealed');
+    prev.querySelectorAll('.slide-photo.zoomed').forEach(p=>p.classList.remove('zoomed'));
+    zoomedOrder.delete(prev);
   }
   current = n;
   const wrap = document.getElementById('slide-'+n);
   wrap.classList.add('active');
-  replayRedactBars(wrap);
-  replayStamp(wrap);
+  wrap.classList.remove('revealed');
+  clearTimeout(wrap._revealTimer);
+  wrap._revealTimer = setTimeout(()=> wrap.classList.add('revealed'), 450);
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+n).classList.add('active');
   updateNav();
@@ -732,9 +404,10 @@ function go(n){
 function goHome(){
   if(current){
     const prev = document.getElementById('slide-'+current);
-    prev.classList.remove('active');
-    prev.querySelectorAll('.slide-photo.zoomed, .dgm-thumb-wrap.zoomed').forEach(p=>p.classList.remove('zoomed'));
-    resetBackFlip(prev.querySelector('.doc-back'));
+    clearTimeout(prev._revealTimer);
+    prev.classList.remove('active','revealed');
+    prev.querySelectorAll('.slide-photo.zoomed').forEach(p=>p.classList.remove('zoomed'));
+    zoomedOrder.delete(prev);
   }
   current = null;
   document.getElementById('slide-view').classList.remove('active');
@@ -768,13 +441,13 @@ window.addEventListener('hashchange', ()=>{
 /* -------- the 16-case archive (nested inside File 08) -------- */
 const ARCHIVE_TAGS = ["Governance","Legitimacy","Redaction","Threshold","Protocol"];
 const ARCHIVE_CASES = [
-  {id:'01', title:'The Great Firewall', tag:'Governance', actor:'state', outcome:'normalized', pos:87,
+  {id:'01', title:'The Great Firewall', tag:'Governance', actor:'state', outcome:'normalized', pos:90,
    note:'Rated toward the concentrated end. Filtering runs at the national gateway with no independent appeal.',
    year:'1998 to ongoing', location:'China',
    mechanism:'DNS filtering, IP blocking, and keyword inspection at the national gateway level',
    kw:['china','infrastructure','ongoing'],
    summary:'A national infrastructure of filtering and blocking that restricts access to foreign platforms and search results, justified as sovereignty over domestic information space.'},
-  {id:'02', title:'NetzDG Takedown Law', tag:'Redaction', actor:'state', outcome:'contested', pos:51,
+  {id:'02', title:'NetzDG Takedown Law', tag:'Redaction', actor:'state', outcome:'contested', pos:55,
    note:'Rated mid scale. The state sets the rule, but a private platform executes it under fine pressure, and the law itself has faced public and legal challenge.',
    year:'2017', location:'Germany',
    mechanism:'Statutory 24 hour takedown mandate enforced through fines on platform operators',
@@ -786,13 +459,13 @@ const ARCHIVE_CASES = [
    mechanism:'Criminal statute prosecuted through the French courts',
    kw:['france','historical memory','upheld'],
    summary:'A law criminalizing Holocaust denial, framed as protecting historical fact and public dignity rather than restricting general political speech.'},
-  {id:'04', title:"Children's Online Privacy Rule", tag:'Threshold', actor:'state', outcome:'upheld', pos:26,
+  {id:'04', title:"Children's Online Privacy Rule", tag:'Threshold', actor:'state', outcome:'upheld', pos:36,
    note:'Rated toward the checked end, and still the lowest score in this archive. A public rulemaking process and agency oversight exist, but an agency still unilaterally restricts, so no case gets to be purely protective.',
    year:'1998 (COPPA), rule active', location:'United States',
    mechanism:'FTC regulatory rule enforced through civil penalties',
    kw:['usa','minors','data'],
    summary:'Federal rules restricting how services can collect data from and target content toward children under 13.'},
-  {id:'05', title:'2017 Wikipedia Block', tag:'Governance', actor:'state', outcome:'overturned', pos:75,
+  {id:'05', title:'2017 Wikipedia Block', tag:'Governance', actor:'state', outcome:'overturned', pos:78,
    note:'Rated toward the concentrated end. Full administrative authority was exercised for over two years before any court intervened.',
    year:'2017 to 2020', location:'Turkey',
    mechanism:'Administrative ISP level block, later reversed by constitutional court ruling',
@@ -810,7 +483,7 @@ const ARCHIVE_CASES = [
    mechanism:'Private platform policy enforcement via automated and human review',
    kw:['platform policy','health','elections'],
    summary:'Extensive removal and demotion of posts flagged as health or election misinformation, private editorial judgment at public square scale.'},
-  {id:'08', title:'Podcast Delisting Disputes', tag:'Redaction', actor:'platform', outcome:'contested', pos:47,
+  {id:'08', title:'Podcast Delisting Disputes', tag:'Redaction', actor:'platform', outcome:'contested', pos:51,
    note:'Rated mid scale. Narrower in reach than platform wide moderation, but still one company\'s unilateral call.',
    year:'2022', location:'United States',
    mechanism:'Selective episode removal under platform content policy',
@@ -822,31 +495,31 @@ const ARCHIVE_CASES = [
    mechanism:'Ministerial correction and takedown directives under statute (POFMA)',
    kw:['singapore','fake news law'],
    summary:'A law empowering ministers to order correction notices or takedowns of statements deemed false, criticized as a tool for suppressing dissent.'},
-  {id:'10', title:'Online Safety Act', tag:'Threshold', actor:'state', outcome:'upheld', pos:43,
+  {id:'10', title:'Online Safety Act', tag:'Threshold', actor:'state', outcome:'upheld', pos:47,
    note:'Rated toward the checked end. A statutory regulator enforces the rule, and formal appeal routes exist even though the penalties are real.',
    year:'2023', location:'United Kingdom',
    mechanism:'Statutory duty of care enforced by regulator (Ofcom) with age verification requirements',
    kw:['uk','minors','platform duty'],
    summary:'Legislation requiring platforms to shield minors from harmful content and enforce age verification.'},
-  {id:'11', title:'DMCA Takedown Notices', tag:'Protocol', actor:'commercial', outcome:'normalized', pos:38,
+  {id:'11', title:'DMCA Takedown Notices', tag:'Protocol', actor:'commercial', outcome:'normalized', pos:44,
    note:'Rated toward the checked end. Any rights holder can trigger a takedown unilaterally, but a counter notice process exists, even if the two sides remain unevenly matched.',
    year:'1998 to ongoing', location:'United States',
    mechanism:'Formal notice and takedown procedure under federal copyright law',
    kw:['usa','copyright','routine'],
    summary:'A system letting rights holders request removal of infringing content via formal notice, routine, and occasionally used to suppress criticism.'},
-  {id:'12', title:'School Library Book Removals', tag:'Redaction', actor:'institution', outcome:'contested', pos:60,
+  {id:'12', title:'School Library Book Removals', tag:'Redaction', actor:'institution', outcome:'contested', pos:61,
    note:'Rated mid scale. An elected local board makes the call, which offers some accountability, though the pattern is often driven by ideological pressure.',
    year:'2021 to ongoing', location:'United States (multiple districts)',
    mechanism:'Local school board review and removal decisions',
    kw:['usa','education','local'],
    summary:'District level removal of books in response to content disputes, driven by local pressure rather than national law.'},
-  {id:'13', title:'Social Credit Content Restriction', tag:'Governance', actor:'state', outcome:'normalized', pos:90,
+  {id:'13', title:'Social Credit Content Restriction', tag:'Governance', actor:'state', outcome:'normalized', pos:93,
    note:'Rated toward the concentrated end. Criteria stay opaque and cross domains, with little independent appeal.',
    year:'2014 to ongoing', location:'China',
    mechanism:'Scoring system linking online conduct to access restrictions on services',
    kw:['china','scoring system','ongoing'],
    summary:'Access to services tied to a citizen scoring system that can be affected by online speech, blending financial and expressive consequences.'},
-  {id:'14', title:'Film Ratings Board', tag:'Threshold', actor:'institution', outcome:'normalized', pos:31,
+  {id:'14', title:'Film Ratings Board', tag:'Threshold', actor:'institution', outcome:'normalized', pos:41,
    note:'Rated toward the checked end. An unelected industry board still controls real distribution and marketing access, which is why even a voluntary system does not score near the floor.',
    year:'1968 to ongoing', location:'United States',
    mechanism:'Voluntary industry self regulation (MPA rating system) tied to distribution and marketing',
@@ -858,7 +531,7 @@ const ARCHIVE_CASES = [
    mechanism:'Platform trust and safety enforcement against political accounts',
    kw:['platform policy','politicians','global'],
    summary:'Suspension of prominent political accounts across several countries, with disputes over whether the standard was applied evenly.'},
-  {id:'16', title:'Wartime Press Censorship', tag:'Protocol', actor:'state', outcome:'contested', pos:70,
+  {id:'16', title:'Wartime Press Censorship', tag:'Protocol', actor:'state', outcome:'contested', pos:71,
    note:'Rated toward the concentrated end. Wartime executive power historically left little room to contest a decision while the review board was active.',
    year:'1917 to 1945 (recurring)', location:'United States / United Kingdom',
    mechanism:'Government pre publication review boards for war reporting',
