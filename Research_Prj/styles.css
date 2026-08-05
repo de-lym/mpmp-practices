@@ -320,7 +320,7 @@
      its own redaction bar, so the reveal cascades line by line rather
      than all at once. Title, heading and qtag are never wrapped in this
      — only front-page body text lines. */
-  .doc-snippet-block{ margin:50px 4px; }
+  .doc-snippet-block{ margin:20px 4px 30px; }
   .doc-snippet-line{ position:relative; overflow:hidden; margin:3px 0; }
   .doc-snippet{
     font-family:'Spectral',serif; font-size:21px; line-height:1.5;
