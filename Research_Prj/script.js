@@ -15,13 +15,13 @@ const FILES = [
   },
   {n:"03", tag:"Threshold",   title:"Precedent",    code:"NT-0414-D", x:760,  y:250,  rot:-1.5,
    qtag:"03 situated technology",
-   body:"That project is the Uncensored Library, created in 2020 by Reporters Without Borders. The idea was to place censored journalism inside Minecraft, a space a national firewall could not reach. But the library did not really escape control. It simply moved from the authority of a state firewall to the authority of a private platform, becoming subject to Mojang's terms of service and Microsoft's moderation policy.",
+   body:"The Uncensored Library is created in 2020 by Reporters Without Borders. The idea was to place censored journalism inside Minecraft, a virtual game space that would be safe from the national firewall. However, the library did not really escape control. It simply moved from the authority of a government to the authority of a private platform, becoming subject to Mojang's terms of service and Microsoft's moderation policy.",
    photos:['./img/05-precedent-2.png', './img/05-precedent-3.jpg', './img/05-precedent-4.png', './img/05-precedent-5.jpg'],
    snippets:["A Library built to escape a national firewall ended up governed by a private platform instead."]
   },
   {n:"04", tag:"Legitimacy",  title:"Public Record",    code:"NT-1206-D", x:590,  y:780,  rot:1,
    qtag:"04 rhetorical argument",
-   body:"The format of an archive does not matter because visibility is never fully released from control. Authority is only ever transferred from one controller to another.<br>Still, censorship is not simply repression. It can protect and restrict depending on who is asking. So the real question is not whether censorship is good or bad, but what makes a restriction turn into control, and who decides that.",
+   body:"This case shows something important. The format of an archive does not matter, because visibility is never fully released from control. Authority is only ever transferred from one controller to another. Still, censorship is not simply repression. It can protect and restrict depending on who is asking. Therefore, the real question will not be whether censorship is good or bad, but what makes a restriction turn into control, and who decides that.",
    photos:['./img/02-threshold.jpeg'],
    snippets:["The format of an archive does not matter, because visibility is never fully released from control.",
     "What makes a restriction turn into control, and who decides that?"
@@ -29,7 +29,7 @@ const FILES = [
   },
   {n:"05", tag:"Governance",  title:"Category",     code:"NT-0602-B", x:130,  y:450,  rot:1,
   qtag:"05 keywords",
-  body:"To investigate this, the project works through five terms. Governance is who holds authority to restrict. Legitimacy is whether that authority is accepted. Redaction is the technique used to cover information. Threshold is the point where restriction becomes control. Protocol is the system a restriction runs on.",
+  body:"For the investigation, the project works through five terms. Governance is who holds authority to restrict. Legitimacy is whether that authority is accepted. Redaction is the technique used to cover information. Threshold is the point where restriction becomes control. Protocol is the system a restriction runs on.",
   photos:['./img/02-Office_Of_Censorship_1945.jpg', './img/02-legitimacy.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/06-tiktok.png'],
   // Front page keeps exactly one line of body text (instead of the usual
   // auto-picked two) — the hub diagram below takes over from there.
@@ -53,19 +53,19 @@ const FILES = [
   },
   {n:"06", tag:"Legitimacy",  title:"Who Signs",        code:"NT-0223-B", x:560,  y:40,   rot:1.5,
    qtag:"06 research question",
-   body:"These terms lead to one central question. Would the authority behind a decision about visibility remain credible once that decision became transparent?",
+   body:"And by defining these terms, it leads to one central question. Would the authority behind a decision about visibility remain credible once that decision became transparent?",
    photos:['./img/censor-book.jpg'],
    snippets:["Would the authority behind a decision about visibility remain credible once that decision became transparent?"]
   },
   {n:"07", tag:"Redaction",   title:"The Archive",      code:"NT-0825-D", x:700,  y:500,  rot:1.5,
    qtag:"07 computational experiments",
-   body:"To work through that question, the archive holds sixteen historical and contemporary cases, each filtered through the five terms. A case index lists all sixteen restrictions categorized under five terms. A threshold map plots each case somewhere between protective and repressive, and readers can adjust a lever representing the concentration of authority. As they move it, related keywords be revealed.",
+   body:"As a process of research, collected data transferred into an interactive archive that holds sixteen historical and contemporary cases. Each of them are filtered through the five terms that is predefined earlier and then visualized into two formats: <br>A case index lists all sixteen restrictions categorized under five terms. <br>A threshold map plots each case somewhere between protective and repressive, and readers can adjust a lever representing the concentration of authority. As they move it, related keywords be revealed.",
    gateway:true, photos:['./img/08-archive-1.png', './img/08-archive-2.png', './img/08-archive-3.png', './img/08-archive-4.jpg', './img/08-archive-5.jpg'],
    snippets:["The archive lets readers actively place each case somewhere between protective and repressive, rather than being told where it belongs."]
   },
   {n:"08", tag:"Redaction",   title:"The Black Bar",    code:"NT-0309-C", x:470,  y:280,  rot:2,
    qtag:"08 visual representation",
-   body:"Each redaction bar represents an authorized decision to censor something. As audiences engage with it, they gradually remove that restriction themselves. Instead of deciding for the audience, the archive makes the act of classifying something as censorship visible, and the whole system is built to recreate the friction of an actual declassification review.",
+   body:"Each redaction bar represents an authorized decision to censor the information. As audiences engage with it, they gradually remove that restriction themselves. Instead of deciding for the audience, the archive makes the act of classifying something as censorship visible, and the whole system is built to recreate the friction of an actual declassification review.",
    photos:['./img/04-redaction-1.jpg', './img/04-redaction-2.jpg', './img/04-redaction-5.jpg'],
    snippets:["The redaction bar interaction is designed to recreate the friction of a real declassification review."]
   },
