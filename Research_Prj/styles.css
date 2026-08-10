@@ -198,11 +198,28 @@
     width:100%; height:96px; margin-bottom:8px; position:relative; overflow:hidden;
     border:1px solid var(--ink);
     display:flex; align-items:center; justify-content:center;
+    background:var(--paper); /* shows through when a card has no photos[] */
   }
-  .node-photo svg{ width:22px; height:22px; opacity:.6; color:var(--ink); position:relative; z-index:1; }
-  .ph-pixel{ background:repeating-linear-gradient(45deg, var(--ink-soft) 0 1px, transparent 1px 7px) var(--paper); }
-  .ph-blur{ background:repeating-linear-gradient(-45deg, var(--ink-soft) 0 1px, transparent 1px 7px) var(--paper); }
-  .ph-grain{ background:repeating-linear-gradient(90deg, var(--ink-soft) 0 1px, transparent 1px 6px) var(--paper); }
+  .node-photo svg{ width:22px; height:22px; opacity:.6; color:var(--ink); position:relative; z-index:2; }
+  /* the actual photo (randomly picked per card from that file's own
+     `photos[]` — see FILES[] + renderNode in script.js), sat behind the
+     hatch overlay and very lightly blurred so it reads as a glimpse
+     rather than a clear image. Scaled up slightly so the blur never
+     reveals a sharp edge at the frame border. */
+  .node-photo-img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter:blur(3.0px); transform:scale(1.08);
+    pointer-events:none;
+    opacity: .85;
+  }
+  /* hatch overlay: drawn ON TOP of the photo (or bare paper, if a card
+     has none) as its own layer, rather than baked into the background,
+     so the same crisp diagonal lines read consistently either way while
+     the blurred photo still shows through the gaps between them. */
+  .node-photo::after{ content:''; position:absolute; inset:0; z-index:1; pointer-events:none; }
+  .node-photo.ph-pixel::after{ background:repeating-linear-gradient(45deg, var(--ink-soft) 0 1px, transparent 1px 7px); opacity:.85; }
+  .node-photo.ph-blur::after{ background:repeating-linear-gradient(-45deg, var(--ink-soft) 0 1px, transparent 1px 7px); opacity:.85; }
+  .node-photo.ph-grain::after{ background:repeating-linear-gradient(90deg, var(--ink-soft) 0 1px, transparent 1px 6px); opacity:.85; }
 
   .node-bars{display:flex; flex-direction:column; gap:4px;}
   .node-bars div{height:6px; background:var(--redact);}
@@ -433,11 +450,15 @@
      Each dot is a bare trigger: it doesn't carry an image. Clicking it
      toggles `.open` on one .wf-extract box (a NEW thumbnail + caption,
      from that file's `waveformExtracts`/`waveformLabels`) and on the
-     matching .wf-strings path/circle, which draws a thin bent "string"
-     line back to the dot's exact point — see the [data-wf-target] click
-     handler in script.js. Clicking anywhere outside an open box (and
-     outside its own dot) closes it again — see the document-level click
-     listener near the bottom of script.js.
+     matching .wf-strings path/circle, which draws a short straight
+     "string" from the dot up/down to the near edge of the trace — see
+     the [data-wf-target] click handler in script.js. The box itself
+     lives in the .wf-row-top or .wf-row-bottom shelf just outside that
+     edge, centered on the dot's own x position (inline `left`, set in
+     script.js) so it pops up right next to what it was pulled from.
+     Clicking anywhere outside an open box (and outside its own dot)
+     closes it again — see the document-level click listener near the
+     bottom of script.js.
 
      Separately, on the FRONT page, `.kw-link` highlights the words
      "material / dataset / archive" inside the redacted snippet text —
@@ -448,8 +469,19 @@
      one per keyword, in reading order, so clicking through the sentence
      zooms them chronologically.
      =================================================================== */
-  .doc-waveform{ position:relative; width:100%; margin:8px 0 4px; }
+  .doc-waveform{ position:relative; width:100%; margin:0; }
   .wf-canvas{ position:relative; width:100%; height:240px; }
+
+  /* Shelves above/below the trace that hold the extract boxes — each box
+     is positioned (left, via inline style) to line up with its own dot's
+     x position, so the photo pops up right next to what it was pulled
+     from instead of in a fixed corner. This row is now just a thin
+     click-safe margin: an open extract box is absolutely positioned and
+     anchored (via inline bottom/top, set in script.js) to the row's edge
+     that touches .wf-canvas, which never moves — so shrinking this row's
+     height only trims the empty space above/below the trace, it does NOT
+     clip or reposition the popped-open box. */
+  .wf-row{ position:relative; width:100%; height:14px; }
 
   .wf-line{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
   .wf-bar{ stroke:var(--ink); stroke-width:.9px; opacity:.8; }
@@ -494,6 +526,14 @@
     transition: opacity .3s ease, transform .4s cubic-bezier(.34,1.56,.64,1);
   }
   .wf-extract.open{ opacity:1; transform:scale(1); pointer-events:auto; }
+  /* top-shelf boxes sit flush against the BOTTOM of their shelf (nearest
+     the trace, frame-side down); bottom-shelf boxes sit flush against the
+     TOP of theirs (frame-side up) — in both cases the frame, not the
+     label, is the part closest to the trace and its dot. This is just a
+     fallback: script.js sets a tighter, per-dot inline bottom/top that
+     pulls the box in closer (see WF_LINE_GAP_PX), which always wins. */
+  .wf-extract-top{ bottom:0; }
+  .wf-extract-bottom{ top:0; }
   .wf-extract-frame{
     width:112px; height:82px;
     border:1px solid var(--ink); background:var(--paper-2); overflow:hidden;
@@ -506,14 +546,6 @@
     letter-spacing:.07em; text-transform:uppercase; color:var(--ink);
     text-align:center; white-space:nowrap;
   }
-  /* tl/bl sit flush against the left edge; tr/br are pulled out further
-     past the right edge than the others so the "Interface Design" box
-     (tr) clears the dot near the tall spike instead of covering it —
-     see WF_BOX_ANCHOR.tr in script.js, nudged to match. */
-  .wf-extract-tl{ left:-6px;  top:0; }
-  .wf-extract-tr{ right:-34px; top:0; }
-  .wf-extract-bl{ left:-6px;  bottom:0; }
-  .wf-extract-br{ right:-6px; bottom:0; }
 
   /* clickable "material / dataset / archive" words on the front page */
   .kw-link{

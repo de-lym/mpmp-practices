@@ -71,6 +71,7 @@ CASES.forEach(c => {
     wordMap[t].cases.push(c);
   });
 });
+
 Object.keys(CATS).forEach(k => {
   const label = CATS[k].label;
   const inCat = CASES.filter(c => c.rationale === k);

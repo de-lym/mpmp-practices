@@ -30,7 +30,7 @@ const FILES = [
   {n:"05", tag:"Governance",  title:"Category",     code:"NT-0602-B", x:130,  y:450,  rot:1,
   qtag:"05 keywords",
   body:"For the investigation, the project works through five terms. Governance is who holds authority to restrict. Legitimacy is whether that authority is accepted. Redaction is the technique used to cover information. Threshold is the point where restriction becomes control. Protocol is the set of rules through which a restriction operates.",
-  photos:['./img/02-Office_Of_Censorship_1945.jpg', './img/02-legitimacy.jpg', './img/02-protocol-system.png', './img/02-redaction.jpg', './img/06-tiktok.png'],
+  photos:['./img/02-Office_Of_Censorship_1945.jpg', './img/02-legitimacy.jpg', './img/02-redaction.jpg', './img/02-protocol-system.png', './img/06-tiktok.png'],
   // Front page keeps exactly one line of body text (instead of the usual
   // auto-picked two) — the hub diagram below takes over from there.
   snippets:["Five terms structure this project."],
@@ -72,7 +72,7 @@ const FILES = [
   {n:"09", tag:"Threshold",   title:"Application",       code:"NT-0904-A", x:980,  y:430,  rot:-1,
    qtag:"09 methods",
    body:"The project is composed of three parts: material, dataset, and archive. The material is a physical index of censorship cases drawn from legislative history in the United States. The dataset is a network diagram mapping collective raw data, left intentionally dense because it represents data that has not yet been classified. The archive is the interactive format I just described, where selected cases become something audiences can actually explore.",
-   photos:['./img/material-photo-1.jpg', './img/website.png', './img/dataset-network.png'],
+   photos:['./img/material-photo-1.jpg', './img/website.png', './img/censorship-casefile-poster.jpg'],
    snippets:["Material, dataset, and archive move the project from raw, unclassified data toward a structured, explorable format."],
    // Exactly 3 floating photos, one per keyword below — no extra/unlinked
    // image. On the FRONT page, these three words in the redacted snippet
@@ -91,12 +91,10 @@ const FILES = [
    // the bottom). Unlike the diagram/keyword links above, these 4 dots
    // don't reuse existing photos — clicking one pops a NEW thumbnail from
    // `waveformExtracts` into a corner, with a string line back to its
-   // exact point on the trace, and a small caption from `waveformLabels`.
-   // Both arrays share the same order as WF_DOTS: top-left, bottom-left,
-   // top-right, bottom-right — which also reads left-to-right along the
-   // trace (chronological), so the captions below read in that order too.
+   // exact point on the trace. Put your own 4 image paths here (dot
+   // order matches WF_DOTS: top-left, bottom-left, top-right, bottom-right).
    waveform:true,
-   waveformExtracts:['./img/extract-01.jpg', './img/extract-02.jpg', './img/extract-03.jpg', './img/extract-04.jpg'],
+   waveformExtracts:['./img/case-coding.png', './img/archival-research.png', './img/interface-design.png', './img/protocol-analysis.png'],
    waveformLabels:['Case Coding', 'Archival Research', 'Interface Design', 'Protocol Analysis']
   },
   {n:"10", tag:"Governance",  title:"The Appeal",       code:"NT-1128-C", x:270,  y:760,  rot:-1.5,
@@ -179,13 +177,23 @@ FILES.forEach((f,idx)=>{
   node.style.zIndex = 5+idx;
   node.tabIndex=0;
   const ph = PH_CLASSES[idx % PH_CLASSES.length];
+  // Random per-card glimpse: pulled from this file's own `photos[]` (the
+  // same images used elsewhere for that file), not a shared/fixed one —
+  // so reloading picks a different frame each time. Falls back to the
+  // camera placeholder for any file with no photos[] set.
+  const nodePhotoSrc = (f.photos && f.photos.length)
+    ? f.photos[Math.floor(Math.random()*f.photos.length)]
+    : null;
+  const nodePhotoInner = nodePhotoSrc
+    ? `<img class="node-photo-img" src="${nodePhotoSrc}" alt="" draggable="false">`
+    : camera;
   node.innerHTML = `
     <div class="node-pin"></div>
     <div class="node-doc" style="transform:rotate(${f.rot}deg)">
       <span class="pagemark">${f.n} / ${String(FILES.length).padStart(2,'0')}</span>
       <div class="node-head"><span class="num">FILE ${f.n}</span><span class="cat">${f.tag}</span></div>
       <div class="title">${f.title}</div>
-      <div class="node-photo ${ph}">${camera}</div>
+      <div class="node-photo ${ph}">${nodePhotoInner}</div>
       <div class="node-bars"><div></div><div></div><div></div><div></div></div>
     </div>`;
   /* navigation on pointer tap is handled centrally by the viewport's own
@@ -655,10 +663,17 @@ function wfEnvelopeAt(t){
 const WF_W = 700, WF_H = 260;      // canvas coordinate space — kept short so the
                                     // trace fills most of the box instead of
                                     // floating in a lot of empty top/bottom space
-const WF_MID = 130, WF_AMP = 78;   // waveform sits in the vertical middle band,
-                                    // leaving just enough room top/bottom for the
-                                    // 4 extract boxes (82px tall)
+const WF_MID = 130, WF_AMP = 78;   // waveform sits in the vertical middle band
 const WF_BAR_COUNT = 170;          // dense + thin = polygraph feel, not audio-editor blocks
+const WF_CANVAS_PX = 240;          // actual rendered height of .wf-canvas — MUST match the
+                                    // `height` in the .wf-canvas CSS rule, since it's how we
+                                    // convert the trace's SVG-unit y-coordinates into real px
+                                    // for positioning the extract boxes in their shelves.
+const WF_LINE_GAP_PX = 30;         // target connector length (dot to box), in real px — kept
+                                    // short and constant regardless of how far a given dot's
+                                    // envelope value puts it from the canvas edge. Must stay
+                                    // comfortably bigger than the dot's own visual footprint
+                                    // (14px pulse-ring radius) so the box never reaches the dot.
 
 // The 4 dots don't have to sit on true amplitude peaks any more (the trace
 // is symmetric now, so "trough" doesn't mean anything on its own) — instead
@@ -666,31 +681,27 @@ const WF_BAR_COUNT = 170;          // dense + thin = polygraph feel, not audio-e
 // the top or bottom edge of the envelope there. Positions loosely echo the
 // reference sketch: two dots over the earlier, smaller clusters, two over
 // the tall spike and the tail.
+// `side` drives two things: which edge of the trace the dot reads off of,
+// AND which shelf (.wf-row-top / .wf-row-bottom, rendered above/below the
+// polygraph itself) its extract box lands in. Each box is then centered
+// on its OWN dot's x position (see renderWaveform) rather than parked in a
+// fixed corner — that keeps every photo right next to the dot that opened
+// it, with only a short straight connector between them, instead of a
+// distant diagonal string that used to cross the whole canvas.
 const WF_DOTS = [
-  {t:0.16, side:'top', corner:'tl'},
-  {t:0.40, side:'bottom', corner:'bl'},
-  {t:0.75, side:'top', corner:'tr'},
-  {t:0.90, side:'bottom', corner:'br'},
+  {t:0.16, side:'top'},
+  {t:0.40, side:'bottom'},
+  {t:0.75, side:'top'},
+  {t:0.90, side:'bottom'},
 ];
-
-// fixed corner anchor points (the near/inner corner of each 112x82
-// .wf-extract-frame box, see the matching CSS) that each string line is
-// drawn from. `tr` sits pulled out further than the others (see
-// .wf-extract-tr in the CSS) so its box clears the dot near the tall
-// spike instead of covering it — its anchor is nudged to match.
-const WF_BOX_ANCHOR = {
-  tl:{x:106,        y:82},
-  tr:{x:WF_W-70,    y:82},
-  bl:{x:106,        y:WF_H-82},
-  br:{x:WF_W-106,   y:WF_H-82},
-};
 
 // Renders the dense hairline trace plus 4 red dots. Each dot is a bare
 // trigger: clicking it pops a NEW thumbnail (from `f.waveformExtracts`,
-// not one of the document's existing floating photos) into one of the
-// four corners, captioned from `f.waveformLabels`, with a bent string
-// line drawn back to the exact point it was "extracted" from. `startLi`
-// continues the page's running redact-bar stagger index.
+// not one of the document's existing floating photos) into the shelf
+// above or below the trace, directly over/under the dot itself, captioned
+// from `f.waveformLabels`, with a short straight line drawn back to the
+// exact point it was "extracted" from. `startLi` continues the page's
+// running redact-bar stagger index.
 function renderWaveform(f, startLi){
   let barsHTML = '';
   for(let i=0; i<WF_BAR_COUNT; i++){
@@ -705,7 +716,7 @@ function renderWaveform(f, startLi){
   const extracts = (f.waveformExtracts && f.waveformExtracts.length) ? f.waveformExtracts : [];
   const labels = (f.waveformLabels && f.waveformLabels.length) ? f.waveformLabels : [];
 
-  let dotsHTML = '', stringsHTML = '', extractsHTML = '';
+  let dotsHTML = '', stringsHTML = '', topExtractsHTML = '', bottomExtractsHTML = '';
   WF_DOTS.forEach((d,idx)=>{
     const env = wfEnvelopeAt(d.t);
     const px = d.t*WF_W;
@@ -717,29 +728,46 @@ function renderWaveform(f, startLi){
       style="--li:${li}; left:${cxPct}%; top:${cyPct}%;"
       aria-label="Reveal extracted image ${idx+1}"></button>`;
 
-    const a = WF_BOX_ANCHOR[d.corner];
-    const bendX = (px + a.x)/2, bendY = a.y; // simple one-bend "string" like the reference sketch
-    stringsHTML += `<path data-wf-string="${id}" d="M${a.x.toFixed(1)},${a.y.toFixed(1)} L${bendX.toFixed(1)},${bendY.toFixed(1)} L${px.toFixed(1)},${py.toFixed(1)}"/>`;
-    stringsHTML += `<circle data-wf-string="${id}" cx="${a.x.toFixed(1)}" cy="${a.y.toFixed(1)}" r="3"/>`;
+    // The connector stops WF_LINE_GAP_PX short of the dot (clamped so it
+    // never overshoots past the true canvas edge for a dot that's already
+    // close to it) — a fixed length regardless of how tall this particular
+    // dot's envelope value is, instead of always running out to y=0/WF_H.
+    const pyPx = py / WF_H * WF_CANVAS_PX;
+    let edgePx, rowOffsetProp, rowOffsetVal;
+    if(d.side === 'top'){
+      edgePx = Math.max(pyPx - WF_LINE_GAP_PX, 0);
+      rowOffsetProp = 'bottom'; rowOffsetVal = -edgePx; // pulls the box down into the canvas
+    } else {
+      edgePx = Math.min(pyPx + WF_LINE_GAP_PX, WF_CANVAS_PX);
+      rowOffsetProp = 'top'; rowOffsetVal = -(WF_CANVAS_PX - edgePx); // pulls it up into the canvas
+    }
+    const edgeY = (edgePx / WF_CANVAS_PX * WF_H).toFixed(1);
+    stringsHTML += `<path data-wf-string="${id}" d="M${px.toFixed(1)},${edgeY} L${px.toFixed(1)},${py.toFixed(1)}"/>`;
+    stringsHTML += `<circle data-wf-string="${id}" cx="${px.toFixed(1)}" cy="${edgeY}" r="3"/>`;
 
     const inner = extracts[idx] ? `<img src="${extracts[idx]}" alt="" draggable="false">` : camera;
-    // label sits ABOVE the frame for top-side boxes, BELOW it for
-    // bottom-side ones — see .wf-extract-label CSS for the actual
-    // positioning; DOM order here just needs label-before/label-after
-    // so a plain stacked fallback (no CSS) still reads top-to-bottom sanely.
+    // label sits ABOVE the frame for top-shelf boxes, BELOW it for
+    // bottom-shelf ones, so in both cases the frame itself is the part
+    // closest to the trace — see .wf-extract-top/-bottom CSS.
     const labelHTML = labels[idx] ? `<div class="wf-extract-label">${labels[idx]}</div>` : '';
     const frameHTML = `<div class="wf-extract-frame">${inner}</div>`;
     const bodyHTML = d.side === 'top' ? (labelHTML + frameHTML) : (frameHTML + labelHTML);
-    extractsHTML += `<div class="wf-extract wf-extract-${d.corner}" id="${id}">${bodyHTML}</div>`;
+    // Centered on the dot's own x (112px box, so shift left by half),
+    // clamped a few px inside each edge so it doesn't run off the strip.
+    const leftPct = Math.min(Math.max(parseFloat(cxPct), 6), 94);
+    const boxHTML = `<div class="wf-extract wf-extract-${d.side}" id="${id}"
+      style="left:calc(${leftPct}% - 56px); ${rowOffsetProp}:${rowOffsetVal.toFixed(1)}px;">${bodyHTML}</div>`;
+    if(d.side === 'top') topExtractsHTML += boxHTML; else bottomExtractsHTML += boxHTML;
   });
 
   return `<div class="doc-waveform">
+    <div class="wf-row wf-row-top">${topExtractsHTML}</div>
     <div class="wf-canvas">
       <svg class="wf-line" viewBox="0 0 ${WF_W} ${WF_H}" preserveAspectRatio="none">${barsHTML}</svg>
       <svg class="wf-strings" viewBox="0 0 ${WF_W} ${WF_H}" preserveAspectRatio="none">${stringsHTML}</svg>
-      ${extractsHTML}
       ${dotsHTML}
     </div>
+    <div class="wf-row wf-row-bottom">${bottomExtractsHTML}</div>
   </div>`;
 }
 
