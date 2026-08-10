@@ -72,8 +72,32 @@ const FILES = [
   {n:"09", tag:"Threshold",   title:"Application",       code:"NT-0904-A", x:980,  y:430,  rot:-1,
    qtag:"09 methods",
    body:"The project is composed of three parts: material, dataset, and archive. The material is a physical index of censorship cases drawn from legislative history in the United States. The dataset is a network diagram mapping collective raw data, left intentionally dense because it represents data that has not yet been classified. The archive is the interactive format I just described, where selected cases become something audiences can actually explore.",
-   photos:['./img/material-photo-1.jpg', './img/censorship-casefile-poster.jpg', './img/website.png'],
-   snippets:["Material, dataset, and archive move the project from raw, unclassified data toward a structured, explorable format."]
+   photos:['./img/material-photo-1.jpg', './img/website.png', './img/dataset-network.png'],
+   snippets:["Material, dataset, and archive move the project from raw, unclassified data toward a structured, explorable format."],
+   // Exactly 3 floating photos, one per keyword below — no extra/unlinked
+   // image. On the FRONT page, these three words in the redacted snippet
+   // text above get highlighted red and become clickable — each one zooms
+   // its matching floating photo (see renderPhotos: photos[0] is always
+   // the corner photo `photo-09-corner`, the rest are `photo-09-0`, `photo-09-1`, ...).
+   // Order below follows reading order (material, dataset, archive) so
+   // clicking through the sentence zooms the photos chronologically.
+   keywordLinks:[
+     {word:'material', target:'photo-09-corner'}, // photos[0] material-photo-1.jpg
+     {word:'dataset',  target:'photo-09-1'},       // photos[2] dataset-network.png
+     {word:'archive',  target:'photo-09-0'},       // photos[1] website.png
+   ],
+   // Front page adds a dense, hairline-thin polygraph-style trace below
+   // the text, with 4 dots along it (2 reading off the top edge, 2 off
+   // the bottom). Unlike the diagram/keyword links above, these 4 dots
+   // don't reuse existing photos — clicking one pops a NEW thumbnail from
+   // `waveformExtracts` into a corner, with a string line back to its
+   // exact point on the trace, and a small caption from `waveformLabels`.
+   // Both arrays share the same order as WF_DOTS: top-left, bottom-left,
+   // top-right, bottom-right — which also reads left-to-right along the
+   // trace (chronological), so the captions below read in that order too.
+   waveform:true,
+   waveformExtracts:['./img/extract-01.jpg', './img/extract-02.jpg', './img/extract-03.jpg', './img/extract-04.jpg'],
+   waveformLabels:['Case Coding', 'Archival Research', 'Interface Design', 'Protocol Analysis']
   },
   {n:"10", tag:"Governance",  title:"The Appeal",       code:"NT-1128-C", x:270,  y:760,  rot:-1.5,
    qtag:"10 community of practice (projects)",
@@ -510,11 +534,18 @@ function renderFrontBody(f){
   // rather than resetting per snippet
   let lineCounter = 0;
   const snippetsHTML = snippets.map((s,i)=>{
-    const lines = splitIntoRedactedLines(s, 4); // ~4 words per redacted line
+    const lines = splitIntoRedactedLines(s, 4); // ~4 words per redacted line — split on PLAIN text
     const linesHTML = lines.map(line=>{
       const li = lineCounter++;
+      // File 09: highlight "material / dataset / archive" on THIS front-page
+      // snippet (not the back-page body text). Linking has to happen AFTER
+      // the line is split, not before — the <span class="kw-link" ...> tag
+      // itself contains spaces (between its attributes), so linking first
+      // and splitting by whitespace second would tear the tag apart across
+      // separate <p> lines and leak raw markup as visible text.
+      const displayLine = f.keywordLinks ? linkifyBody(line, f.keywordLinks) : line;
       return `<div class="doc-snippet-line" style="--li:${li}">
-        <p class="doc-snippet">${line}</p>
+        <p class="doc-snippet">${displayLine}</p>
         <span class="redact-bar"></span>
       </div>`;
     }).join('');
@@ -525,12 +556,19 @@ function renderFrontBody(f){
   // right after the text, continuing the same running --li counter so its
   // labels/thumbnails reveal in sequence right after the text above them
   const diagramHTML = f.diagram ? renderDiagram(f.diagram, lineCounter) : ``;
+  if(f.diagram) lineCounter += f.diagram.nodes.length;
+
+  // waveform section (currently only File 09 defines `waveform`) —
+  // placed right after the text/diagram, continuing the same running
+  // --li counter so its 4 dots pop in right after everything above them.
+  const waveformHTML = f.waveform ? renderWaveform(f, lineCounter) : ``;
+  if(f.waveform) lineCounter += 4;
 
   const gatewayHTML = f.gateway ? `<div class="gateway-btns">
     <button class="open-archive-btn" id="openArchiveBtn">Open the case index &rarr;</button>
     <button class="open-archive-btn" id="openWordmapBtn">Open the threshold map &rarr;</button>
   </div>` : ``;
-  return imageHTML + snippetsHTML + diagramHTML + gatewayHTML;
+  return imageHTML + snippetsHTML + diagramHTML + waveformHTML + gatewayHTML;
 }
 
 //NEED TO BE REVISED
@@ -542,11 +580,11 @@ const DGM_POS = ['top','left','right','bl','br'];
 // Connector line endpoints, hand-matched to the .dgm-pos-* CSS positions
 // and the 350×560 .dgm-canvas box. Center hub sits at (175,225), 50px radius.
 const DGM_LINES = [
-  'M175,180 L175,84',   // hub -> top
+  'M175,200 L175,84',   // hub -> top
   'M129,221 L60,206',   // hub -> left
   'M221,221 L290,206',  // hub -> right
-  'M148,258 L50,350',    // hub -> bottom-left top-middle
-  'M202,258 L300,350',   // hub -> bottom-right top-middle
+  'M170,258 L70,400',    // hub -> bottom-left top-middle
+  'M180,258 L280,400',   // hub -> bottom-right top-middle
 ];
 function renderDiagram(d, startLi){
   const centerInner = d.center && d.center.image
@@ -587,9 +625,173 @@ function renderDiagram(d, startLi){
   </div>`;
 }
 
+// -------- polygraph waveform + word-linked photos (File 09) --------
+// Dense hairline bar trace, shaped like a real audio waveform (mirrored
+// above/below a centerline) but drawn with very thin, closely-spaced
+// strokes rather than thick blocks — reads as a polygraph/lie-detector
+// strip rather than an audio-editor envelope. Amplitude is defined by a
+// handful of control points (quiet stretches between 5 activity
+// "clusters" of different heights); the bars between them are filled in
+// and interpolated, with a little per-bar jitter so it doesn't look like
+// a perfectly smooth cartoon envelope.
+const WF_ENV_POINTS = [
+  [0.00,.04],[0.05,.05],[0.09,.11],[0.13,.24],[0.16,.40],[0.19,.22],
+  [0.23,.07],[0.29,.05],[0.33,.28],[0.37,.48],[0.40,.30],[0.44,.40],
+  [0.48,.56],[0.52,.30],[0.56,.08],[0.61,.05],[0.65,.35],[0.69,.75],
+  [0.73,1.00],[0.77,.55],[0.81,.18],[0.85,.05],[0.88,.07],[0.90,.28],
+  [0.93,.33],[0.96,.14],[1.00,.04]
+];
+function wfEnvelopeAt(t){
+  for(let i=0;i<WF_ENV_POINTS.length-1;i++){
+    const [t0,v0] = WF_ENV_POINTS[i], [t1,v1] = WF_ENV_POINTS[i+1];
+    if(t>=t0 && t<=t1){
+      const f = (t1===t0) ? 0 : (t-t0)/(t1-t0);
+      return v0 + (v1-v0)*f;
+    }
+  }
+  return WF_ENV_POINTS[WF_ENV_POINTS.length-1][1];
+}
+
+const WF_W = 700, WF_H = 260;      // canvas coordinate space — kept short so the
+                                    // trace fills most of the box instead of
+                                    // floating in a lot of empty top/bottom space
+const WF_MID = 130, WF_AMP = 78;   // waveform sits in the vertical middle band,
+                                    // leaving just enough room top/bottom for the
+                                    // 4 extract boxes (82px tall)
+const WF_BAR_COUNT = 170;          // dense + thin = polygraph feel, not audio-editor blocks
+
+// The 4 dots don't have to sit on true amplitude peaks any more (the trace
+// is symmetric now, so "trough" doesn't mean anything on its own) — instead
+// each is pinned to a specific x position along the strip, and reads off
+// the top or bottom edge of the envelope there. Positions loosely echo the
+// reference sketch: two dots over the earlier, smaller clusters, two over
+// the tall spike and the tail.
+const WF_DOTS = [
+  {t:0.16, side:'top', corner:'tl'},
+  {t:0.40, side:'bottom', corner:'bl'},
+  {t:0.75, side:'top', corner:'tr'},
+  {t:0.90, side:'bottom', corner:'br'},
+];
+
+// fixed corner anchor points (the near/inner corner of each 112x82
+// .wf-extract-frame box, see the matching CSS) that each string line is
+// drawn from. `tr` sits pulled out further than the others (see
+// .wf-extract-tr in the CSS) so its box clears the dot near the tall
+// spike instead of covering it — its anchor is nudged to match.
+const WF_BOX_ANCHOR = {
+  tl:{x:106,        y:82},
+  tr:{x:WF_W-70,    y:82},
+  bl:{x:106,        y:WF_H-82},
+  br:{x:WF_W-106,   y:WF_H-82},
+};
+
+// Renders the dense hairline trace plus 4 red dots. Each dot is a bare
+// trigger: clicking it pops a NEW thumbnail (from `f.waveformExtracts`,
+// not one of the document's existing floating photos) into one of the
+// four corners, captioned from `f.waveformLabels`, with a bent string
+// line drawn back to the exact point it was "extracted" from. `startLi`
+// continues the page's running redact-bar stagger index.
+function renderWaveform(f, startLi){
+  let barsHTML = '';
+  for(let i=0; i<WF_BAR_COUNT; i++){
+    const t = i/(WF_BAR_COUNT-1);
+    const jitter = 0.55 + Math.random()*0.45; // organic texture within the envelope
+    const amp = Math.max(wfEnvelopeAt(t)*jitter, 0.02); // faint hairline even in "quiet" zones
+    const x = (t*WF_W).toFixed(1);
+    const y1 = (WF_MID - amp*WF_AMP).toFixed(1), y2 = (WF_MID + amp*WF_AMP).toFixed(1);
+    barsHTML += `<line class="wf-bar" x1="${x}" y1="${y1}" x2="${x}" y2="${y2}"/>`;
+  }
+
+  const extracts = (f.waveformExtracts && f.waveformExtracts.length) ? f.waveformExtracts : [];
+  const labels = (f.waveformLabels && f.waveformLabels.length) ? f.waveformLabels : [];
+
+  let dotsHTML = '', stringsHTML = '', extractsHTML = '';
+  WF_DOTS.forEach((d,idx)=>{
+    const env = wfEnvelopeAt(d.t);
+    const px = d.t*WF_W;
+    const py = d.side === 'top' ? (WF_MID - env*WF_AMP) : (WF_MID + env*WF_AMP);
+    const li = startLi + idx;
+    const id = `wfx-${f.n}-${idx}`;
+    const cxPct = (px/WF_W*100).toFixed(2), cyPct = (py/WF_H*100).toFixed(2);
+    dotsHTML += `<button type="button" class="wf-dot" data-wf-target="${id}"
+      style="--li:${li}; left:${cxPct}%; top:${cyPct}%;"
+      aria-label="Reveal extracted image ${idx+1}"></button>`;
+
+    const a = WF_BOX_ANCHOR[d.corner];
+    const bendX = (px + a.x)/2, bendY = a.y; // simple one-bend "string" like the reference sketch
+    stringsHTML += `<path data-wf-string="${id}" d="M${a.x.toFixed(1)},${a.y.toFixed(1)} L${bendX.toFixed(1)},${bendY.toFixed(1)} L${px.toFixed(1)},${py.toFixed(1)}"/>`;
+    stringsHTML += `<circle data-wf-string="${id}" cx="${a.x.toFixed(1)}" cy="${a.y.toFixed(1)}" r="3"/>`;
+
+    const inner = extracts[idx] ? `<img src="${extracts[idx]}" alt="" draggable="false">` : camera;
+    // label sits ABOVE the frame for top-side boxes, BELOW it for
+    // bottom-side ones — see .wf-extract-label CSS for the actual
+    // positioning; DOM order here just needs label-before/label-after
+    // so a plain stacked fallback (no CSS) still reads top-to-bottom sanely.
+    const labelHTML = labels[idx] ? `<div class="wf-extract-label">${labels[idx]}</div>` : '';
+    const frameHTML = `<div class="wf-extract-frame">${inner}</div>`;
+    const bodyHTML = d.side === 'top' ? (labelHTML + frameHTML) : (frameHTML + labelHTML);
+    extractsHTML += `<div class="wf-extract wf-extract-${d.corner}" id="${id}">${bodyHTML}</div>`;
+  });
+
+  return `<div class="doc-waveform">
+    <div class="wf-canvas">
+      <svg class="wf-line" viewBox="0 0 ${WF_W} ${WF_H}" preserveAspectRatio="none">${barsHTML}</svg>
+      <svg class="wf-strings" viewBox="0 0 ${WF_W} ${WF_H}" preserveAspectRatio="none">${stringsHTML}</svg>
+      ${extractsHTML}
+      ${dotsHTML}
+    </div>
+  </div>`;
+}
+
+// Wraps specific keywords in a file's body text (used on the flipped-open
+// back page) with clickable red spans that zoom the document's matching
+// floating photo — File 09 uses this to link "material / dataset /
+// archive" back to their source images, in reading order. Only the FIRST
+// occurrence of each word gets linked, so it targets the itemized list in
+// the opening sentence rather than a later repeat of the same word.
+function linkifyBody(body, links){
+  let out = body;
+  (links||[]).forEach(link=>{
+    const re = new RegExp(`\\b(${link.word})\\b`, 'i');
+    out = out.replace(re, m => `<span class="kw-link" data-target="${link.target}">${m}</span>`);
+  });
+  return out;
+}
+
 // Any number of photos on a document can be zoomed at once — no cap,
 // no eviction. Each photo's zoom state is independent of the others.
+// On zoom-in, size the box itself to the image's real aspect ratio (its
+// LARGER dimension maxes out at ZOOM_MAX) instead of scaling the fixed
+// landscape thumbnail box — so portrait/vertical images zoom based on
+// their height and fill the frame edge-to-edge, no more letterboxing.
+const ZOOM_MAX = 440; // px, target size of the zoomed photo's longer side
+function setZoomSize(photo, img){
+  if(!img || !img.naturalWidth || !img.naturalHeight) return;
+  const aspect = img.naturalWidth / img.naturalHeight;
+  photo.dataset.zoomW = aspect >= 1 ? ZOOM_MAX : Math.round(ZOOM_MAX * aspect);
+  photo.dataset.zoomH = aspect >= 1 ? Math.round(ZOOM_MAX / aspect) : ZOOM_MAX;
+}
 function toggleZoom(photo){
+  const zoomingIn = !photo.classList.contains('zoomed');
+  // Scattered photos get explicit inline width/height at creation time
+  // (see renderPhotos), and inline styles always beat a CSS class rule —
+  // so the size has to be swapped directly on photo.style here rather
+  // than left to a `.zoomed{ width:... }` CSS rule, or it silently does
+  // nothing for every photo except the corner one.
+  if(zoomingIn){
+    if(photo.dataset.origW===undefined){
+      photo.dataset.origW = photo.style.width || getComputedStyle(photo).width;
+      photo.dataset.origH = photo.style.height || getComputedStyle(photo).height;
+    }
+    setZoomSize(photo, photo.querySelector('img'));
+    if(photo.dataset.zoomW){
+      photo.style.width = photo.dataset.zoomW+'px';
+      photo.style.height = photo.dataset.zoomH+'px';
+    }
+  } else if(photo.dataset.origW){
+    photo.style.width = photo.dataset.origW;
+    photo.style.height = photo.dataset.origH;
+  }
   photo.classList.toggle('zoomed');
 }
 
@@ -600,6 +802,17 @@ function sheetAngles(){
   let back = (Math.random()*3 + 2) * (Math.random()<0.5 ? -1 : 1);    // ~2..5deg
   if(Math.sign(back)===Math.sign(front)) back *= -1; // keep them leaning opposite ways
   return {front, back};
+}
+
+// Opens/closes a waveform-extract box (section 09) together with its dot's
+// active state and its string line — shared by the dot's own click toggle
+// and the click-outside-closes listener, so both stay in sync.
+function setWfExtractOpen(wrap, id, open){
+  const box = wrap.querySelector('#'+CSS.escape(id));
+  if(!box) return;
+  box.classList.toggle('open', open);
+  wrap.querySelectorAll(`[data-wf-target="${CSS.escape(id)}"]`).forEach(dot=>dot.classList.toggle('active', open));
+  wrap.querySelectorAll(`[data-wf-string="${CSS.escape(id)}"]`).forEach(el=>el.classList.toggle('open', open));
 }
 
 FILES.forEach((f,idx)=>{
@@ -663,6 +876,19 @@ FILES.forEach((f,idx)=>{
     }, {once:true});
   });
 
+  /* precompute each photo's zoom size as soon as its image finishes
+     loading (rather than only at click time) — click-to-zoom can happen
+     before the browser has reported naturalWidth/naturalHeight, which
+     would otherwise fall back to the old landscape default and make
+     portrait photos zoom in far too small. */
+  wrap.querySelectorAll('.slide-photo').forEach(photo=>{
+    const img = photo.querySelector('img');
+    if(img){
+      if(img.complete) setZoomSize(photo, img);
+      else img.addEventListener('load', ()=>setZoomSize(photo, img), {once:true});
+    }
+  });
+
   /* draggable + click-to-zoom photos, corner photo included */
   wrap.querySelectorAll('.slide-photo').forEach(photo=>{
     let pdrag=false, moved=false, px=0, py=0, ox=0, oy=0, sideProp='right';
@@ -675,26 +901,75 @@ FILES.forEach((f,idx)=>{
       photo.setPointerCapture(e.pointerId);
     });
     photo.addEventListener('pointermove', e=>{
-      if(!pdrag || photo.classList.contains('zoomed')) return;
+      if(!pdrag) return;
       const dx=e.clientX-px, dy=e.clientY-py;
       if(Math.abs(dx)>3 || Math.abs(dy)>3) moved = true;
       photo.style[sideProp] = (sideProp==='right' ? ox-dx : ox+dx)+'px';
       photo.style.top = (oy+dy)+'px';
     });
     photo.addEventListener('pointerup', ()=>{
-      if(pdrag && !moved) toggleZoom(photo);
       pdrag=false;
     });
     photo.addEventListener('pointerleave', ()=>{ pdrag=false; });
+    photo.addEventListener('click', e=>{
+      e.stopPropagation();
+      if(!moved) toggleZoom(photo);
+    });
   });
 
-  // diagram thumbnails (section 02): plain click-to-zoom, no drag — click
-  // again (or click elsewhere on the thumb) to shrink back to normal size
-  wrap.querySelectorAll('.dgm-thumb-wrap').forEach(thumb=>{
+  // diagram thumbnails (section 02): clicking a labeled diagram image no
+  // longer zooms the thumbnail itself — it only zooms the floating photo
+  // that sits at the SAME index in this file's photos[] list (index 0 is
+  // always the corner photo, the rest are the scattered ones), so the
+  // diagram acts purely as a set of triggers, in diagram/chronological
+  // order, for the floating photos elsewhere on the document.
+  wrap.querySelectorAll('.dgm-thumb-wrap').forEach((thumb,i)=>{
+    const targetId = i===0 ? `photo-${f.n}-corner` : `photo-${f.n}-${i-1}`;
     thumb.addEventListener('click', e=>{
       e.stopPropagation();
-      toggleZoom(thumb);
+      const targetPhoto = wrap.querySelector('#'+CSS.escape(targetId));
+      if(targetPhoto) toggleZoom(targetPhoto);
     });
+  });
+
+  // waveform red dots (section 09): clicking a dot pops a NEW thumbnail
+  // (not one of the document's existing photos) into its matching corner
+  // box, and lights up the string line back to the point it was pulled
+  // from. Toggling the same dot again closes it — as does clicking
+  // anywhere outside the box, see the document-level listener below.
+  wrap.querySelectorAll('[data-wf-target]').forEach(dot=>{
+    dot.addEventListener('click', e=>{
+      e.stopPropagation();
+      const id = dot.dataset.wfTarget;
+      const box = wrap.querySelector('#'+CSS.escape(id));
+      if(!box) return;
+      setWfExtractOpen(wrap, id, !box.classList.contains('open'));
+    });
+  });
+
+  // keyword links (section 09 back page): clicking "material" / "dataset"
+  // / "archive" in the body text zooms that word's matching floating photo,
+  // same mechanism as the diagram thumbnails and waveform dots above.
+  wrap.querySelectorAll('.kw-link').forEach(span=>{
+    span.addEventListener('click', e=>{
+      e.stopPropagation();
+      const targetPhoto = wrap.querySelector('#'+CSS.escape(span.dataset.target));
+      if(targetPhoto) toggleZoom(targetPhoto);
+    });
+  });
+});
+
+// Any open waveform-extract box (section 09) closes when the person clicks
+// anywhere else — empty canvas, another document, the page background —
+// not just by re-clicking its own dot. Clicking the dot itself, or the open
+// box/image, is excluded so the box doesn't immediately close under your
+// own click; the dot's handler above also stops propagation, so this is
+// mostly a safety net for it.
+document.addEventListener('click', e=>{
+  if(e.target.closest('.wf-extract') || e.target.closest('.wf-dot')) return;
+  document.querySelectorAll('.wf-extract.open').forEach(box=>{
+    const wrap = box.closest('.slide-doc-wrap');
+    if(wrap) setWfExtractOpen(wrap, box.id, false);
   });
 });
 
