@@ -30,7 +30,7 @@ const FILES = [
   {n:"05", tag:"Governance",  title:"Category",     code:"NT-0602-B", x:130,  y:450,  rot:1,
   qtag:"05 keywords",
   body:"For the investigation, the project works through five terms. Governance is who holds authority to restrict. Legitimacy is whether that authority is accepted. Redaction is the technique used to cover information. Threshold is the point where restriction becomes control. Protocol is the set of rules through which a restriction operates.",
-  photos:['./img/02-Office_Of_Censorship_1945.jpg', './img/02-legitimacy.jpg', './img/02-redaction.jpg', './img/02-protocol-system.png', './img/06-tiktok.png'],
+  photos:['./img/02-Office_Of_Censorship_1945.jpg', './img/02-legitimacy.jpg', './img/02-redaction.jpg', './img/06-tiktok.png', './img/02-protocol-system.png'],
   // Front page keeps exactly one line of body text (instead of the usual
   // auto-picked two) — the hub diagram below takes over from there.
   snippets:["Five terms structure this project."],
